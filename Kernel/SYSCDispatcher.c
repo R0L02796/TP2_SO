@@ -48,7 +48,7 @@ void syscallDispatcher(uint64_t syscall, uint64_t p1, uint64_t p2, uint64_t p3, 
 		case FREE:
 			free((void *) p1);
 		case PRINTPAGE:
-			findPage((void *) p1);
+			printPage((void *) p1);
 	}
 }
 
