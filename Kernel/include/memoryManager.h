@@ -15,8 +15,8 @@
 typedef struct memoryList{
     size_t freePages;
     size_t cantPages;
-    page * first;  
-    page * last;
+    struct page * first;  
+    struct page * last;
 }memoryList;
 
 typedef struct page{
