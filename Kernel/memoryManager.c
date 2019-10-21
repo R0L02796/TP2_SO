@@ -1,4 +1,5 @@
 #include "memoryManager.h"
+#include "include/videoDriver.h"
 
 void newMemory();
 page * newPage(uint64_t * paddress, page * prev, uint64_t * pointedAddress, size_t size);
