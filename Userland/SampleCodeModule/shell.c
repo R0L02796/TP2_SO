@@ -149,9 +149,9 @@ int memTest() {
   char* mem = malloc(30);
   printf(
       "Memory has been allocated correctly (and string has been inserted). "
-      "Showing memory block:");
+      "Showing memory block:\n");
 
-  char copy[30] = "another one bites the dust";
+  char copy[30] = "another one bites the dust\n";
   memcpy(mem, copy, sizeof(copy));
 
   printPage(mem);
@@ -164,13 +164,13 @@ int memTest() {
   char* mem2 = malloc(16);
   printf(
       "\n New memory has been allocated correctly in the same block. Showing "
-      "memory block:");
+      "memory block:\n");
 
   printPage(mem2);
   char copy2[16] = "it works, relax";
   memcpy(mem, copy2, sizeof(copy2));
 
-  printf("\n Showing memory block with new inserted string:");
+  printf("\n Showing memory block with new inserted string:\n");
   printPage(mem2);
 
   free(mem2);
