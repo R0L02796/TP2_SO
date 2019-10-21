@@ -58,14 +58,14 @@ page * newPage(uint64_t * paddress, page * prev, uint64_t * pointedAddress, size
         }
     (memory->freePages)++;
 
-    page * page = paddress;
-    page->address = pointedAddress;
-    page->free = 1;
-    page->size = size;
-    page->next = NULL;
-    page->prev = prev;
+    page * p = (page *) paddress;
+    p->address = pointedAddress;
+    p->free = 1;
+    p->size = size;
+    p->next = NULL;
+    p->prev = prev;
 
-    return page;
+    return p;
 }
 
 //adds page in the end of the list.
