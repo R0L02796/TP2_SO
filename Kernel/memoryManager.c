@@ -10,7 +10,7 @@ page * findPage(void * address);
 
 
 
-static const uint64_t * memoryListAddress = (uint64_t *)0x0100000; //begining of memory
+static uint64_t * memoryListAddress = (uint64_t *)0x0100000; //begining of memory
 static memoryList * memory;
 
 
@@ -18,7 +18,7 @@ static memoryList * memory;
 
 void * malloc(size_t space)
 {
-    if ( memory != memoryListAddress ) 
+    if ( memory != (memoryList *) memoryListAddress ) 
     {
         newMemory();
     }
@@ -51,7 +51,7 @@ void newMemory()
 
 page * newPage(uint64_t * paddress, page * prev, uint64_t * pointedAddress, size_t size)
 {
-    if(memory->cantPages = MAX_CANT_OF_PAGES)
+    if(memory->cantPages == MAX_CANT_OF_PAGES)
         {
             //there is no more space
             return NULL;
@@ -81,26 +81,12 @@ void addPage()
 //get the best page to alocate the space.
 page * getOptimalPage(size_t space)
 {
+    
     int possiblePages = memory->freePages;
     page * currentPage = memory->first;
     int spaceToAlocate = space;
-    if(possiblePages == 0)
-    {
-        addPage();
-        currentPage = memory->last;
-        currentPage->free = 0;
-        spaceToAlocate -= SIZE_OF_PAGE;
-        while(spaceToAlocate > SIZE_OF_PAGE)
-        {
-            addPage();
-            spaceToAlocate -= SIZE_OF_PAGE;
-        }
-        addPage();//because its alwais greater than size we need 1 more page.
-        joinPages(currentPage);
-        return currentPage;
-    }
 
-    while (possiblePages)
+     while (possiblePages)
     {
         if (possiblePages == 1 && currentPage == memory->last)//if its the last one free and possible it should be the optimal
         {
@@ -133,12 +119,29 @@ page * getOptimalPage(size_t space)
         else
             currentPage = currentPage->next;
     }
+
+    if(possiblePages == 0)
+    {
+        addPage();
+        currentPage = memory->last;
+        currentPage->free = 0;
+        spaceToAlocate -= SIZE_OF_PAGE;
+        while(spaceToAlocate > SIZE_OF_PAGE)
+        {
+            addPage();
+            spaceToAlocate -= SIZE_OF_PAGE;
+        }
+        addPage();//because its alwais greater than size we need 1 more page.
+        joinPages(currentPage);
+        return currentPage;
+    }
+    return NULL;
 }
 
 //if the page recieved is full leave it as it is. if not separate it in two pages one full and one empty.
 void resizePage(page * p, size_t usedspace)
 {
-    if (memory->cantPages = MAX_CANT_OF_PAGES)
+    if (memory->cantPages == MAX_CANT_OF_PAGES)
     {
         return;
     }
