@@ -10,6 +10,8 @@
 #define RECTANGLE 4
 #define BEEP 5
 #define CURSOR 6
+#define MALLOC 7
+#define FREE 8
 
 #define GET 0
 #define SET 1

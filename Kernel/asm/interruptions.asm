@@ -3,7 +3,7 @@ GLOBAL _sti
 GLOBAL picMasterMask
 GLOBAL picSlaveMask
 GLOBAL haltcpu
-GLOBAL _hlt
+GLOBAL _hlt	
 
 GLOBAL _irq00Handler
 GLOBAL _irq01Handler

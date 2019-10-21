@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "snakemodule.h": "c"
+        "snakemodule.h": "c",
+        "stdint.h": "c"
     }
 }

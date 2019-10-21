@@ -1,11 +1,16 @@
 #include "memoryManager.h"
 
-void newMemory(uint64_t * adrress);
-page * newPage(uint64_t * paddress,page * prev);
+void newMemory();
+page * newPage(uint64_t * paddress, page * prev, uint64_t * pointedAddress, size_t size);
+void addPage();
+page * getOptimalPage(size_t space);
+void resizePage(page * p, size_t usedspace);
+void joinPages(page * initialPage);
+page * findPage(void * address);
 
 
 
-static const uint64_t * startAdrress = (uint8_t *)0x0100000; //begining of memory
+static const uint64_t * memoryListAddress = (uint64_t *)0x0100000; //begining of memory
 static memoryList * memory;
 
 
@@ -13,24 +18,38 @@ static memoryList * memory;
 
 void * malloc(size_t space)
 {
+    if ( memory != memoryListAddress ) 
+    {
+        newMemory();
+    }
     page * optPage = getOptimalPage(space);
-    
+    resizePage(optPage, space);
+   
     return optPage->address;
 }
 
+void free(void * address)
+{
+    page * p = findPage(address);
+    p->free = 1;
+    joinPages(p);
+}
 
 /////////////////////////////////memory managment tools///////////////////////////
 
-void newMemory(uint64_t * adrress)
+//creates the page table with one page if theres the need for more they are added later.
+void newMemory()
 {
-    memory = (memoryList *) adrress;
+    memory = (memoryList *) memoryListAddress;
     
     memory->cantPages = 0;
     memory->freePages = 0;
-    memory->first = newPage(adrress + sizeof(memoryList),NULL);
+    page * aux = newPage(memoryListAddress + sizeof(memoryList), NULL, memoryListAddress + sizeof(memoryList) + sizeof(page) * MAX_CANT_OF_PAGES, SIZE_OF_PAGE);
+    memory->first = aux;
+    memory->last = aux;
 }
 
-page * newPage(uint64_t * paddress,page * prev)
+page * newPage(uint64_t * paddress, page * prev, uint64_t * pointedAddress, size_t size)
 {
     if(memory->cantPages = MAX_CANT_OF_PAGES)
         {
@@ -40,46 +59,139 @@ page * newPage(uint64_t * paddress,page * prev)
     (memory->freePages)++;
 
     page * page = paddress;
-    page->address = paddress;
+    page->address = pointedAddress;
     page->free = 1;
-    page->size = SIZE_OF_MEMORY/MAX_CANT_OF_PAGES;
+    page->size = size;
     page->next = NULL;
     page->prev = prev;
 
     return page;
 }
 
+//adds page in the end of the list.
+void addPage()
+{
+    memory->cantPages ++;
+    memory->freePages ++;
+    memory->last->next = newPage((uint64_t *) (memory->last) + sizeof(page), memory->last, memory->last->address +  memory->last->size , SIZE_OF_PAGE);
+    memory->last = memory->last->next;
+}
+
+
 //get the best page to alocate the space.
 page * getOptimalPage(size_t space)
 {
-    int pageCant = cantOfPagesFor(space);
-    page * optPage = findPages(pageCant);
-    resizePage(optPage);
+    int possiblePages = memory->freePages;
+    page * currentPage = memory->first;
+    int spaceToAlocate = space;
+    if(possiblePages == 0)
+    {
+        addPage();
+        currentPage = memory->last;
+        currentPage->free = 0;
+        spaceToAlocate -= SIZE_OF_PAGE;
+        while(spaceToAlocate > SIZE_OF_PAGE)
+        {
+            addPage();
+            spaceToAlocate -= SIZE_OF_PAGE;
+        }
+        addPage();//because its alwais greater than size we need 1 more page.
+        joinPages(currentPage);
+        return currentPage;
+    }
 
-    return optPage;
-}
+    while (possiblePages)
+    {
+        if (possiblePages == 1 && currentPage == memory->last)//if its the last one free and possible it should be the optimal
+        {
+            if(space > currentPage->size)
+            {
+                currentPage->free = 0;
+                spaceToAlocate -= currentPage->size;
+                while(spaceToAlocate > SIZE_OF_PAGE)
+                {
+                    addPage();
+                    spaceToAlocate -= SIZE_OF_PAGE;
+                }
+                addPage();
+                joinPages(currentPage);
 
-//find how many pages you need to alocate the space given.
-int cantOfPagesFor(size_t space)
-{
-    
-}
-
-
-//finds the cant of pages if they are continuos one another if not order them so that they are.
-page * findPages(int cant)
-{
-
+            }
+            return currentPage;
+            
+        }
+        
+        if(currentPage->free && space <= currentPage->size)//the one that its free and has space.
+        {
+            return currentPage;
+        }
+        else if(currentPage->free)//there isnt enough free space in the page.
+        {
+            possiblePages--;
+            currentPage = currentPage->next;
+        }
+        else
+            currentPage = currentPage->next;
+    }
 }
 
 //if the page recieved is full leave it as it is. if not separate it in two pages one full and one empty.
-void resizePage(page * page)
+void resizePage(page * p, size_t usedspace)
 {
+    if (memory->cantPages = MAX_CANT_OF_PAGES)
+    {
+        return;
+    }
+    int sizeNewPage = p->size - usedspace;
+    p->size = usedspace;
+    page * aux = p->next;
+    p->next = newPage((uint64_t *)p + sizeof(p), p, p->address + p->size, sizeNewPage);
+    p->next->next = aux;
 
+    memory->freePages++;
+    memory->cantPages++;
+    
 }
 
-//join cant pages into one 
-void joinPages(page * firstPage, int cant)
+//join all prevs and next free pages into one.
+void joinPages(page * initialPage)
 {
-    
+    page* currentp = initialPage;
+    //next pages.
+    while (currentp != NULL)
+    {
+        if (currentp->next != NULL && currentp->next->free )
+        {
+            initialPage->next = currentp->next->next;
+            initialPage->size += currentp->next->size;
+            
+        }
+        currentp = currentp->next;
+    }
+    //prev pages.
+    currentp = initialPage;
+    while (currentp != NULL)
+    {
+        if (currentp->prev != NULL && currentp->prev->free)
+        {
+           initialPage->prev = currentp-> prev;
+           initialPage->size += currentp->prev->size;
+        }
+        currentp = currentp->prev;
+    }
+   
+}
+
+page * findPage(void * address)
+{
+    page * current = memory->first;
+    while (current!=NULL)
+    {
+        if (current->address == address)
+        {
+            return current;
+        }
+        current = current->next;
+    }
+    return NULL; //address isnt a adrress pointed by a page
 }
