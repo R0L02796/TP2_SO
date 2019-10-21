@@ -154,7 +154,7 @@ int memTest() {
   char copy[30] = "another one bites the dust";
   memcpy(mem, copy, sizeof(copy));
 
-  printNode(mem);
+  printPage(mem);
 
   free(mem);
   printf("Memory has been freed. Showing memory block:\n");
@@ -166,7 +166,7 @@ int memTest() {
       "\n New memory has been allocated correctly in the same block. Showing "
       "memory block:");
 
-  printNode(mem2);
+  printPage(mem2);
   char copy2[16] = "it works, relax";
   memcpy(mem, copy2, sizeof(copy2));
 
