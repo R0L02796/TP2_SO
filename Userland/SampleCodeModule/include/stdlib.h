@@ -38,5 +38,8 @@ void srand(unsigned long int seed);
 void lcg(unsigned long int *x, unsigned long int a, int c,
          unsigned long int m) ;
 
+void* memcpy(void* destination, const void* source, size_t length);
+        
+
 unsigned long int rand();
 #endif

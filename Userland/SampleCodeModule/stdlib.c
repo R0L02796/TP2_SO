@@ -146,3 +146,40 @@ unsigned long int rand() {
   lcg(&var, A, C, M);
   return var;
 }
+
+void* memcpy(void* destination, const void* source, size_t length) {
+  /*
+   * memcpy does not support overlapping buffers, so always do it
+   * forwards. (Don't change this without adjusting memmove.)
+   *
+   * For speedy copying, optimize the common case where both pointers
+   * and the length are word-aligned, and copy word-at-a-time instead
+   * of byte-at-a-time. Otherwise, copy by bytes.
+   *
+   * The alignment logic below should be portable. We rely on
+   * the compiler to be reasonably intelligent about optimizing
+   * the divides and modulos out. Fortunately, it is.
+   * 
+   * source STACKOVERFLOW
+   */
+  size_t i;
+
+  if ((uintptr_t)destination % sizeof(long) == 0 &&
+      (uintptr_t)source % sizeof(long) == 0 &&
+      length % sizeof(long) == 0) 
+	{
+   		long * d = destination;
+   		const long * s = source;
+		for (i = 0; i < length / sizeof(uint32_t); i++) 
+			d[i] = s[i];
+  	} 
+  else 
+  	{
+    char * d = destination;
+    const char * s = source;
+    for (i = 0; i < length; i++) 
+		d[i] = s[i];
+  	}
+
+  return destination;
+}

@@ -4,8 +4,7 @@
 #ifndef SNAKEMODULE_H
 #define SNAKEMODULE_H
 #include "videoModule.h"
-
-#define NULL (void*)0
+#include <stddef.h>
 
 #define SUP 119
 #define SDOWN 115
