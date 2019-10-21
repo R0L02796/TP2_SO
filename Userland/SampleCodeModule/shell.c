@@ -4,6 +4,7 @@
 #include "timeModule.h"
 #include "videoModule.h"
 #include "pongModule.h"
+#include "memoryModule.h"
 #include "soundModule.h"
 #include "snakeModule.h"
 
@@ -145,12 +146,12 @@ void invCom() {
 }
 
 int memTest() {
-  char* mem = malloc(25);
+  char* mem = malloc(30);
   printf(
       "Memory has been allocated correctly (and string has been inserted). "
       "Showing memory block:");
 
-  char copy[25] = "Penguins have knees";
+  char copy[30] = "another one bites the dust";
   memcpy(mem, copy, sizeof(copy));
 
   printNode(mem);
@@ -158,7 +159,7 @@ int memTest() {
   free(mem);
   printf("Memory has been freed. Showing memory block:\n");
 
-  printNode(mem);
+  printPage(mem);
 
   char* mem2 = malloc(16);
   printf(
@@ -170,7 +171,7 @@ int memTest() {
   memcpy(mem, copy2, sizeof(copy2));
 
   printf("\n Showing memory block with new inserted string:");
-  printNode(mem2);
+  printPage(mem2);
 
   free(mem2);
   printf("Memory has been freed.\n");

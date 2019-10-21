@@ -12,6 +12,7 @@
 #define CURSOR 6
 #define MALLOC 7
 #define FREE 8
+#define PRINTPAGE 9
 
 #define GET 0
 #define SET 1

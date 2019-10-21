@@ -4,7 +4,7 @@
 #include <stddef.h>
 
 void* malloc(size_t size);
-void free(void* source);
-
+void free(void* address);
+void printPage(void * address);
 
 #endif

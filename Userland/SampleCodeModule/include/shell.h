@@ -57,4 +57,6 @@ void snake();
 // Declaration of external function
 void opCode();
 
+int memtest();
+
 #endif
