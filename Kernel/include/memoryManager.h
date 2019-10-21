@@ -3,7 +3,7 @@
 
 #include <stddef.h>
 #include <stdint.h>
-#include "./lib.h"
+#include "lib.h"
 
 
 #define SIZE_OF_MEMORY 0x10000000   //(0xFFFFFFFFFFFFFFFF-0x0000000000100000) is what i can use.
