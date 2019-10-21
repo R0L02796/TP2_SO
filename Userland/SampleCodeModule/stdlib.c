@@ -147,7 +147,7 @@ unsigned long int rand() {
   return var;
 }
 
-void* memcpy(void* destination, const void* source, size_t length) {
+void* memcpy(void* destination, const void* source, unsigned long long length) {
   /*
    * memcpy does not support overlapping buffers, so always do it
    * forwards. (Don't change this without adjusting memmove.)
@@ -162,7 +162,7 @@ void* memcpy(void* destination, const void* source, size_t length) {
    * 
    * source STACKOVERFLOW
    */
-  size_t i;
+   unsigned long long i;
 
   if ((uintptr_t)destination % sizeof(long) == 0 &&
       (uintptr_t)source % sizeof(long) == 0 &&
