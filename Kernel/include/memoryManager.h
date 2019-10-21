@@ -31,4 +31,7 @@ void * malloc(size_t space);
 void free(void * address);
 
 
+void prinPage(uint64_t address);
+page * findPage(void * address);
+
 #endif

@@ -57,6 +57,8 @@ void initShell(){
           break;
       case INVCOM:
           invCom();
+      case MEMTEST:
+          memTest();
     }
   }
    printf("\n\n End of program");
@@ -72,6 +74,8 @@ int getCommand(char * command) {
   if (!strCmp("lenia", command)) return LENIA;
   if (!strCmp("exit", command)) return EXIT;
   if (!strCmp("snake", command)) return SNAKE;
+  if (!strCmp("memtest", command)) return MEMTEST;
+
   return INVCOM;
 }
 
@@ -138,4 +142,62 @@ void exit() {
 
 void invCom() {
   printf("\nInvalid command\n");
+}
+
+int memTest() {
+  char* mem = malloc(25);
+  printf(
+      "Memory has been allocated correctly (and string has been inserted). "
+      "Showing memory block:");
+
+  char copy[25] = "Penguins have knees";
+  memcpy(mem, copy, sizeof(copy));
+
+  printNode(mem);
+
+  free(mem);
+  printf("Memory has been freed. Showing memory block:\n");
+
+  printNode(mem);
+
+  char* mem2 = malloc(16);
+  printf(
+      "\n New memory has been allocated correctly in the same block. Showing "
+      "memory block:");
+
+  printNode(mem2);
+  char copy2[16] = "it works, relax";
+  memcpy(mem, copy2, sizeof(copy2));
+
+  printf("\n Showing memory block with new inserted string:");
+  printNode(mem2);
+
+  free(mem2);
+  printf("Memory has been freed.\n");
+
+  printf(
+      "\n        "
+      "////////////////////////////////////////////////////////////////////////"
+      "////////////////////////////////////\n");
+  printf(
+      "        //////////////////////////////////////////  ///////  "
+      "///////////////////////////////////////////////////////\n");
+  printf(
+      "        //////////////////////////////////////////  ///////  "
+      "///////////////////////////////////////////////////////\n");
+  printf(
+      "        "
+      "////////////////////////////////////////////////////////////////////////"
+      "////////////////////////////////////\n");
+  printf(
+      "        ///////////////////////////////////////  ////////////  "
+      "/////////////////////////////////////////////////////\n");
+  printf(
+      "        ////////////////////////////////////////             "
+      "///////////////////////////////////////////////////////\n");
+  printf(
+      "        "
+      "////////////////////////////////////////////////////////////////////////"
+      "////////////////////////////////////\n");
+  return 0;
 }

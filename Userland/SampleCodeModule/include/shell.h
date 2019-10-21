@@ -13,6 +13,7 @@
 #define SHELLSHOCK   9
 #define EXIT   10
 #define SNAKE 11
+#define MEMTEST 12
 
 #define MAXLEN 256
 
