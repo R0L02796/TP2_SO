@@ -1,7 +1,6 @@
-#include "include/memoryModule.h"
+#include "memoryModule.h"
 #include <stdint.h>
-#include "include/SYSCall.h"
-
+#include "SYSCall.h"
 void* malloc(size_t size) {
   void* address;
   systemCall((uint64_t)MALLOC, (uint64_t)&address, (uint64_t)size, 0, 0, 0);

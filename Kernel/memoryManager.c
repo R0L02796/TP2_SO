@@ -205,7 +205,8 @@ void printPage(uint64_t *address) {
     newLine();
     newLine();
 
-putStr("IMPRIME");
+    putStr("IMPRIME");
+
     newLine();
     newLine();
     newLine();
