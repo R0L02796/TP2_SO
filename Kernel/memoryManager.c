@@ -201,17 +201,7 @@ page * findPage(void * address)
 }
 
 void printPage(uint64_t *address) {
-    newLine();
-    newLine();
-    newLine();
-
-    putStr("IMPRIME");
-
-    newLine();
-    newLine();
-    newLine();
-
- /* page * p = findPage(address);
+    page * p = findPage(address);
   if (p == NULL) {
     putStr("not a page in the address inserted \n");
     newLine();
@@ -238,5 +228,5 @@ void printPage(uint64_t *address) {
   } else {
     putStr("yes");
   }
-  newLine();*/
+  newLine();
 }
