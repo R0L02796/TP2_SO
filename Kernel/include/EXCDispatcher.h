@@ -13,10 +13,5 @@ void op_code(uint64_t *sp);
 // Prints registers and their contents
 void printInfo(uint64_t* stackPointer);
 
-// Transformes a decimal to string. used for displaying the registers
-char * decToStr(int num, char * buffer);
-
-// VideoDriver function used for displaying exceptions
-void putStr(char * str);
 
 #endif
