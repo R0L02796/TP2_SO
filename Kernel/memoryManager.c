@@ -19,6 +19,10 @@ static memoryList * memory;
 
 void * malloc(size_t space)
 {
+
+    newLine();
+    putStr("MALLOC");
+    newLine();
     if ( memory != (memoryList *) memoryListAddress ) 
     {
         newMemory();
