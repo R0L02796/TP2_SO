@@ -180,7 +180,18 @@ void joinPages(page * initialPage)
     while (currentp->next != NULL && currentp->next->free )
     {
         initialPage->next = currentp->next->next;
+        
+        newLine();
+        putStr("----------------");
+        char buffer6[15];
+
         initialPage->size = initialPage->size + currentp->next->size;
+
+        putStr(decToStr(initialPage->size, buffer6));
+        putStr(decToStr(currentp->next->size, buffer6));
+        newLine();
+        putStr("----------------");
+        
         (memory->freePages)--;
         (memory->cantPages)--;
         if (currentp->next == memory->last)
