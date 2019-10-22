@@ -19,6 +19,8 @@ static memoryList * memory;
 
 void * malloc(size_t space)
 {
+    char buffer5[10];
+    putStr(decToStr(space,buffer5));
     if ( memory != (memoryList *) memoryListAddress ) 
     {
         newMemory();
@@ -169,6 +171,7 @@ void joinPages(page * initialPage)
         initialPage->next = currentp->next->next;
         initialPage->size += currentp->next->size;
         (memory->freePages)--;
+        (memory->cantPages)--;
         currentp = currentp->next;
     }
     //prev pages.
@@ -178,6 +181,7 @@ void joinPages(page * initialPage)
         initialPage->prev = currentp-> prev->prev;
         initialPage->size += currentp->prev->size;
         (memory->freePages)--;
+        (memory->cantPages)--;
         currentp = currentp->prev;
     }
    
