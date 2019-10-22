@@ -57,11 +57,11 @@ void initShell(){
       case SNAKE:
           snake();
           break;
-
+          
       case MEMTEST:
           memTest();
           break;
-
+          
       case INVCOM:
           invCom();
           break;
@@ -151,29 +151,29 @@ void invCom() {
 }
 
 void memTest() {
- // char* mem = malloc(30);
+  char* mem = malloc(30);
   printf("\n -----MALLOC----\n");
 
- // char copy[30] = "another one bites the dust\n";
-  //memcpy(mem, copy, sizeof(copy));
+  char copy[30] = "another one bites the dust\n";
+  memcpy(mem, copy, sizeof(copy));
 
   //printPage(mem);
 
-  //free(mem);
+  free(mem);
   printf("\n -----FREE----\n");
 
   //printPage(mem);
 
-  //char* mem2 = malloc(16);
+  char* mem2 = malloc(16);
   printf("\n -----MALLOC----\n");
 
 
   //printPage(mem2);
   char copy2[16] = "it works, relax";
-//  memcpy(mem, copy2, sizeof(copy2));
+  memcpy(mem, copy2, sizeof(copy2));
 
   //printPage(mem2);
 
-  //free(mem2);
+  free(mem2);
   printf("\n -----FREE----\n");
 }
