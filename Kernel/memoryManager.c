@@ -206,31 +206,41 @@ page * findPage(void * address)
 
 void printPage(uint64_t *address) {
     page * p = findPage(address);
-  if (p == NULL) {
-    putStr("not a page in the address inserted \n");
+    if (p == NULL) 
+    {
+        putStr("not a page in the address inserted \n");
+        newLine();
+        return;
+    }
     newLine();
-    return;
-  }
-  newLine();
-  putStr("content \n");
-  putStr((char *)p->address);
-  newLine();
+    putStr("cant of pages \t");
+    putStr(memory->cantPages);
+    putStr("cant of free pages \t");
+    putStr(memory->freePages); 
+    newLine();
 
-  putStr("address \n");
-  char buff[10];
-  putStr(decToStr((size_t)p->address, buff));
-  newLine();
+    putStr("content \t");
+    putStr((char *)p->address);
+    newLine();
 
-  putStr("size \n");
-  char buffer[10];
-  putStr(decToStr((size_t)p->size, buffer));
-  newLine();
+    putStr("address \t");
+    char buff[10];
+    putStr(decToStr((size_t)p->address, buff));
+    newLine();
 
-  putStr("free \n");
-  if (p->free == 0) {
-    putStr("no");
-  } else {
-    putStr("yes");
-  }
-  newLine();
+    putStr("size \t");
+    char buffer[10];
+    putStr(decToStr((size_t)p->size, buffer));
+    newLine();
+
+    putStr("free \t");
+    if (p->free == 0) 
+    {
+        putStr("no");
+    } 
+    else 
+    {
+        putStr("yes");
+    }
+    newLine();
 }
