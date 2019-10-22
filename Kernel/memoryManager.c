@@ -213,10 +213,12 @@ void printPage(uint64_t *address) {
         return;
     }
     newLine();
+    char buff[10];
     putStr("cant of pages \t");
-    putStr(memory->cantPages);
+    putStr(decToStr(memory->cantPages, buff));
+    char buff[10];
     putStr("cant of free pages \t");
-    putStr(memory->freePages); 
+    putStr(decToStr(memory->freePages, buff)); 
     newLine();
 
     putStr("content \t");
