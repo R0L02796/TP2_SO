@@ -175,44 +175,42 @@ void resizePage(page * p, size_t usedspace)
 //join all prevs and next free pages into one.
 void joinPages(page * initialPage)
 {
-    page* currentp = initialPage;
+    page* currentp = initialPage->next;
     //next pages.
-    while (currentp->next != NULL && currentp->next->free )
-    {
-        initialPage->next = currentp->next->next;
-        
+    while (currentp != NULL && currentp->free )
+    {        
         newLine();
         putStr("----------------");
         newLine();
         char buffer6[15];
         char buffer7[15];
 
-        initialPage->size = initialPage->size + currentp->next->size;
+        initialPage->size = initialPage->size + currentp->size;
 
         putStr(decToStr(initialPage->size, buffer6));
         newLine();
-        putStr(decToStr(currentp->next->size, buffer7));
+        putStr(decToStr(currentp->size, buffer7));
         newLine();
         putStr("----------------");
 
         (memory->freePages)--;
         (memory->cantPages)--;
-        if (currentp->next == memory->last)
+        if (currentp == memory->last)
         {
             memory->last = initialPage;
         }
-        
+        initialPage->next = currentp->next;
         currentp = currentp->next;
     }
     //prev pages.
-    currentp = initialPage;
-    while (currentp->prev != NULL && currentp->prev->free)
+    currentp = initialPage->prev;
+    while (currentp != NULL && currentp->free)
     {
-        initialPage->prev = currentp-> prev->prev;
-        initialPage->size += currentp->prev->size;
+        initialPage->prev = currentp->prev;
+        initialPage->size += currentp->size;
         (memory->freePages)--;
         (memory->cantPages)--;
-        if (currentp->prev == memory->first)
+        if (currentp == memory->first)
         {
             memory->first = initialPage;
         }
