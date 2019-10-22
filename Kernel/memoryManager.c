@@ -179,20 +179,7 @@ void joinPages(page * initialPage)
     //next pages.
     while (currentp != NULL && currentp->free )
     {        
-        newLine();
-        putStr("----------------");
-        newLine();
-        char buffer6[15];
-        char buffer7[15];
-
         initialPage->size = initialPage->size + currentp->size;
-
-        putStr(decToStr(initialPage->size, buffer6));
-        newLine();
-        putStr(decToStr(currentp->size, buffer7));
-        newLine();
-        putStr("----------------");
-
         (memory->freePages)--;
         (memory->cantPages)--;
         if (currentp == memory->last)
@@ -206,7 +193,6 @@ void joinPages(page * initialPage)
     currentp = initialPage->prev;
     while (currentp != NULL && currentp->free)
     {
-        initialPage->prev = currentp->prev;
         initialPage->size += currentp->size;
         (memory->freePages)--;
         (memory->cantPages)--;
@@ -214,6 +200,7 @@ void joinPages(page * initialPage)
         {
             memory->first = initialPage;
         }
+        initialPage->prev = currentp->prev;
         currentp = currentp->prev;
     }
    
@@ -277,5 +264,4 @@ void printPage(uint64_t *address)
     }
     newLine();
 
-    printPage(p->next->address);
 }
