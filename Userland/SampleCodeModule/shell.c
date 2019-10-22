@@ -145,7 +145,7 @@ void invCom() {
   printf("\nInvalid command\n");
 }
 
-int memTest() {
+void memTest() {
   char* mem = malloc(30);
   printf("\n -----MALLOC----\n");
 
@@ -171,5 +171,4 @@ int memTest() {
 
   free(mem2);
   printf("\n -----FREE----\n");
-  return 0;
 }
