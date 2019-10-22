@@ -170,6 +170,6 @@ int memTest() {
   printPage(mem2);
 
   free(mem2);
-  printf("\n -----FREE----\n");
-  return 0;*/
+  printf("\n -----FREE----\n");*/
+  return 0;
 }
