@@ -34,8 +34,13 @@ void * malloc(size_t space)
 void free(void * address)
 {
     page * p = findPage(address);
+    if (p->free)
+    {
+       return;
+    }
+    (memory->freePages)++;
+
     p->free = 1;
-    memory->freePages++;
     joinPages(p);
 }
 
@@ -107,12 +112,16 @@ page * getOptimalPage(size_t space)
                 joinPages(currentPage);
 
             }
+            currentPage->free = 0;
+            (memory->freePages)--;
             return currentPage;
             
         }
         
         if(currentPage->free && space <= currentPage->size)//the one that its free and has space.
         {
+            currentPage->free = 0;
+            (memory->freePages)--;
             return currentPage;
         }
         else if(currentPage->free)//there isnt enough free space in the page.
@@ -153,8 +162,12 @@ void resizePage(page * p, size_t usedspace)
     int sizeNewPage = p->size - usedspace;
     p->size = usedspace;
     page * aux = p->next;
-    p->next = newPage((uint64_t *)p + sizeof(p), p, p->address + p->size, sizeNewPage);
+    p->next = newPage((uint64_t *)p + sizeof(page), p, p->address + p->size, sizeNewPage);
     p->next->next = aux;
+    if(p = memory->last)
+    {
+        memory->last = p->next;
+    }
 
     memory->freePages++;
     memory->cantPages++;
@@ -201,7 +214,8 @@ page * findPage(void * address)
     return NULL; //address isnt a adrress pointed by a page
 }
 
-void printPage(uint64_t *address) {
+void printPage(uint64_t *address) 
+{
     page * p = findPage(address);
     if (p == NULL) 
     {
