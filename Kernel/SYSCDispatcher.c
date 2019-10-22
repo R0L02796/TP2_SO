@@ -43,7 +43,7 @@ void syscallDispatcher(uint64_t syscall, uint64_t p1, uint64_t p2, uint64_t p3, 
 					break;
 			}	
 		case MALLOC:
-			*((void **) p1) = malloc(*(size_t *)p2); 
+			*((void **) p1) = malloc((size_t )p2); 
 			break;
 		case FREE:
 			free((void *) p1);

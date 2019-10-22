@@ -72,7 +72,7 @@ void addPage()
     if(memory->cantPages == MAX_CANT_OF_PAGES)
         {
             //there is no more space
-            return NULL;
+            return;
         }
     (memory->cantPages) ++;
     (memory->freePages) ++;
