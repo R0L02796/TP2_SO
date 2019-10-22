@@ -167,7 +167,6 @@ int memTest() {
   char copy2[16] = "it works, relax";
   memcpy(mem, copy2, sizeof(copy2));
 
-  printf("\n Showing memory block with new inserted string:\n");
   printPage(mem2);
 
   free(mem2);
