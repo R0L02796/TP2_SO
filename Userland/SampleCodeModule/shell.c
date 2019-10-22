@@ -153,7 +153,7 @@ int memTest() {
   memcpy(mem, copy, sizeof(copy));
 
   printPage(mem);
-
+/*
   free(mem);
   printf("\n -----FREE----\n");
 
@@ -171,5 +171,5 @@ int memTest() {
 
   free(mem2);
   printf("\n -----FREE----\n");
-  return 0;
+  return 0;*/
 }

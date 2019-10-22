@@ -264,4 +264,6 @@ void printPage(uint64_t *address)
         putStr("yes");
     }
     newLine();
+
+    printPage(p->next->address);
 }
