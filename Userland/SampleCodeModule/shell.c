@@ -147,9 +147,7 @@ void invCom() {
 
 int memTest() {
   char* mem = malloc(30);
-  printf(
-      "Memory has been allocated correctly (and string has been inserted). "
-      "Showing memory block:\n");
+  printf("\n -----MALLOC----\n");
 
   char copy[30] = "another one bites the dust\n";
   memcpy(mem, copy, sizeof(copy));
@@ -157,14 +155,13 @@ int memTest() {
   printPage(mem);
 
   free(mem);
-  printf("Memory has been freed. Showing memory block:\n");
+  printf("\n -----FREE----\n");
 
   printPage(mem);
 
   char* mem2 = malloc(16);
-  printf(
-      "\n New memory has been allocated correctly in the same block. Showing "
-      "memory block:\n");
+  printf("\n -----MALLOC----\n");
+
 
   printPage(mem2);
   char copy2[16] = "it works, relax";
@@ -174,6 +171,6 @@ int memTest() {
   printPage(mem2);
 
   free(mem2);
-  printf("Memory has been freed.\n");
+  printf("\n -----FREE----\n");
   return 0;
 }
