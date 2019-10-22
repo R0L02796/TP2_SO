@@ -183,15 +183,18 @@ void joinPages(page * initialPage)
         
         newLine();
         putStr("----------------");
+        newLine();
         char buffer6[15];
+        char buffer7[15];
 
         initialPage->size = initialPage->size + currentp->next->size;
 
         putStr(decToStr(initialPage->size, buffer6));
-        putStr(decToStr(currentp->next->size, buffer6));
+        newLine();
+        putStr(decToStr(currentp->next->size, buffer7));
         newLine();
         putStr("----------------");
-        
+
         (memory->freePages)--;
         (memory->cantPages)--;
         if (currentp->next == memory->last)
