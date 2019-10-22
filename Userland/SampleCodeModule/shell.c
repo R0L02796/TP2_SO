@@ -152,14 +152,14 @@ int memTest() {
   char copy[30] = "another one bites the dust\n";
   memcpy(mem, copy, sizeof(copy));
 
-  printPage(mem);
-/*
+ // printPage(mem);
+
   free(mem);
   printf("\n -----FREE----\n");
 
   printPage(mem);
 
-  char* mem2 = malloc(16);
+ /* char* mem2 = malloc(16);
   printf("\n -----MALLOC----\n");
 
 
