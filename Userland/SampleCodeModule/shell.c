@@ -56,10 +56,12 @@ void initShell(){
       case SNAKE:
           snake();
           break;
-      case INVCOM:
-          invCom();
       case MEMTEST:
           memTest();
+          break;
+      case INVCOM:
+          invCom();
+          break;
     }
   }
    printf("\n\n End of program");
