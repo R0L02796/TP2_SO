@@ -162,7 +162,7 @@ void resizePage(page * p, size_t usedspace)
     page * aux = p->next;
     p->next = newPage((uint64_t *)p + sizeof(page), p, p->address + p->size, sizeNewPage);
     p->next->next = aux;
-    if(p = memory->last)
+    if(p == memory->last)
     {
         memory->last = p->next;
     }
