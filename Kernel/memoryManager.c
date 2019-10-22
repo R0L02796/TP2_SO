@@ -15,14 +15,10 @@ static uint64_t * memoryListAddress = (uint64_t *)0x0100000; //begining of memor
 static memoryList * memory;
 
 
-///////////////////////////////memory acces functions//////////////////////////
+///////////////////////////////memory access functions//////////////////////////
 
 void * malloc(size_t space)
 {
-
-    newLine();
-    putStr("MALLOC");
-    newLine();
     if ( memory != (memoryList *) memoryListAddress ) 
     {
         newMemory();
@@ -37,6 +33,7 @@ void free(void * address)
 {
     page * p = findPage(address);
     p->free = 1;
+    memory->freePages++;
     joinPages(p);
 }
 
@@ -47,8 +44,8 @@ void newMemory()
 {
     memory = (memoryList *) memoryListAddress;
     
-    memory->cantPages = 0;
-    memory->freePages = 0;
+    memory->cantPages = 1;
+    memory->freePages = 1;
     page * aux = newPage(memoryListAddress + sizeof(memoryList), NULL, memoryListAddress + sizeof(memoryList) + sizeof(page) * MAX_CANT_OF_PAGES, SIZE_OF_PAGE);
     memory->first = aux;
     memory->last = aux;
@@ -56,13 +53,7 @@ void newMemory()
 
 page * newPage(uint64_t * paddress, page * prev, uint64_t * pointedAddress, size_t size)
 {
-    if(memory->cantPages == MAX_CANT_OF_PAGES)
-        {
-            //there is no more space
-            return NULL;
-        }
-    (memory->freePages)++;
-
+    
     page * p = (page *) paddress;
     p->address = pointedAddress;
     p->free = 1;
@@ -76,8 +67,13 @@ page * newPage(uint64_t * paddress, page * prev, uint64_t * pointedAddress, size
 //adds page in the end of the list.
 void addPage()
 {
-    memory->cantPages ++;
-    memory->freePages ++;
+    if(memory->cantPages == MAX_CANT_OF_PAGES)
+        {
+            //there is no more space
+            return NULL;
+        }
+    (memory->cantPages) ++;
+    (memory->freePages) ++;
     memory->last->next = newPage((uint64_t *) (memory->last) + sizeof(page), memory->last, memory->last->address +  memory->last->size , SIZE_OF_PAGE);
     memory->last = memory->last->next;
 }
@@ -98,13 +94,14 @@ page * getOptimalPage(size_t space)
             if(space > currentPage->size)
             {
                 currentPage->free = 0;
+                (memory->freePages)--;
                 spaceToAlocate -= currentPage->size;
                 while(spaceToAlocate > SIZE_OF_PAGE)
                 {
                     addPage();
                     spaceToAlocate -= SIZE_OF_PAGE;
                 }
-                addPage();
+                addPage();//because its alwais greater than size we need 1 more page.
                 joinPages(currentPage);
 
             }
@@ -130,6 +127,7 @@ page * getOptimalPage(size_t space)
         addPage();
         currentPage = memory->last;
         currentPage->free = 0;
+        (memory->freePages)--;
         spaceToAlocate -= SIZE_OF_PAGE;
         while(spaceToAlocate > SIZE_OF_PAGE)
         {
@@ -166,25 +164,20 @@ void joinPages(page * initialPage)
 {
     page* currentp = initialPage;
     //next pages.
-    while (currentp != NULL)
+    while (currentp->next != NULL && currentp->next->free )
     {
-        if (currentp->next != NULL && currentp->next->free )
-        {
-            initialPage->next = currentp->next->next;
-            initialPage->size += currentp->next->size;
-            
-        }
+        initialPage->next = currentp->next->next;
+        initialPage->size += currentp->next->size;
+        (memory->freePages)--;
         currentp = currentp->next;
     }
     //prev pages.
     currentp = initialPage;
-    while (currentp != NULL)
+    while (currentp->prev != NULL && currentp->prev->free)
     {
-        if (currentp->prev != NULL && currentp->prev->free)
-        {
-           initialPage->prev = currentp-> prev;
-           initialPage->size += currentp->prev->size;
-        }
+        initialPage->prev = currentp-> prev->prev;
+        initialPage->size += currentp->prev->size;
+        (memory->freePages)--;
         currentp = currentp->prev;
     }
    
