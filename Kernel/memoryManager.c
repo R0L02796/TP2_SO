@@ -11,7 +11,7 @@ page * findPage(void * address);
 
 
 
-static uint64_t * memoryListAddress = (uint64_t *)0x0100000; //begining of memory
+static uint64_t * memoryListAddress = (uint64_t *)0x1000000; //begining of memory
 static memoryList * memory;
 
 
@@ -219,7 +219,7 @@ page * findPage(void * address)
     }
     return NULL; //address isnt a adrress pointed by a page
 }
-/*
+
 void printPage(uint64_t *address) 
 {
     page * p = findPage(address);
@@ -264,4 +264,4 @@ void printPage(uint64_t *address)
     }
     newLine();
 
-}*/
+}
