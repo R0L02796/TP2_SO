@@ -61,7 +61,7 @@ void initShell(){
       case MEMTEST:
           memTest();
           break;
-          
+
       case INVCOM:
           invCom();
           break;

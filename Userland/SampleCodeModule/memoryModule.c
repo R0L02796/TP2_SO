@@ -12,6 +12,6 @@ void free(void * address)
   systemCall((uint64_t)FREE, (uint64_t)address, 0, 0, 0, 0);
 }
 
-void printPage(void* address) {
+/*void printPage(void* address) {
   systemCall((uint64_t)PRINTPAGE, (uint64_t)address, 0, 0, 0, 0);
-}
+}*/
