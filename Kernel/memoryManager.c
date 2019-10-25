@@ -189,6 +189,10 @@ void joinPages(page * initialPage)
         initialPage->next = currentp->next;
         currentp = currentp->next;
     }
+    if(initialPage->next != NULL)
+    {
+        initialPage->next->prev = initialPage;
+    }
     //prev pages.
     currentp = initialPage->prev;
     while (currentp != NULL && currentp->free)
@@ -202,6 +206,10 @@ void joinPages(page * initialPage)
         }
         initialPage->prev = currentp->prev;
         currentp = currentp->prev;
+    }
+    if(initialPage->prev != NULL)
+    {
+        initialPage->prev->next = initialPage;
     }
    
 }

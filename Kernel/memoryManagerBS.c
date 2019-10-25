@@ -8,6 +8,13 @@ page * getOptimalPage(size_t space);
 void resizePage(page * p, size_t usedspace);
 void joinPages(page * initialPage);
 page * findPage(void * address);
+getPage(int lv);
+int getOptimalLv(int space);
+void decreseLv(page * p);
+void add(page * p, int lv);
+void remove(page * p, int lv);
+
+
 
 
 
