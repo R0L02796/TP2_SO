@@ -11,7 +11,7 @@ page * getOptimalPage(size_t space);
 void resizePage(page * p, size_t usedspace);
 void joinPages(page * initialPage);
 page * findPage(void * address);
-getPage(int lv);
+page * getPage(int lv);
 int getOptimalLv(int space);
 void decreseLv(page * p);
 void add(page * p, int lv);
@@ -68,7 +68,7 @@ void newMemory()
     page * current = memory->lvVec[MAX_LEVEL-MIN_LEVEL];
     for(int i=1; i < INIT_CANT_OF_PAGES; i++)
     {
-        current->next = newPage(current + sizeof(page), current->address + current->size, (1<<MAX_LEVEL), MAX_LEVEL);
+        current->next = newPage((uint64_t *)current + sizeof(page), current->address + current->size, (1<<MAX_LEVEL), MAX_LEVEL);
         current = current->next;
    }
 
@@ -114,6 +114,8 @@ int getOptimalLv(int space)
         }
         
     }
+    putStr("space its to big to allocate");
+    return -1;
 }
 
 void addLv()
@@ -129,7 +131,7 @@ void addLv()
     {
         if (memory->freePagesLv[level-MIN_LEVEL] == 0)
         {   
-            if(level = MAX_LEVEL)
+            if(level == MAX_LEVEL)
             {
                 putStr("no more space in memory");
                 return;
@@ -171,7 +173,7 @@ void remove(page * p, int lv)
     
     while (currentPage->next!=NULL)
     {
-        if(currentPage->next->address==p->address)
+        if(currentPage->next->address == p->address)
         {
             currentPage->next = currentPage->next->next;
             memory->freePagesLv[currentPage->lv - MIN_LEVEL]--;
@@ -201,7 +203,7 @@ void add(page * p, int lv)
     return;
 }
 
-getPage(int lv)
+page * getPage(int lv)
 {
     page * currentPage = memory->lvVec[lv-MIN_LEVEL];
     while (currentPage->free == 0)
