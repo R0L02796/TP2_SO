@@ -369,7 +369,7 @@ page * getOptimalPage(size_t space)
         newLine();
         newLine();
         char buffer12[10];
-        putStr("cant of pages \t");
+        putStr("free pages \t");
         putStr(decToStr(memory->freePagesLv[optLv-MIN_LEVEL], buffer12));
         newLine();
     while (optLv < memory->minLv)
@@ -386,6 +386,7 @@ page * getOptimalPage(size_t space)
     page * p = getPage(optLv);
     p->free = 0;
     (memory->freePages)--;
+    (memory->freePagesLv[p->lv - MIN_LEVEL]) --;
     return p;
 }
 
