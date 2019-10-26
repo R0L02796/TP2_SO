@@ -419,12 +419,6 @@ void addLv()
 
     while (level >= memory->minLv)
     {
-        newLine();
-            char buffer10[10];
-            putStr(decToStr(level,buffer10));
-            newLine();
-            char buffer11[10];
-            putStr(decToStr(memory->minLv,buffer11));
         if(current->lv == MIN_LEVEL)
         {
         putStr("lv already minimum cant be reduced to more than minimal");
@@ -571,7 +565,7 @@ void printPage(uint64_t *address)
     newLine();
 
     char buffer6[10];
-    putStr("cant of free pages \t");
+    putStr("Level \t");
     putStr(decToStr(memory->minLv, buffer6)); 
     newLine();
 

@@ -151,7 +151,7 @@ void invCom() {
 }
 
 void memTest() {
-  char* mem = malloc(900);
+  char * mem = malloc(901);
   printf("\n -----MALLOC----\n");
 
   char copy[900] = "another one bites the dust\n";
@@ -164,16 +164,32 @@ void memTest() {
 
   printPage(mem);
 
-  char* mem2 = malloc(16);
+//----------
+
+  char * mem2 = malloc(26);
   printf("\n -----MALLOC----\n");
 
 
   printPage(mem2);
-  char copy2[16] = "it works, relax";
-  memcpy(mem, copy2, sizeof(copy2));
+  char copy2[25] = "it works, relax";
+  memcpy(mem2, copy2, sizeof(copy2));
 
   printPage(mem2);
 
   free(mem2);
   printf("\n -----FREE----\n");
+
+//-------------------------
+
+  char * mem3 = malloc(200);
+  printf("\n -----MALLOC----\n");
+  char copy3[25] = "hasta la vista baby";
+  memcpy(mem3, copy3, sizeof(copy3));
+  printPage(mem3);
+
+  char * mem4 = malloc(200); 
+  printf("\n -----MALLOC----\n");
+  char copy4[25] = "la vista";
+  memcpy(mem4, copy4, sizeof(copy4));
+  printPage(mem4);
 }
