@@ -369,6 +369,11 @@ page * getOptimalPage(size_t space)
            putStr("addlv");
            addLv(memory->minLv);
        }
+       newLine();
+        char buffer20[10];
+        putStr("free pages\t");
+        putStr(decToStr(memory->freePagesLv[optLv-MIN_LEVEL], buffer10));
+        newLine();
     if (memory->freePagesLv[optLv-MIN_LEVEL] == 0 && optLv >= memory->minLv)
     {
         addLv(optLv + 1);
