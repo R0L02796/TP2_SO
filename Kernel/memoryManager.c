@@ -345,7 +345,6 @@ void newMemory()
         current = current->next;
    }
 
-    putStr("wasaaasaa");
 }
 
 page * newPage(uint64_t * paddress, uint64_t * pointedAddress, size_t size, int level)
@@ -366,7 +365,6 @@ page * getOptimalPage(size_t space)
     int optLv = getOptimalLv(space);
     while (optLv < memory->minLv)
        {
-           putStr("addlv");
            addLv();
        }
     page * p = getPage(optLv);
@@ -384,9 +382,7 @@ int getOptimalLv(int space)
         currentLvSize = 1 << k;
         if (space <= currentLvSize)
         {
-            newLine();
-            char buffer9[10];
-            putStr(decToStr(k,buffer9));
+            
             return k;
         }
         
@@ -423,7 +419,6 @@ void addLv()
 
     while (level >= memory->minLv)
     {
-        putStr("Decrese");
         newLine();
             char buffer10[10];
             putStr(decToStr(level,buffer10));
