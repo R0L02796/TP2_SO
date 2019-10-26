@@ -9,7 +9,7 @@
 void * malloc(size_t space);
 void free(void * address);
 
-page * findPage(void * address);
+struct page * findPage(void * address);
 void printPage(uint64_t * address);
 
 
