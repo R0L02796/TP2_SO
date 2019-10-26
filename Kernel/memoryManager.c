@@ -345,7 +345,7 @@ void newMemory()
         current = current->next;
    }
 
-
+    putStr("wasaaasaa");
 }
 
 page * newPage(uint64_t * paddress, uint64_t * pointedAddress, size_t size, int level)
