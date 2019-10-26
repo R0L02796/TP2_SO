@@ -421,6 +421,7 @@ void addLv()
     }
     while (level >= memory->minLv)
     {
+        putStr("Decrese");
         decreseLv(current);
     }
 }
@@ -447,7 +448,14 @@ void remove(page * p, int lv)
         putStr("the page trying to remove doesnt exist");
         return;
     }
-    
+    if(currentPage->address == p->address)
+    {
+        memory->lvVec[lv-MIN_LEVEL] = currentPage->next;
+        memory->freePagesLv[currentPage->lv - MIN_LEVEL]--;
+        memory->freePages--;
+        memory->cantPages--;
+        return;  
+    }
     while (currentPage->next!=NULL)
     {
         if(currentPage->next->address == p->address)
