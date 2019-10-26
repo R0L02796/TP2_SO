@@ -365,6 +365,7 @@ page * getOptimalPage(size_t space)
     int optLv = getOptimalLv(space);
     while (optLv < memory->minLv)
        {
+           putStr("addlv");
            addLv();
        }
     page * p = getPage(optLv);
