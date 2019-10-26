@@ -430,20 +430,20 @@ void addLv(int l)
     {
         if(current->lv == MIN_LEVEL)
         {
-        putStr("lv already minimum cant be reduced to more than minimal");
-        return;
+            putStr("lv already minimum cant be reduced to more than minimal");
+            return;
         }
         if(current->lv == l)
         {
             if(l==memory->minLv)
                 (memory->minLv) --;
-            newLine();
+        /*    newLine();
         char buffer14[10];
         putStr("free pages antes rem\t");
         putStr(decToStr(memory->freePagesLv[current->lv-MIN_LEVEL], buffer14));
         newLine();
 
-        remove(current, current->lv);
+            remove(current, current->lv);
 
         newLine();
         char buffer18[10];
@@ -452,7 +452,7 @@ void addLv(int l)
         newLine();
 
 
-        (current->lv)--;
+            (current->lv)--;
 
         newLine();
         char buffer17[10];
@@ -460,7 +460,7 @@ void addLv(int l)
         putStr(decToStr(memory->freePagesLv[current->lv-MIN_LEVEL], buffer17));
         newLine();
 
-        add(current, current->lv);
+             add(current, current->lv);
 
         newLine();
         char buffer16[10];
@@ -468,13 +468,17 @@ void addLv(int l)
         putStr(decToStr(memory->freePagesLv[current->lv-MIN_LEVEL], buffer16));
         newLine();
 
-        resizePage(current, current->size/2);
+            resizePage(current, current->size/2);
 
         newLine();
         char buffer15[10];
         putStr("free pages despues resize\t");
         putStr(decToStr(memory->freePagesLv[current->lv-MIN_LEVEL], buffer15));
-        newLine();
+        newLine();*/
+            remove(current, current->lv);
+            (current->lv)--;
+            add(current, current->lv);
+            resizePage(current, current->size/2);
             return;
         }
         remove(current, current->lv);
