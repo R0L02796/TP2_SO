@@ -446,34 +446,34 @@ void addLv(int l)
         remove(current, current->lv);
 
         newLine();
-        char buffer14[10];
+        char buffer18[10];
         putStr("free pages despues rem\t");
-        putStr(decToStr(memory->freePagesLv[current->lv-MIN_LEVEL], buffer14));
+        putStr(decToStr(memory->freePagesLv[current->lv-MIN_LEVEL], buffer18));
         newLine();
 
 
         (current->lv)--;
 
         newLine();
-        char buffer14[10];
+        char buffer17[10];
         putStr("free pages antes add\t");
-        putStr(decToStr(memory->freePagesLv[current->lv-MIN_LEVEL], buffer14));
+        putStr(decToStr(memory->freePagesLv[current->lv-MIN_LEVEL], buffer17));
         newLine();
 
         add(current, current->lv);
 
         newLine();
-        char buffer14[10];
+        char buffer16[10];
         putStr("free pages despues add\t");
-        putStr(decToStr(memory->freePagesLv[current->lv-MIN_LEVEL], buffer14));
+        putStr(decToStr(memory->freePagesLv[current->lv-MIN_LEVEL], buffer16));
         newLine();
 
         resizePage(current, current->size/2);
 
         newLine();
-        char buffer14[10];
+        char buffer15[10];
         putStr("free pages despues resize\t");
-        putStr(decToStr(memory->freePagesLv[current->lv-MIN_LEVEL], buffer14));
+        putStr(decToStr(memory->freePagesLv[current->lv-MIN_LEVEL], buffer15));
         newLine();
             return;
         }
