@@ -419,26 +419,32 @@ void addLv()
         current = current->next;
 
     }
+
     while (level >= memory->minLv)
     {
         putStr("Decrese");
-        decreseLv(current);
-    }
-}
-void decreseLv(page * p)
-{
-    if(p->lv == MIN_LEVEL)
-    {
+        if(current->lv == MIN_LEVEL)
+        {
         putStr("lv already minimum cant be reduced to more than minimal");
         return;
+        }
+        if(current->lv == memory->minLv)
+        {
+            (memory->minLv) --;
+            remove(current, current->lv);
+            (current->lv)--;
+            add(current, current->lv);
+            resizePage(current, current->size/2);
+            return;
+        }
+        remove(current, current->lv);
+        (current->lv)--;
+        add(current, current->lv);
+        resizePage(current, current->size/2);
+        level--;
     }
-    if(p->lv == memory->minLv)
-        (memory->minLv) --;
-    remove(p, p->lv);
-    (p->lv)--;
-    add(p, p->lv);
-    resizePage(p, p->size/2);
 }
+
 
 void remove(page * p, int lv)
 {
