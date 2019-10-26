@@ -157,22 +157,22 @@ void memTest() {
   char copy[30] = "another one bites the dust\n";
   memcpy(mem, copy, sizeof(copy));
 
-  //printPage(mem);
+  printPage(mem);
 
   free(mem);
   printf("\n -----FREE----\n");
 
-  //printPage(mem);
+  printPage(mem);
 
   char* mem2 = malloc(16);
   printf("\n -----MALLOC----\n");
 
 
-  //printPage(mem2);
+  printPage(mem2);
   char copy2[16] = "it works, relax";
   memcpy(mem, copy2, sizeof(copy2));
 
-  //printPage(mem2);
+  printPage(mem2);
 
   free(mem2);
   printf("\n -----FREE----\n");
