@@ -1,6 +1,9 @@
 #include "memoryManagerBS.h"
 #include "videoDriver.h"
 
+//choose a memory manager from SYSCDispatcher.C by uncommenting the include of the one you choose
+
+
 void newMemory();
 page * newPage(uint64_t * paddress, uint64_t * pointedAddress, size_t size, int level);
 void addLv();

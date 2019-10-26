@@ -6,11 +6,10 @@
 #include "lib.h"
 
 
-#define SIZE_OF_MEMORY 0x10000000   //(0xFFFFFFFFFFFFFFFF-0x0000000000100000) is what i can use.
-                                    // dont want to use a big number like that .
+#define SIZE_OF_MEMORY 0x8000000   //128 Megas
 #define MAX_LEVEL 10                //0x10000000=2^28 should be if i want just one lv
 #define MIN_LEVEL 3
-#define INIT_CANT_OF_PAGES 100         //0x10000000/(1<<10) is what i can have as max. im going with 100 for the moment
+#define INIT_CANT_OF_PAGES 0x8000000/(1<<10)     //SIZE_OF_MEMORY/(1<<MAX_LEVEL)
 #define MAX_CANT_OF_PAGES 1000000
 
 
