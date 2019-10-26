@@ -384,7 +384,7 @@ int getOptimalLv(int space)
         if (space <= currentLvSize)
         {
             newLine();
-            char * buffer9[10];
+            char buffer9[10];
             putStr(decToStr(k,buffer9));
             return k;
         }
