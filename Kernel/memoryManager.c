@@ -423,6 +423,12 @@ void addLv()
     while (level >= memory->minLv)
     {
         putStr("Decrese");
+        newLine();
+            char buffer10[10];
+            putStr(decToStr(level,buffer10));
+            newLine();
+            char buffer11[10];
+            putStr(decToStr(memory->minLv,buffer11));
         if(current->lv == MIN_LEVEL)
         {
         putStr("lv already minimum cant be reduced to more than minimal");
