@@ -501,6 +501,11 @@ void add(page * p, int lv)
         memory->freePagesLv[currentPage->lv - MIN_LEVEL]++;
         memory->freePages ++;
         memory->cantPages ++;
+        newLine();
+        char buffer14[10];
+        putStr("free pages \t");
+        putStr(decToStr(memory->freePagesLv[lv-MIN_LEVEL], buffer14));
+        newLine();
         return;
     }
     
@@ -512,6 +517,11 @@ void add(page * p, int lv)
     memory->freePagesLv[currentPage->lv - MIN_LEVEL]++;
     memory->freePages ++;
     memory->cantPages ++;
+    newLine();
+        char buffer13[10];
+        putStr("free pages \t");
+        putStr(decToStr(memory->freePagesLv[lv-MIN_LEVEL], buffer13));
+        newLine();
     return;
 }
 
