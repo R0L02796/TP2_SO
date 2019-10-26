@@ -1,9 +1,10 @@
 #include "memoryManager.h"
 #include "videoDriver.h"
 
-//choose a memory manager from SYSCDispatcher.C by uncometing the include of the one you choose
+//choose a memory manager from the ones bellow by uncometing the include of the one you choose
 
-
+//----------------------------------------------FIRST FIT--------------------------------------------------//
+/*
 void newMemory();
 page * newPage(uint64_t * paddress, page * prev, uint64_t * pointedAddress, size_t size);
 void addPage();
@@ -48,7 +49,6 @@ void free(void * address)
 /////////////////////////////////memory managment tools//////////////////////////////////////////
 
 
-////////////////////////////////////////////FIRST FIT///////////////////////////////////////////////
 //creates the page table with one page if theres the need for more they are added later.
 void newMemory()
 {
@@ -278,9 +278,52 @@ void printPage(uint64_t *address)
     newLine();
 
 }
+*/
+//----------------------------------------------BUDDY SYSTEM--------------------------------------------------//
 
-//////////////////////////////////////////////////////BUDDY SYSTEM////////////////////////////////////////////
-/*
+void newMemory();
+page * newPage(uint64_t * paddress, uint64_t * pointedAddress, size_t size, int level);
+void addLv();
+page * getOptimalPage(size_t space);
+void resizePage(page * p, size_t usedspace);
+void joinPages(page * initialPage);
+page * findPage(void * address);
+page * getPage(int lv);
+int getOptimalLv(int space);
+void decreseLv(page * p);
+void add(page * p, int lv);
+void remove(page * p, int lv);
+
+static uint64_t * memoryListAddress = (uint64_t *)0x1000000; //begining of memory
+static memoryList * memory;
+
+
+///////////////////////////////memory access functions//////////////////////////
+
+void * malloc(size_t space)
+{
+    if ( memory != (memoryList *) memoryListAddress ) 
+    {
+        newMemory();
+    }
+    page * optPage = getOptimalPage(space);   
+    return optPage->address;
+}
+
+void free(void * address)
+{
+    page * p = findPage(address);
+    if (p->free)
+    {
+       return;
+    }
+    (memory->freePages)++;
+    (memory->freePagesLv[p->lv - MIN_LEVEL])++;
+    p->free = 1;
+}
+
+/////////////////////////////////memory managment tools///////////////////////////
+
 void newMemory()
 {
     memory = (memoryList *) memoryListAddress;
@@ -527,4 +570,3 @@ void printPage(uint64_t *address)
     newLine();
 
 }
-*/

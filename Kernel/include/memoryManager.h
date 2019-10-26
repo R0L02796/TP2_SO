@@ -15,6 +15,7 @@ void printPage(uint64_t * address);
 
 
 ////////////////////////////////////////////////FIRST FIT//////////////////////////////////////////////////////////
+/*
 
 #define SIZE_OF_MEMORY 0x8000000   //128Megas
 #define SIZE_OF_PAGE 0x8000000/1000000
@@ -36,9 +37,8 @@ typedef struct page{
     struct page * prev;
 }page;
 
-
+*/
 //////////////////////////////////////////////////////////BUDDY SYSTEM///////////////////////////////////////////////////
-/*
 #define SIZE_OF_MEMORY 0x8000000   //128 Megas
 #define MAX_LEVEL 10                //0x10000000=2^28 should be if i want just one lv
 #define MIN_LEVEL 3
@@ -62,7 +62,7 @@ typedef struct page{
     struct page * next;
     int lv;
 }page;
-*/
+
 
 #endif
 
