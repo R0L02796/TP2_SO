@@ -363,15 +363,7 @@ page * newPage(uint64_t * paddress, uint64_t * pointedAddress, size_t size, int 
 page * getOptimalPage(size_t space)
 {
     int optLv = getOptimalLv(space);
-    newLine();
-        char buffer11[10];
-        putStr(decToStr(optLv, buffer11));
-        newLine();
-        newLine();
-        char buffer12[10];
-        putStr("free pages \t");
-        putStr(decToStr(memory->freePagesLv[optLv-MIN_LEVEL], buffer12));
-        newLine();
+
     while (optLv < memory->minLv)
        {
            putStr("addlv");
@@ -445,10 +437,44 @@ void addLv(int l)
         {
             if(l==memory->minLv)
                 (memory->minLv) --;
-            remove(current, current->lv);
-            (current->lv)--;
-            add(current, current->lv);
-            resizePage(current, current->size/2);
+            newLine();
+        char buffer14[10];
+        putStr("free pages antes rem\t");
+        putStr(decToStr(memory->freePagesLv[current->lv-MIN_LEVEL], buffer14));
+        newLine();
+
+        remove(current, current->lv);
+
+        newLine();
+        char buffer14[10];
+        putStr("free pages despues rem\t");
+        putStr(decToStr(memory->freePagesLv[current->lv-MIN_LEVEL], buffer14));
+        newLine();
+
+
+        (current->lv)--;
+
+        newLine();
+        char buffer14[10];
+        putStr("free pages antes add\t");
+        putStr(decToStr(memory->freePagesLv[current->lv-MIN_LEVEL], buffer14));
+        newLine();
+
+        add(current, current->lv);
+
+        newLine();
+        char buffer14[10];
+        putStr("free pages despues add\t");
+        putStr(decToStr(memory->freePagesLv[current->lv-MIN_LEVEL], buffer14));
+        newLine();
+
+        resizePage(current, current->size/2);
+
+        newLine();
+        char buffer14[10];
+        putStr("free pages despues resize\t");
+        putStr(decToStr(memory->freePagesLv[current->lv-MIN_LEVEL], buffer14));
+        newLine();
             return;
         }
         remove(current, current->lv);
@@ -456,7 +482,6 @@ void addLv(int l)
         add(current, current->lv);
         resizePage(current, current->size/2);
         level--;
-        putStr("level bajo");
     }
 }
 
@@ -501,11 +526,6 @@ void add(page * p, int lv)
         memory->freePagesLv[currentPage->lv - MIN_LEVEL]++;
         memory->freePages ++;
         memory->cantPages ++;
-        newLine();
-        char buffer14[10];
-        putStr("free pages \t");
-        putStr(decToStr(memory->freePagesLv[lv-MIN_LEVEL], buffer14));
-        newLine();
         return;
     }
     
@@ -517,11 +537,6 @@ void add(page * p, int lv)
     memory->freePagesLv[currentPage->lv - MIN_LEVEL]++;
     memory->freePages ++;
     memory->cantPages ++;
-    newLine();
-        char buffer13[10];
-        putStr("free pages \t");
-        putStr(decToStr(memory->freePagesLv[lv-MIN_LEVEL], buffer13));
-        newLine();
     return;
 }
 
@@ -552,11 +567,7 @@ void resizePage(page * p, size_t usedSpace)
     memory->cantPages++;
     memory->freePagesLv[p->lv-MIN_LEVEL]++;
     
-    newLine();
-        char buffer12[10];
-        putStr("free pages after resize \t");
-        putStr(decToStr(memory->freePagesLv[p->lv-MIN_LEVEL], buffer12));
-        newLine();
+    
 }
 
 
