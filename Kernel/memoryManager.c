@@ -366,8 +366,13 @@ page * getOptimalPage(size_t space)
     while (optLv < memory->minLv)
        {
            putStr("addlv");
-           addLv();
+           addLv(memory->minLv);
        }
+    if (memory->freePagesLv[optLv-MIN_LEVEL] == 0)
+    {
+        addLv(optLv + 1);
+    }
+    
     page * p = getPage(optLv);
     p->free = 0;
     (memory->freePages)--;
@@ -393,9 +398,9 @@ int getOptimalLv(int space)
 
 }
 
-void addLv()
+void addLv(int l)
 {
-    int level = memory->minLv;
+    int level = l;
     page * current = memory->lvVec[level-MIN_LEVEL];
     if (memory->freePages == 0)
         {
@@ -419,16 +424,17 @@ void addLv()
 
     }
 
-    while (level >= memory->minLv)
+    while (level >= l)
     {
         if(current->lv == MIN_LEVEL)
         {
         putStr("lv already minimum cant be reduced to more than minimal");
         return;
         }
-        if(current->lv == memory->minLv)
+        if(current->lv == l)
         {
-            (memory->minLv) --;
+            if(l==memory->minLv)
+                (memory->minLv) --;
             remove(current, current->lv);
             (current->lv)--;
             add(current, current->lv);
