@@ -186,7 +186,7 @@ void memTest() {
   char copy3[25] = "hasta la vista baby";
   memcpy(mem3, copy3, sizeof(copy3));
   printPage(mem3);
-/*
+
   char * mem4 = malloc(200); 
   printf("\n -----MALLOC----\n");
   char copy4[25] = "la vista";
@@ -197,5 +197,5 @@ void memTest() {
   printf("\n -----MALLOC----\n");
   char copy5[25] = "la vista";
   memcpy(mem5, copy5, sizeof(copy5));
-  printPage(mem5);*/
+  printPage(mem5);
 }
