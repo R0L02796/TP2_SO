@@ -544,6 +544,11 @@ void printPage(uint64_t *address)
     putStr(decToStr(memory->freePages, buffer1)); 
     newLine();
 
+    char buffer6[10];
+    putStr("cant of free pages \t");
+    putStr(decToStr(memory->minLv, buffer6)); 
+    newLine();
+
     putStr("content \t");
     putStr((char *)p->address);
     newLine();
