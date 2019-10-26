@@ -366,6 +366,7 @@ page * getOptimalPage(size_t space)
     int optLv = getOptimalLv(space);
     while (optLv < memory->minLv)
        {
+           putStr("addlv");
            addLv();
        }
     page * p = getPage(optLv);
@@ -489,6 +490,10 @@ void add(page * p, int lv)
     if (currentPage == NULL)
     {
         memory->lvVec[lv-MIN_LEVEL] = p;
+        memory->freePagesLv[currentPage->lv - MIN_LEVEL]++;
+        memory->freePages ++;
+        memory->cantPages ++;
+        return;
     }
     
     while (currentPage->next!=NULL)
@@ -496,7 +501,9 @@ void add(page * p, int lv)
         currentPage = currentPage->next;
     }
     currentPage->next = p;
-    
+    memory->freePagesLv[currentPage->lv - MIN_LEVEL]++;
+    memory->freePages ++;
+    memory->cantPages ++;
     return;
 }
 
