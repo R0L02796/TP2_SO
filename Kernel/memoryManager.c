@@ -540,8 +540,13 @@ void resizePage(page * p, size_t usedSpace)
     p->next->next = aux;
     memory->freePages++;
     memory->cantPages++;
-    (memory->freePagesLv[p->lv-MIN_LEVEL])++;
+    memory->freePagesLv[p->lv-MIN_LEVEL]++;
     
+    newLine();
+        char buffer12[10];
+        putStr("free pages after resize \t");
+        putStr(decToStr(memory->freePagesLv[p->lv-MIN_LEVEL], buffer12));
+        newLine();
 }
 
 
