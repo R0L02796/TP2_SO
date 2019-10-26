@@ -411,6 +411,7 @@ void addLv()
                 return;
             }
             level++;
+            putStr("aumento lv");
             current = memory->lvVec[level-MIN_LEVEL]; 
         }
         current = current->next;
@@ -438,6 +439,7 @@ void addLv()
         add(current, current->lv);
         resizePage(current, current->size/2);
         level--;
+        putStr("level bajo");
     }
 }
 
