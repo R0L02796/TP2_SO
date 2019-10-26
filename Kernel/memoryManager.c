@@ -383,12 +383,16 @@ int getOptimalLv(int space)
         currentLvSize = 1 << k;
         if (space <= currentLvSize)
         {
+            newLine();
+            char * buffer9[10];
+            putStr(decToStr(k,buffer9));
             return k;
         }
         
     }
     putStr("space its to big to allocate");
     return -1;
+
 }
 
 void addLv()
