@@ -363,7 +363,6 @@ page * newPage(uint64_t * paddress, uint64_t * pointedAddress, size_t size, int 
 page * getOptimalPage(size_t space)
 {
     int optLv = getOptimalLv(space);
-    putStr("getoptpage");
     
     while (optLv < memory->minLv)
        {
@@ -372,10 +371,6 @@ page * getOptimalPage(size_t space)
        
     if (memory->freePagesLv[optLv-MIN_LEVEL] == 0 && optLv >= memory->minLv)
     {
-        newLine();
-        putStr("primera de 9 en if  ");
-        char c[2];
-        putStr(decToStr(memory->lvVec[6]->free,c));
         addLv(optLv + 1);
     }
 
@@ -383,12 +378,6 @@ page * getOptimalPage(size_t space)
     p->free = 0;
     (memory->freePages)--;
     (memory->freePagesLv[p->lv - MIN_LEVEL]) --;
-   
-        newLine();
-    char c2[2];
-    putStr("primera de 9");
-        putStr(decToStr(memory->lvVec[6]->free,c2));
-
     return p;
 }
 
@@ -435,7 +424,6 @@ void addLv(int l)
     current = getPage(level);
     while (level >= l)
     {
-        putStr("entreal while");
         if(current->lv == MIN_LEVEL)
         {
             putStr("lv already minimum cant be reduced to more than minimal");
@@ -447,19 +435,7 @@ void addLv(int l)
                 (memory->minLv) --;
             remove(current, current->lv);
             (current->lv)--;
-
-    newLine();
-    char c3[2];
-    putStr("paginas free en 8  ");
-        putStr(decToStr(memory->freePagesLv[5],c3));
-
             add(current, current->lv);
-    newLine();
-    char c4[2];
-    putStr("paginas free en 8  ");
-        putStr(decToStr(memory->freePagesLv[5],c4));
-
-            
             resizePage(current, current->size/2);
             return;
         }
@@ -517,7 +493,7 @@ void add(page * p, int lv)
         return;
     }
     
-    while (currentPage->next!=NULL)
+    while (currentPage->next != NULL)
     {
         currentPage = currentPage->next;
     }
@@ -535,16 +511,9 @@ page * getPage(int lv)
     while (currentPage->free == 0)
     {
         newLine();
-        putStr("GETPAGE");
         putStr((char*)currentPage->address);
         currentPage = currentPage->next;
     }   
-
-newLine();
-        putStr("la q devuelve ");
-        char c7[2];
-        uint64_t * add = currentPage->address;
-        putStr(decToStr(add,c7));
 
     return currentPage;
 }
@@ -572,10 +541,6 @@ void resizePage(page * p, size_t usedSpace)
 
 page * findPage(void * address)
 {
-    putStr("la q busca ");
-        char c7[2];
-        void * add = address;
-        putStr(decToStr(add,c7));
     page * current;
     for (size_t i = 0; i <= MAX_LEVEL-MIN_LEVEL; i++)
     {
