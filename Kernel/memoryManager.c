@@ -363,7 +363,8 @@ page * newPage(uint64_t * paddress, uint64_t * pointedAddress, size_t size, int 
 page * getOptimalPage(size_t space)
 {
     int optLv = getOptimalLv(space);
-
+        char c[2];
+        putStr(decToStr(memory->lvVec[6]->free,c));
     while (optLv < memory->minLv)
        {
            addLv(memory->minLv);
@@ -371,8 +372,7 @@ page * getOptimalPage(size_t space)
        
     if (memory->freePagesLv[optLv-MIN_LEVEL] == 0 && optLv >= memory->minLv)
     {
-        char c[2];
-        putStr(decToStr(memory->lvVec[6]->free,c));
+
         addLv(optLv + 1);
     }
     page * p = getPage(optLv);
