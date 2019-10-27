@@ -366,20 +366,13 @@ page * getOptimalPage(size_t space)
 
     while (optLv < memory->minLv)
        {
-           putStr("addlv");
            addLv(memory->minLv);
        }
-       newLine();
-        char buffer20[10];
-        putStr("free pages\t");
-        putStr(decToStr(memory->freePagesLv[optLv+1-MIN_LEVEL], buffer20));
-        newLine();
+       
     if (memory->freePagesLv[optLv-MIN_LEVEL] == 0 && optLv >= memory->minLv)
     {
-        putStr("qwafsafffa");
         addLv(optLv + 1);
     }
-    putStr("salio fasfsad");
     page * p = getPage(optLv);
     p->free = 0;
     (memory->freePages)--;
@@ -424,21 +417,10 @@ void addLv(int l)
             return;
         }
         level++;
-        putStr("aumento lv");
         current = memory->lvVec[level-MIN_LEVEL]; 
         
     }
-    newLine();
-        char bu[10];
-        putStr("free?\t");
-        putStr(decToStr(current->free, bu)); 
-        newLine();
-    while (current->free == 0)
-    {
-        current = current->next;
-        //putStr("en while");
-    }
-    putStr("wsdsaf");
+    current = getPage(level);
     while (level >= l)
     {
         if(current->lv == MIN_LEVEL)
@@ -519,6 +501,7 @@ void add(page * p, int lv)
     return;
 }
 
+//returns first free page in lv
 page * getPage(int lv)
 {
     page * currentPage = memory->lvVec[lv-MIN_LEVEL];

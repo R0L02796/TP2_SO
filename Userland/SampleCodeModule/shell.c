@@ -193,6 +193,8 @@ void memTest() {
   memcpy(mem4, copy4, sizeof(copy4));
   printPage(mem4);
 
+  
+
   char * mem5 = malloc(200); 
   printf("\n -----MALLOC----\n");
   char copy5[25] = "la vista";
