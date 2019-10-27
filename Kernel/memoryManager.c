@@ -436,6 +436,14 @@ void addLv(int l)
             (current->lv)--;
             add(current, current->lv);
             resizePage(current, current->size/2);
+            
+            newLine();
+            char w[2];
+            char w1[2];
+            putStr(decToStr(current->free,w));
+            putStr(decToStr(current->lv,w1));
+            newLine();
+
             return;
         }
         remove(current, current->lv);
