@@ -359,6 +359,8 @@ page * newPage(uint64_t * paddress, uint64_t * pointedAddress, size_t size, int 
     return p;
 }
 
+addPage();
+
 //get the best page to alocate the space.
 page * getOptimalPage(size_t space)
 {
@@ -549,7 +551,7 @@ void resizePage(page * p, size_t usedSpace)
     int sizeNewPage = p->size - usedSpace;
     p->size = usedSpace;
     page * aux = p->next;
-    p->next = newPage((uint64_t *)p + sizeof(page), p->address + p->size, sizeNewPage, p->lv);
+    p->next = newPage(memoryListAddress + sizeof(memoryList) + memory->cantPages * sizeof(page), p->address + p->size, sizeNewPage, p->lv);
     p->next->next = aux;
     memory->freePages++;
     memory->cantPages++;
