@@ -372,7 +372,7 @@ page * getOptimalPage(size_t space)
        newLine();
         char buffer20[10];
         putStr("free pages\t");
-        putStr(decToStr(optLv, buffer20));
+        putStr(decToStr(memory->freePagesLv[optLv+1-MIN_LEVEL], buffer20));
         newLine();
     if (memory->freePagesLv[optLv-MIN_LEVEL] == 0 && optLv >= memory->minLv)
     {
@@ -435,7 +435,7 @@ void addLv(int l)
     while (current->free == 0)
     {
         current = current->next;
-        putStr("en while");
+        //putStr("en while");
     }
     putStr("wsdsaf");
     while (level >= l)
