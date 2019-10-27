@@ -543,7 +543,7 @@ page * getPage(int lv)
 newLine();
         putStr("la q devuelve ");
         char c7[2];
-        putStr(decToStr(currentPage->free,c7));
+        putStr(decToStr(currentPage->address,c7));
 
     return currentPage;
 }
