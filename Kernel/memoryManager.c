@@ -416,27 +416,26 @@ void addLv(int l)
             putStr("No Space in Memory");
             return;//not enough space
         }
+    while(memory->freePagesLv[level-MIN_LEVEL] == 0)
+    {   
+        if(level == MAX_LEVEL)
+        {
+            putStr("no more space in memory");
+            return;
+        }
+        level++;
+        putStr("aumento lv");
+        current = memory->lvVec[level-MIN_LEVEL]; 
+        newLine();
+        char bu[10];
+        putStr("free?\t");
+        putStr(decToStr(current->free, bu)); 
+        newLine();
+    }
     while (current->free == 0)
     {
         current = current->next;
         putStr("en while");
-        if (memory->freePagesLv[level-MIN_LEVEL] == 0)
-        {   
-            if(level == MAX_LEVEL)
-            {
-                putStr("no more space in memory");
-                return;
-            }
-            level++;
-            putStr("aumento lv");
-            current = memory->lvVec[level-MIN_LEVEL]; 
-            newLine();
-    char bu[10];
-    putStr("free?\t");
-    putStr(decToStr(current->free, bu)); 
-    newLine();
-        }
-
     }
     putStr("wsdsaf");
     while (level >= l)
