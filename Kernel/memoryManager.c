@@ -419,6 +419,7 @@ void addLv(int l)
     while (current->free == 0)
     {
         current = current->next;
+        putStr("en while");
         if (memory->freePagesLv[level-MIN_LEVEL] == 0)
         {   
             if(level == MAX_LEVEL)
