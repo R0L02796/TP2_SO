@@ -391,7 +391,7 @@ page * getOptimalPage(size_t space)
         newLine();
     char c2[2];
     putStr("primera de 9");
-        putStr(decToStr(memory->lvVec[6]->free,c2));
+        putStr(decToStr(p->lv,c2));
 
     return p;
 }
