@@ -426,12 +426,13 @@ void addLv(int l)
         level++;
         putStr("aumento lv");
         current = memory->lvVec[level-MIN_LEVEL]; 
-        newLine();
+        
+    }
+    newLine();
         char bu[10];
         putStr("free?\t");
         putStr(decToStr(current->free, bu)); 
         newLine();
-    }
     while (current->free == 0)
     {
         current = current->next;
