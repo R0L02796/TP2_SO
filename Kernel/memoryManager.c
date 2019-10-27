@@ -450,13 +450,13 @@ void addLv(int l)
             remove(current, current->lv);
             (current->lv)--;
 
-newLine();
+    newLine();
     char c3[2];
     putStr("paginas free en 8  ");
         putStr(decToStr(memory->freePagesLv[5],c3));
 
             add(current, current->lv);
-newLine();
+    newLine();
     char c4[2];
     putStr("paginas free en 8  ");
         putStr(decToStr(memory->freePagesLv[5],c4));
@@ -536,6 +536,7 @@ page * getPage(int lv)
     page * currentPage = memory->lvVec[lv-MIN_LEVEL];
     while (currentPage->free == 0)
     {
+        putStr((char*)currentPage->address);
         currentPage = currentPage->next;
     }   
     return currentPage;
