@@ -376,6 +376,7 @@ page * getOptimalPage(size_t space)
         newLine();
     if (memory->freePagesLv[optLv-MIN_LEVEL] == 0 && optLv >= memory->minLv)
     {
+        putStr("qwafsafffa");
         addLv(optLv + 1);
     }
     
@@ -416,6 +417,7 @@ void addLv(int l)
         }
     while (current->free == 0)
     {
+        current = current->next;
         if (memory->freePagesLv[level-MIN_LEVEL] == 0)
         {   
             if(level == MAX_LEVEL)
@@ -427,7 +429,6 @@ void addLv(int l)
             putStr("aumento lv");
             current = memory->lvVec[level-MIN_LEVEL]; 
         }
-        current = current->next;
 
     }
 
