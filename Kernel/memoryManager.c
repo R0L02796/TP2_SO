@@ -387,11 +387,7 @@ page * getOptimalPage(size_t space)
     p->free = 0;
     (memory->freePages)--;
     (memory->freePagesLv[p->lv - MIN_LEVEL]) --;
-    if (memory->lvVec[6]->free==0)
-    {
-        p->free=1;
-    }
-    
+   
         newLine();
     char c2[2];
     putStr("primera de 9");
@@ -489,6 +485,7 @@ void remove(page * p, int lv)
         memory->freePagesLv[currentPage->lv - MIN_LEVEL]--;
         memory->freePages--;
         memory->cantPages--;
+        currentPage->next = NULL;
         return;  
     }
     while (currentPage->next!=NULL)
@@ -499,6 +496,7 @@ void remove(page * p, int lv)
             memory->freePagesLv[currentPage->lv - MIN_LEVEL]--;
             memory->freePages--;
             memory->cantPages--;
+            currentPage->next = NULL;
             return;
         }
     }
