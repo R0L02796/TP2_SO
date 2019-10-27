@@ -441,7 +441,7 @@ void addLv(int l)
             char w[2];
             char w1[2];
             putStr(decToStr(memory->lvVec[(current->lv)+1- MIN_LEVEL]->free,w));
-            putStr(decToStr(memory->lvVec[current->lv+1-MIN_LEVEL]->free,w1));
+            putStr(decToStr(memory->lvVec[current->lv+1-MIN_LEVEL]->lv,w1));
             newLine();
 
             return;
