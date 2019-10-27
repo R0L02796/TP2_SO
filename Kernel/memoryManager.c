@@ -411,12 +411,6 @@ void addLv(int l)
     int level = l;
     page * current = memory->lvVec[level-MIN_LEVEL];
 
-    newLine();
-    char bu[10];
-    putStr("free?\t");
-    putStr(decToStr(current->free, bu)); 
-    newLine();
-
     if (memory->freePages == 0)
         {
             putStr("No Space in Memory");
@@ -435,10 +429,15 @@ void addLv(int l)
             level++;
             putStr("aumento lv");
             current = memory->lvVec[level-MIN_LEVEL]; 
+            newLine();
+    char bu[10];
+    putStr("free?\t");
+    putStr(decToStr(current->free, bu)); 
+    newLine();
         }
 
     }
-
+    putStr("wsdsaf");
     while (level >= l)
     {
         if(current->lv == MIN_LEVEL)
