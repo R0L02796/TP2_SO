@@ -572,6 +572,10 @@ void resizePage(page * p, size_t usedSpace)
 
 page * findPage(void * address)
 {
+    putStr("la q busca ");
+        char c7[2];
+        uint64_t add = address;
+        putStr(decToStr(add,c7));
     page * current;
     for (size_t i = 0; i <= MAX_LEVEL-MIN_LEVEL; i++)
     {
