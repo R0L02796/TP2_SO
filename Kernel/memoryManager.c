@@ -359,8 +359,6 @@ page * newPage(uint64_t * paddress, uint64_t * pointedAddress, size_t size, int 
     return p;
 }
 
-addPage();
-
 //get the best page to alocate the space.
 page * getOptimalPage(size_t space)
 {
@@ -536,9 +534,17 @@ page * getPage(int lv)
     page * currentPage = memory->lvVec[lv-MIN_LEVEL];
     while (currentPage->free == 0)
     {
+        newLine();
+        putStr("GETPAGE");
         putStr((char*)currentPage->address);
         currentPage = currentPage->next;
     }   
+
+newLine();
+        putStr("la q devuelve ");
+        char c7[2];
+        putStr(decToStr(currentPage->free,c7));
+
     return currentPage;
 }
 
