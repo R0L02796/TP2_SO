@@ -375,6 +375,8 @@ page * getOptimalPage(size_t space)
 
         addLv(optLv + 1);
     }
+    char c1[2];
+    putStr(decToStr(optLv,c1));
     page * p = getPage(optLv);
     p->free = 0;
     (memory->freePages)--;
