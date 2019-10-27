@@ -387,11 +387,15 @@ page * getOptimalPage(size_t space)
     p->free = 0;
     (memory->freePages)--;
     (memory->freePagesLv[p->lv - MIN_LEVEL]) --;
-
+    if (memory->lvVec[6]->free==0)
+    {
+        p->free=1;
+    }
+    
         newLine();
     char c2[2];
     putStr("primera de 9");
-        putStr(decToStr(p->lv,c2));
+        putStr(decToStr(memory->lvVec[6]->free,c2));
 
     return p;
 }
