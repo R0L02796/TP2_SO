@@ -440,8 +440,8 @@ void addLv(int l)
             newLine();
             char w[2];
             char w1[2];
-            putStr(decToStr(current->next->free,w));
-            putStr(decToStr(current->next->lv,w1));
+            putStr(decToStr(memory->lvVec[current->lv+1]->free,w));
+            putStr(decToStr(memory->lvVec[current->lv+1]->free,w1));
             newLine();
 
             return;
