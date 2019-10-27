@@ -543,7 +543,7 @@ page * getPage(int lv)
 newLine();
         putStr("la q devuelve ");
         char c7[2];
-        uint64_t add = currentPage->address;
+        uint64_t * add = currentPage->address;
         putStr(decToStr(add,c7));
 
     return currentPage;
@@ -574,7 +574,7 @@ page * findPage(void * address)
 {
     putStr("la q busca ");
         char c7[2];
-        uint64_t add = address;
+        void * add = address;
         putStr(decToStr(add,c7));
     page * current;
     for (size_t i = 0; i <= MAX_LEVEL-MIN_LEVEL; i++)
