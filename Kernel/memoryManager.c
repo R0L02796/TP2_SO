@@ -449,7 +449,19 @@ void addLv(int l)
                 (memory->minLv) --;
             remove(current, current->lv);
             (current->lv)--;
+
+newLine();
+    char c3[2];
+    putStr("paginas free en 8  ");
+        putStr(decToStr(memory->freePagesLv[5],c3));
+
             add(current, current->lv);
+newLine();
+    char c4[2];
+    putStr("paginas free en 8  ");
+        putStr(decToStr(memory->freePagesLv[5],c4));
+
+            
             resizePage(current, current->size/2);
             return;
         }
