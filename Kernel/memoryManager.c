@@ -375,18 +375,11 @@ page * getOptimalPage(size_t space)
     if (memory->freePagesLv[optLv-MIN_LEVEL] == 0 && optLv >= memory->minLv)
     {
         newLine();
-        putStr("primera de 9");
+        putStr("primera de 9 en if  ");
         char c[2];
         putStr(decToStr(memory->lvVec[6]->free,c));
         addLv(optLv + 1);
     }
-    char c1[2];
-    putStr(decToStr(optLv,c1));
-
-    newLine();
-        putStr("primera de 9");
-        char c[2];
-        putStr(decToStr(memory->lvVec[6]->free,c));
 
     page * p = getPage(optLv);
     p->free = 0;
@@ -444,6 +437,7 @@ void addLv(int l)
     current = getPage(level);
     while (level >= l)
     {
+        putStr("entreal while");
         if(current->lv == MIN_LEVEL)
         {
             putStr("lv already minimum cant be reduced to more than minimal");
@@ -457,14 +451,6 @@ void addLv(int l)
             (current->lv)--;
             add(current, current->lv);
             resizePage(current, current->size/2);
-            
-            newLine();
-            char w[2];
-            char w1[2];
-            putStr(decToStr(memory->lvVec[(current->lv)+1- MIN_LEVEL]->free,w));
-            putStr(decToStr(memory->lvVec[current->lv+1-MIN_LEVEL]->lv,w1));
-            newLine();
-
             return;
         }
         remove(current, current->lv);
