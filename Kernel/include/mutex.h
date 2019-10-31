@@ -1,6 +1,7 @@
 #ifndef MUTEX_H
 #define MUTEX_H
 #include "queue.h"
+#include "stddef.h"
 
 #define MAX_MUTEXES 50
 
