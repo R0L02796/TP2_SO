@@ -2,15 +2,14 @@
 #include "lib.h"
 #include "queue.h"
 
-queue_t mutexQueue;
 
-static mutex_t mutexVec[MAX_MUTEXES] = {NULL};
+static mutex mutexVec[MAX_MUTEXES];
 
 void mutexInitialize() {
     for (int i=0; i<MAX_MUTEXES; i++)
     {
-        mutex_t m = mutexVec[i]; 
-        m->blockedQueue = newQueue(sizeof(Process*));
+        mutex_t m = &mutexVec[i]; 
+        m->blockedQueue = newQueue(sizeof(Process *));
         m->pidCreator = 0;
         m->value = 0;
         m->free = 1;
@@ -19,23 +18,18 @@ void mutexInitialize() {
 }
 
 int newMutex(char * name)
-{
-    if (mutexVec[0] == NULL)
-    {
-        mutexInitialize();
-    }
-    
+{   
     int pid = getprocesspid;
     for (int i = 0; i < MAX_MUTEXES; i++) 
     {
-		if (mutexVec[i]->free == 1) 
+		if (mutexVec[i].free == 1) 
         {
-			mutexVec[i]->free = 0;
+			mutexVec[i].free = 0;
 			int len = strlen(name);
-			memcpy(mutexVec[i]->name, name, len+1);
-			mutexVec[i]->pidLock = 0;
-			mutexVec[i]->value = 0;
-			mutexVec[i]->pidCreator = pid;
+			memcpy(mutexVec[i].name, name, len+1);
+			mutexVec[i].pidLock = 0;
+			mutexVec[i].value = 0;
+			mutexVec[i].pidCreator = pid;
             return i;
 		}
     }
@@ -45,7 +39,7 @@ int newMutex(char * name)
 int getMutex(char * mutexName) 
 {
 	for (int i = 0; i < MAX_MUTEXES; i++) {
-		if (strcmp(mutexVec[i]->name, mutexName) == 0 && mutexVec[i]->free == 0) {
+		if (strcmp(mutexVec[i].name, mutexName) == 0 && mutexVec[i].free == 0) {
 			return i;
 		}
 	}
@@ -55,14 +49,14 @@ int getMutex(char * mutexName)
 void deleteMutex(char * name)
 {
     int i = getMutex(name);
-    mutexVec[i]->free = 1;
-    mutexVec[i]->pidCreator = 0;
+    mutexVec[i].free = 1;
+    mutexVec[i].pidCreator = 0;
     Process * ret;
-    while (sizeQ(mutexVec[i]->blockedQueue) > 0)
+    while (sizeQ(mutexVec[i].blockedQueue) > 0)
     {
-        poll(mutexVec[i]->blockedQueue,&ret);
+        poll(mutexVec[i].blockedQueue,&ret);
     }
-    mutexVec[i]->value = 0;
+    mutexVec[i].value = 0;
 }
 
 void mutexLock(mutex_t mutex)
