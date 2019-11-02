@@ -1,4 +1,6 @@
 #include "mutex.h"
+#include "process.h"
+#include "scheduler.h"
 #include "lib.h"
 #include "queue.h"
 
@@ -19,7 +21,7 @@ void mutexInitialize() {
 
 int newMutex(char * name)
 {
-  int pid = getprocesspid;
+  int pid = getCurrentPid();
   for (int i = 0; i < MAX_MUTEXES; i++) 
   {
 		if (mutexVec[i].free == 1) 
@@ -67,7 +69,7 @@ void mutexLock(mutex_t mutex)
 
     Offer(mutex->blockedQueue, &running);
     removeProcess(running);
-    running->status = BLOCKED;
+    running->state = BLOCKED;
     _interrupt();
 }
 
@@ -78,7 +80,7 @@ void mutexUnlock(mutex_t mutex)
     Process * proc;
     poll(mutex->blockedQueue, &proc);
     mutex->pidCreator = proc->pid;
-    proc->status = READY;
+    proc->state = READY;
     addProcess(proc);
   } 
   else 

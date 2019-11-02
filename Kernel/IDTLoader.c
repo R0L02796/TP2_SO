@@ -26,7 +26,7 @@ void loadIDT();
 
 
 void loadIDT() {
-  _cli();   // disables interruptions 
+  //_cli();   // disables interruptions 
 
   IDTEntrySetup (0x00, (uint64_t)&_exception0Handler);  //0 division
   IDTEntrySetup (0x06, (uint64_t)&_exceptionInvalidOpcodeHandler);  //invalid opcode

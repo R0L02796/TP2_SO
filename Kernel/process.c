@@ -1,3 +1,5 @@
+#include "include/process.h"
+
 typedef struct ProcessSlot
  {
   Process * process;
@@ -8,7 +10,7 @@ static void addToProcessList(Process * process);
 static ProcessSlot * removeFromProcessList(ProcessSlot * node, Process * process);
 
 
-static long int pid
+static long int pid;
 static ProcessSlot * processList;
 
 Process * createProcess(char * name,int argc, char** argv,int priority, int (*entryFunction) (int, char **), int isForeground)
@@ -40,7 +42,7 @@ static void addToProcessList(Process * process)
   ProcessSlot * aux = malloc(sizeof(ProcessSlot));
   aux->process = process;
   aux->next = processList;
-  list = aux;
+  processList = aux;
 }
 
 static ProcessSlot * removeFromProcessList(ProcessSlot * node, Process * process)

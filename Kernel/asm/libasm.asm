@@ -1,5 +1,6 @@
 GLOBAL cpuVendor
 GLOBAL printTimeASM
+GLOBAL _get
 
 section .text
 	
@@ -25,4 +26,11 @@ cpuVendor:
 
 	mov rsp, rbp
 	pop rbp
+	ret
+
+_get:
+	mov rbp, [rsp]
+	mov rsp, rdi
+	mov [rsp],rbp
+	mov rbp, rsp
 	ret

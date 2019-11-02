@@ -8,7 +8,8 @@
 
 #define PROCESS_MEMORY 4096
 #define MAX_FD 30
-
+#define LOWP 1
+#define HIGHP 6
 typedef struct ProcessSlot
 {
   Process * process;
@@ -19,16 +20,19 @@ typedef struct ProcessSlot
 typedef enum processState {RUNNING, READY, BLOCKED, DEAD} processState;
 typedef struct Process{
   int argc;
+  char * name;
   char **argv;
-  int pid;
+  long int pid;
   processState state;
   int priority;
   uint64_t stackBase;
   uint64_t stackTop;
   uint64_t rsp;
   int (*entryFunction) (int, char **);
+  int foreground;
   int fileDescriptors[MAX_FD];
 } Process;
+
 
 Process * createProcess(char * name,int argc, char** argv,int priority, int (*entryFunction) (int, char **), int isForeground);
 void startProcesses();

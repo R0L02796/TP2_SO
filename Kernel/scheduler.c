@@ -9,7 +9,7 @@ static int quantum;
 static ProcessSlot * current;
 static int cantProcesses;
 
-int (*entryIdle)();
+typedef int (*entryIdle)();
 void _runProcess(uint64_t rsp);
 uint64_t _stackCheat(uint64_t stackBase, int (*entryFunction)(int, char *), int argc,char **argv, uint64_t stackRet);
 static ProcessSlot* findProcessReadyRec(ProcessSlot * current);
@@ -234,6 +234,6 @@ static void idle()
 {
   while(1)
   {
-    _hlt;
+    _hlt();
   }
 }
