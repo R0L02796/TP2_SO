@@ -1,5 +1,4 @@
 
-static ProcessSlot* findProcessReadyRec(ProcessSlot * current);
 void _runProcess(uint64_t rsp);
 uint64_t _stackCheat(uint64_t stackBase, int (entryFunction)(int, char *), int argc,char **argv, uint64_t stackRet);
 

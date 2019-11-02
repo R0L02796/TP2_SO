@@ -9,6 +9,7 @@ static int quantum;
 static ProcessSlot * current;
 static int cantProcesses;
 
+int (*entryIdle)();
 void _runProcess(uint64_t rsp);
 uint64_t _stackCheat(uint64_t stackBase, int (*entryFunction)(int, char *), int argc,char **argv, uint64_t stackRet);
 static ProcessSlot* findProcessReadyRec(ProcessSlot * current);
@@ -20,7 +21,7 @@ void startSchedule(int (*entryPoint)(int, char **))
   current = NULL;
 	cantProcesses=0;
   startProcesses();
-  Process * idle = createProcess("idle", 0, NULL,LOWP, INSERTIDLEFUNCTIONENTRY,0);
+  Process * idle = createProcess("idle", 0, NULL,LOWP, (entryIdle)idle,0);
   Process * shell = createProcess("shell",0, NULL, HIGHP,entryPoint, 0);
   if (shell == NULL)
    {
@@ -177,7 +178,7 @@ void printProcesses()
 	int i;
 	ProcessSlot * s = current;
 	printc('\n');
-	for(i = 0; i < cantProcesses; i++) 
+	for(i = 0; i < cantProcesses; i++)
   {
 		Process * p = s->process;
 		putStr("  |  Name: ");
@@ -227,4 +228,12 @@ char * getStateFromNumber(int state)
 			default: s="other";
 		}
 		return s;
+}
+
+static void idle()
+{
+  while(1)
+  {
+    _hlt;
+  }
 }

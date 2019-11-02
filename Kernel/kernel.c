@@ -5,6 +5,7 @@
 #include <naiveConsole.h>
 #include "videoDriver.h"
 #include "IDTLoader.h"
+#include "scheduler.h"
 
 
 extern uint8_t text;
@@ -18,6 +19,7 @@ static const uint64_t PageSize = 0x1000;
 
 static void * const sampleCodeModuleAddress = (void*)0x400000;
 static void * const sampleDataModuleAddress = (void*)0x500000;
+void _get(void* sp);
 
 typedef int (*EntryPoint)();
 
@@ -53,10 +55,12 @@ void * initializeKernelBinary()
 
 int main() {
 
+	_cli();
+	_get(getStackBase());
 	loadIDT();
 	ncClear();
-	
-	((EntryPoint)sampleCodeModuleAddress)();
+
+	startSchedule((EntryPoint)sampleCodeModuleAddress)();
 
 	return 1;
 }
