@@ -2,8 +2,9 @@
 #include "lib.h"
 #include "queue.h"
 
+queue_t mutexQueue;
 
-static mutex mutexVec[MAX_MUTEXES];
+static mutex mutexVec[MAX_MUTEXES] = {NULL};
 
 void mutexInitialize() {
     for (int i=0; i<MAX_MUTEXES; i++)
@@ -18,22 +19,22 @@ void mutexInitialize() {
 }
 
 int newMutex(char * name)
-{   
-    int pid = getprocesspid;
-    for (int i = 0; i < MAX_MUTEXES; i++) 
-    {
+{
+  int pid = getprocesspid;
+  for (int i = 0; i < MAX_MUTEXES; i++) 
+  {
 		if (mutexVec[i].free == 1) 
-        {
+      {
 			mutexVec[i].free = 0;
 			int len = strlen(name);
 			memcpy(mutexVec[i].name, name, len+1);
 			mutexVec[i].pidLock = 0;
 			mutexVec[i].value = 0;
 			mutexVec[i].pidCreator = pid;
-            return i;
+      return i;
 		}
-    }
-    return -1;
+  }
+  return -1;
 }
 
 int getMutex(char * mutexName) 
