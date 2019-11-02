@@ -1,9 +1,19 @@
 #ifndef process_h
 #define process_h
 
+#include "stddef.h"
+#include "stdlib.h"
+#include "lib.h"
+
 
 #define PROCESS_MEMORY 4096
 #define MAX_FD 30
+
+typedef struct ProcessSlot
+{
+  Process * process;
+  struct ProcessSlot * next;
+} ProcessSlot;
 
 
 typedef enum processState {RUNNING, READY, BLOCKED, DEAD} processState;
@@ -16,11 +26,11 @@ typedef struct Process{
   uint64_t stackBase;
   uint64_t stackTop;
   uint64_t rsp;
-  void * entryPoint;
+  int (*entryFunction) (int, char **);
   int fileDescriptors[MAX_FD];
 } Process;
 
-Process * createProcess(int argc, char** argv,int priority,void* entryPoint);
+Process * createProcess(char * name,int argc, char** argv,int priority, int (*entryFunction) (int, char **), int isForeground);
 void startProcesses();
 void freeProcess(Process * process);
 int addFileDescriptor(Process* process, int fileDescriptor);
