@@ -1,3 +1,8 @@
+#include "include/scheduler.h"
+#include "include/process.h"
+//#include "include/pipe.h"
+#include "include/videoDriver.h"
+
 
 
 static int quantum;
@@ -5,23 +10,24 @@ static ProcessSlot * current;
 static int cantProcesses;
 
 void _runProcess(uint64_t rsp);
-uint64_t _stackCheat(uint64_t stackBase, int (entryFunction)(int, char *), int argc,char **argv, uint64_t stackRet);
+uint64_t _stackCheat(uint64_t stackBase, int (*entryFunction)(int, char *), int argc,char **argv, uint64_t stackRet);
+static ProcessSlot* findProcessReadyRec(ProcessSlot * current);
 
 
-
-void startSchedule(int (*entryPoint)(int, char **)) {
+void startSchedule(int (*entryPoint)(int, char **))
+{
   quantum = 1;
   current = NULL;
 	cantProcesses=0;
-  initializeProcesses();
-  Process * idle = createProcess("Idle", (entryFnc)idle, 0, NULL, IDLE);
-  Process * shell = createProcess("shell", entryPoint, 0, NULL, HIGHP);
-  if (shell == NULL) {
-    // throw error
+  startProcesses();
+  Process * idle = createProcess("idle", 0, NULL,LOWP, INSERTIDLEFUNCTIONENTRY,0);
+  Process * shell = createProcess("shell",0, NULL, HIGHP,entryPoint, 0);
+  if (shell == NULL)
+   {
     return;
   }
-  if (idle == NULL) {
-    // throw error
+  if (idle == NULL)
+  {
     return;
   }
   stackCheat(shell);
@@ -29,23 +35,26 @@ void startSchedule(int (*entryPoint)(int, char **)) {
   addProcess(shell);
   addProcess(idle);
   current = shell;
-  _runProcess(current->rsp);
+  _runProcess(current->process->rsp);
 }
 
-ProcessSlot * newProcessSlot(Process * process) {
+ProcessSlot * newProcessSlot(Process * process)
+{
 	ProcessSlot * newProcessSlot = malloc(sizeof(ProcessSlot));//revisar allocblock
 	newProcessSlot->process = process;
 	return newProcessSlot;
 }
 
-void addProcess(Process * process) { //adds the process to the last place in the cylic, for example: you have process 1,2,3,4,5 (currently processing the 3rd one) and you want to add the 6th process, then it would be added like this 1,2,6,3,4,5
+void addProcess(Process * process)
+ {
 	ProcessSlot * newProcess = newProcessSlot(process);
 
 	if (current == NULL) {
 		current = newProcess;
 		current->next = current;
 	}
-	else {
+	else
+  {
 		ProcessSlot * prevToCurrent = current;
 		while (prevToCurrent->next != current)
 			prevToCurrent = prevToCurrent->next;
@@ -55,25 +64,10 @@ void addProcess(Process * process) { //adds the process to the last place in the
   cantProcesses++;
 }
 
-int eqProcess(Process * proc1, Process * proc2) {
-	return proc1->pid == proc2->pid;
-}
-
-ProcessSlot * searchPid(ProcessSlot p, int pid){
-  int i = 0;
-  while(p->next->process->pid != pid && i < cantProcesses){
-    p = p->next;
-    i++;
-  }
-  if(i == cantProcesses){
-    return NULL;
-  }
-  else
-    return p;
-}
-
-void removeProcess(int pid) {
-	if (pid == 0 || pid == 1 || cantProcesses < 3) {
+void removeProcess(long int pid)
+{
+	if (pid == 0 || pid == 1 || cantProcesses < 3)
+  {
 		return;
 	}
 
@@ -86,23 +80,23 @@ void removeProcess(int pid) {
 		i++;
 	}
 
-	if (i == cantProcesses) {
+	if (i == cantProcesses)
+  {
 		return;
 	}
 
-	if (eqProcess(slotToRemove->process, current->process)) {
-		changeProcessState(slotToRemove->process->pid, DEAD);
-		// _yield(); FIJARSE ACAAAAAAAAAAAAAA
-	}
-	else {
+
+else
+{
 		prevSlot->next = slotToRemove->next;
 		cantProcesses--;
-		// deallocBlock(slotToRemove->process);
-		// deallocBlock(slotToRemove); FIJARSE ESTOOOOOOOOOOOOOOOOOOOO ACAAAAAAAAAAAAAA
-	}
+    freeProcess(slotToRemove->process);
+}
+return;
 }
 
-ProcessSlot* findProcessReadyRec(ProcessSlot * current){ //STATIC
+static ProcessSlot* findProcessReadyRec(ProcessSlot * current)
+{ //STATIC
   if(current->process->state == READY){
     if(current->process->pid == -1){     //maintenance process
       if(cantProcesses<2){
@@ -115,13 +109,14 @@ ProcessSlot* findProcessReadyRec(ProcessSlot * current){ //STATIC
   }
   if(current->process->state == DEAD){
     ProcessSlot * aux = current;
-    terminateProcess(current);
+    removeProcess(current);
     return findProcessReadyRec(aux->next);
   }
   return findProcessReadyRec(current->next);
 }
 
-void schedule() {
+void schedule()
+{
 	if(quantum > 0 && current->process->state == RUNNING){
     quantum--;
     return;
@@ -136,20 +131,9 @@ void schedule() {
   _runProcess(current->process->rsp);
 }
 
-// Process * getProcessById(int pid) {
-// 	int i;
-// 	ProcessSlot * slot = current;
-//
-// 	for (i=0; i < cantProcesses; i++) {
-// 		if (slot->process->pid == pid)
-// 			return slot->process;
-// 		slot = slot->next;
-// 	}
-//
-// 	return NULL;
-// }
 
-void changeProcessState(int pid, processState state) { //PARA BLOQUEAR Y MATAR PROCESOS, DONDE ESTA DEFINIDO processState???????
+void changeProcessState(int pid, processState state)
+{ //PARA BLOQUEAR Y MATAR PROCESOS, DONDE ESTA DEFINIDO processState???????
 	int i;
  	ProcessSlot * slot = current;
 
@@ -165,31 +149,82 @@ void changeProcessState(int pid, processState state) { //PARA BLOQUEAR Y MATAR P
 	return;
 }
 
-int getCurrentPid() {   // DIGANME SI LES SIRVE ESTA FUNCION!!!!!!!!
+unsigned long int getCurrentPid()
+{
 	return current == NULL ? -1 : current->process->pid;
 }
 
-// Process * getCurrentProcess() {   // DIGANME SI LES SIRVE ESTA FUNCION!!!!!!!!
-// 	return current->process;
-// }
-
-// void * getCurrentEntryPoint() {  // DIGANME SI LES SIRVE ESTA FUNCION!!!!!!!!
-// 	void * ret = current->process->entryPoint;
-// 	return ret;
-// }
-
-void stackCheat(Process * process) {
-  process->rsp = _stackCheat(process->stackBase, proccess->entryPoint, proccess->argc, process->argv,(uint64_t)wrapper);
+Process * getCurrentProcess()
+{
+	return current->process;
 }
 
-void wrapper(int (*entryFunction)(int, char **), int argc, char **argv) {
+void stackCheat(Process * process)
+{
+  process->rsp = _stackCheat(process->stackBase, process->entryFunction, process->argc, process->argv,(uint64_t)wrapper);
+}
+
+void wrapper(int (*entryFunction)(int, char **), int argc, char **argv)
+{
   entryFunction(argc, argv);
   // _cli();
-  current->process->state = DEAD
+  current->process->state = DEAD;
   _interrupt();
 }
 
-void terminateProcess(ProcessSlot * slot) {
-  removeProcess(slot->process->pid);
-  freeProcess(slot);
+void printProcesses()
+{
+	int i;
+	ProcessSlot * s = current;
+	printc('\n');
+	for(i = 0; i < cantProcesses; i++) 
+  {
+		Process * p = s->process;
+		putStr("  |  Name: ");
+		putStr(p->name);
+		putStr("PID: ");
+    char buffer[10];
+		putStr(decToStr(p->pid,buffer));
+    if(p->foreground)
+    {
+      putStr("Foreground process");
+    }
+    else
+    {
+      putStr("Background process");
+    }
+    putStr("  | Priority: ");
+    char buffer1[10];
+    putStr(decToStr(p->priority, buffer1));
+		putStr("  |  State: ");
+		putStr(getStateFromNumber(p->state));
+		putStr("  |  RSP: 0x");
+    char buffer2[20];
+		putStr(decToStr((int)p->rsp, buffer2));
+		putStr("  |  Stack Base: 0x");
+		char buffer3[20];
+		putStr(decToStr((int)p->stackBase, buffer3));
+		putStr("  |  Stack Top: 0x");
+    char buffer4[10];
+		putStr(decToStr((int)p->stackTop, buffer4));
+    newLine();
+		s = s->next;
+	}
+}
+
+char * getStateFromNumber(int state)
+{
+	char * s;
+	switch(state) {
+			case 0: s="RUNNING";
+					break;
+			case 1:s="READY";
+					break;
+			case 2:s= "BLOCKED";
+					break;
+			case 3: s="DEAD";
+					break;
+			default: s="other";
+		}
+		return s;
 }
