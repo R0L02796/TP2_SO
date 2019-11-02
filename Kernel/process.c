@@ -5,12 +5,13 @@ typedef struct ProcessSlot
 } ProcessSlot;
 
 static void addToProcessList(Process * process);
+static ProcessSlot * removeFromProcessList(ProcessSlot * node, Process * process);
 
 
-static unsigned long int pid
+static long int pid
 static ProcessSlot * processList;
 
-Process * createProcess(char * name,int argc, char** argv,int priority, int (*entryFunction) (int, char **))
+Process * createProcess(char * name,int argc, char** argv,int priority, int (*entryFunction) (int, char **), int isForeground)
 {
     Process * process = malloc(sizeof(process));
     process->name = name;
@@ -23,6 +24,13 @@ Process * createProcess(char * name,int argc, char** argv,int priority, int (*en
     process->rsp = process->stackBase;
     process->priority = priority;
     process->state = READY;
+    process->foreground = isForeground;
+    process->fileDescriptors[0] = 0;
+    process->fileDescriptors[1] = 1;
+    for (int i = 2; i < MAX_FD; i++)
+    {
+      process->fileDescriptors[i] = -1;
+    }
     addToProcessList(process);
     return process;
 }
@@ -35,22 +43,10 @@ static void addToProcessList(Process * process)
   list = aux;
 }
 
-Process * getFromProcessList(unsigned long int pid)
-{
-  ProcessSlot * aux = processList;
-  while (aux != NULL) {
-    if (aux->process->pid == pid) {
-      return aux->process;
-    }
-    aux = aux->next;
-  }
-  return NULL;
-}
-
 static ProcessSlot * removeFromProcessList(ProcessSlot * node, Process * process)
  {
   if (node == NULL) return NULL;
-  if (node->process == process) {
+  if (node->process->pid == process->pid) {
     ProcessSlot * aux = node->next;
     free(node);
     return aux;
@@ -59,7 +55,7 @@ static ProcessSlot * removeFromProcessList(ProcessSlot * node, Process * process
   return node;
 }
 
-void initializeProcesses()
+void startProcesses()
  {
   pid = 0;
   processList = NULL;
@@ -72,28 +68,37 @@ void freeProcess(Process * process)
   processList = removeFromProcessList(processList, process);
   // _sti();
   free((Process*)process->stackTop);
-  // for (int i = 0; i <= process->maxFD; i++) {
-  //   closeFD(process, i);
-  // }
+  for (int i = 0; i <= MAX_FD; i++)
+  {
+    closeFD(process, i);
+  }
   free(process);
 }
 
-// void getProcessData(Process * process, ProcessData * data)
+int addFileDescriptor(Process* process, int fileDescriptor)
+{
+  for (int i = 0; i <= MAX_FD; i++)
+  {
+    if (process->fileDescriptors[i] == -1)
+    {
+      process->fileDescriptors[i] = fileDescriptor;
+      return i;
+    }
+  }
+  return -1;
+}
+
+// void closeFileDescriptors(Process* process, int fd)
 // {
-//   data->name = malloc(strlen(process->name) + 1);
-//   memcpy(data->name, process->name, strlen(process->name) + 1);
-//   data->memory = process->stackBase - process->stackTop;
-//   data->pid = process->pid;
-//   if (process->status == BLOCKED) {
-//     data->status = "Blocked";
-//   } else {
-//     data->status = "Ready  ";
-//   }
-//   if (process->priority == HIGHP) {
-//     data->priority = "High   ";
-//   } else if (process->priority == LOWP) {
-//     data->priority = "Low    ";
-//   } else {
-//     data->priority = "Minimum";
-//   }
+//   int pipeid = process->fileDescriptors[fd];
+//   if (pipeid < 2)
+//     {
+//       return;
+//     }
+//
+//   process->fileDescriptors[fd] = -1;
+//   pipe pipe = pipes[pipeid -2];
+//   pipe->users--;
+//   if (fd == process->maxFD) setMaxFD(process);
+//   if (pipe->users == 0) freePipe(pipe);
 // }

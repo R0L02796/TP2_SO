@@ -2,9 +2,8 @@
 #include "lib.h"
 #include "queue.h"
 
-queue_t mutexQueue;
 
-static mutex mutexVec[MAX_MUTEXES] = {NULL};
+static mutex mutexVec[MAX_MUTEXES];
 
 void mutexInitialize() {
     for (int i=0; i<MAX_MUTEXES; i++)
