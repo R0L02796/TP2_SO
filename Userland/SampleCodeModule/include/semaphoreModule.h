@@ -2,7 +2,7 @@
 #define semaphoreModule_h
 
 #include <stddef.h>
-#define MAX_SEM_ID 15
+#define MAX_SEM_ID 20
 
 void semOpen(char id[MAX_SEM_ID], int start);
 void semClose(char id[MAX_SEM_ID]);
