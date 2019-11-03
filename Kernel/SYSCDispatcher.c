@@ -73,10 +73,16 @@ void syscallDispatcher(uint64_t syscall, uint64_t p1, uint64_t p2, uint64_t p3, 
 		case END_PROCESS:
 			break;
 		case SEMOPEN:
+			*((void **) p2) = semCreate((char *) p1);
 			break;
 		case SEMCLOSE:
+			deleteSem((char *) p1);
 			break;
 		case SEMWAIT:
+			semWait((char *) p1);
+			break;
+		case SEMPOST:
+			semPost((char *) p1);
 			break;
 		case MUTEXOPEN:
 			*((void **) p2) = newMutex((char *) p1);
