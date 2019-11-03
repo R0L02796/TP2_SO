@@ -22,6 +22,7 @@ void initializePipes()
     p->sem = NULL;
     p->mutex = NULL;
     p->bufferDim = 0;
+    p->users = 0;
 
     for (i = 0; i < MAX_BUFFER_DIM; i++)
     {
@@ -43,29 +44,30 @@ int pipe(int fds[2])
         pipes[i].free = 0;
         pipes[i].sem = semOpen(toString(pipes[i].pipeid));
         pipes[i].mutex = newMutex(toString(pipes[i].pipeid));
+        pipes[i].users = 0;
         return 0;
       }
   }
 }
 
 int pipeRead(int pipeid, char * data, int bytes)
-  {
-    Pipe_t pipe = &pipes[pipeid - 2];
-    semWait(pipe->sem);
-    mutexLock(pipe->mutex);
-    int i;
-    for (i = 0; i < bytes && pipe->bufferDim > 0; i++)
-     {
-      pipe->readPosition = pipe->readPosition % MAX_BUFFER_DIM;
-      data[i] = pipe->buffer[pipe->readPosition++];
-      pipe->bufferDim--;
-    }
-    mutexUnlock(pipe->mutex);
-    return i;
+{
+  Pipe_t pipe = &pipes[pipeid - 2];
+  semWait(pipe->sem);
+  mutexLock(pipe->mutex);
+  int i;
+  for (i = 0; i < bytes && pipe->bufferDim > 0; i++)
+    {
+    pipe->readPosition = pipe->readPosition % MAX_BUFFER_DIM;
+    data[i] = pipe->buffer[pipe->readPosition++];
+    pipe->bufferDim--;
   }
+  mutexUnlock(pipe->mutex);
+  return i;
+}
 
 int pipeWrite(int pipeid, char* data, int bytes)
- {
+{
   Pipe_t pipe = &pipes[pipeid -2];
   mutexLock(pipe->mutex);
   int i;
@@ -84,39 +86,32 @@ int pipeWrite(int pipeid, char* data, int bytes)
 }
 
 
-void freePipe(int pipeid)
- {
-    Pipe_t p = &(pipes[pipeid - 2]);
-    p->free = 1;
-    p->creatorProcess = NULL;
-    p->readPosition = 0;
-    p->writePosition = 0;
-    deleteSem(toString(p->pipeid)); //hacer funcion to string
-    p->sem = NULL;
-    deleteMutex(toString(p->pipeid));
-    p->mutex = NULL;
+Pipe * getPipeId(int id)
+{
+  if(id < 2 || id > MAX_PIPES)
+    return NULL;
+  return &(pipes[id - 2]);
+}
 
-    for (int i = 0; i < MAX_BUFFER_DIM; i++)
-    {
-      p->buffer[i] = 0;
-    }
-    p->bufferDim = 0;
+void freePipe(int pipeid)
+{
+  Pipe_t p = &(pipes[pipeid - 2]);
+  p->free = 1;
+  p->creatorProcess = NULL;
+  p->readPosition = 0;
+  p->writePosition = 0;
+  deleteSem(toString(p->pipeid)); //hacer funcion to string
+  p->sem = NULL;
+  deleteMutex(toString(p->pipeid));
+  p->mutex = NULL;
+  p->users = 0;
+  for (int i = 0; i < MAX_BUFFER_DIM; i++)
+  {
+    p->buffer[i] = 0;
+  }
+  p->bufferDim = 0;
 }
 
 
 
 
-// void closeFileDescriptors(Process* process, int fd)
-// {
-//   int pipeid = process->fileDescriptors[fd];
-//   if (pipeid < 2)
-//     {
-//       return;
-//     }
-//
-//   process->fileDescriptors[fd] = -1;
-//   pipe pipe = pipes[pipeid -2];
-//   pipe->users--;
-//   if (fd == process->maxFD) setMaxFD(process);
-//   if (pipe->users == 0) freePipe(pipe);
-// }

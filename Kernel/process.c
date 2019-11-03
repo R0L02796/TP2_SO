@@ -1,4 +1,6 @@
 #include "include/process.h"
+#include "include/pipe.h"
+#include "include/scheduler.h"
 
 typedef struct ProcessSlot
  {
@@ -77,30 +79,41 @@ void freeProcess(Process * process)
   free(process);
 }
 
-int addFileDescriptor(Process* process, int fileDescriptor)
+int addFileDescriptor(Process* process, int fd)
 {
   for (int i = 0; i <= MAX_FD; i++)
   {
     if (process->fileDescriptors[i] == -1)
     {
-      process->fileDescriptors[i] = fileDescriptor;
+      process->fileDescriptors[i] = fd;
       return i;
     }
   }
   return -1;
 }
 
-// void closeFileDescriptors(Process* process, int fd)
-// {
-//   int pipeid = process->fileDescriptors[fd];
-//   if (pipeid < 2)
-//     {
-//       return;
-//     }
-//
-//   process->fileDescriptors[fd] = -1;
-//   pipe pipe = pipes[pipeid -2];
-//   pipe->users--;
-//   if (fd == process->maxFD) setMaxFD(process);
-//   if (pipe->users == 0) freePipe(pipe);
-// }
+void closeFileDescriptor(Process* process, int fd)
+ {
+   int pipeid = process->fileDescriptors[fd];
+   if (pipeid < 2)
+     {
+       return;
+     }
+
+   process->fileDescriptors[fd] = -1;
+   Pipe * pipe = getPipe(pipeid);
+   pipe->users--;
+   if (pipe->users == 0) 
+      freePipe(pipe->pipeid);
+ }
+
+
+void dup(int fd1, int fd2, Process * processFd2)
+{
+  Process * processFd1 = getCurrentProcess();
+  int pipeID = processFd1->fileDescriptors[fd1];
+  Pipe * pipe = getPipe(pipeID);
+  if (pipe != NULL) 
+    pipe->users++;
+  processFd2->fileDescriptors[fd2] = pipeID;
+}

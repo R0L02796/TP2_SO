@@ -73,7 +73,7 @@ void syscallDispatcher(uint64_t syscall, uint64_t p1, uint64_t p2, uint64_t p3, 
 		case END_PROCESS:
 			break;
 		case SEMOPEN:
-			*((void **) p2) = semCreate((char *) p1);
+			semCreate((char *) p1, (int) p2);
 			break;
 		case SEMCLOSE:
 			deleteSem((char *) p1);

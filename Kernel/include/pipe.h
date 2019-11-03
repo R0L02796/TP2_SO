@@ -21,6 +21,7 @@ typedef struct Pipe
     mutex_t mutex;
     char buffer[MAX_BUFFER_DIM];
     int bufferDim;
+    int users;
 }Pipe;
 
 typedef Pipe* Pipe_t;
