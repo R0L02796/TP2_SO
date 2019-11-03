@@ -23,6 +23,11 @@
 #define SEMCLOSE 19
 #define SEMWAIT 20
 #define SEMPOST 21
+#define MUTEXOPEN 22 
+#define MUTEXCLOSE 23
+#define MUTEXLOCK 24
+#define MUTEXUNLOCK 25
+
 
 
 #define GET 0

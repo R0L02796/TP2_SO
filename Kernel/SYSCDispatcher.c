@@ -78,9 +78,20 @@ void syscallDispatcher(uint64_t syscall, uint64_t p1, uint64_t p2, uint64_t p3, 
 			break;
 		case SEMWAIT:
 			break;
-		case SEMPOST:
+		case MUTEXOPEN:
+			*((void **) p2) = newMutex((char *) p1);
+			break;
+		case MUTEXCLOSE:
+			deleteMutex((char *) p1);
+			break;
+		case MUTEXLOCK:
+			mutexLock((char *) p1);
+			break;
+		case MUTEXUNLOCK:
+			mutexUnlock((char *) p1);
 			break;
 		
+
 	}
 }
 

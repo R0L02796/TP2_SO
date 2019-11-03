@@ -62,23 +62,23 @@ void semWait(sem_t s) {
   if (s == NULL) {
     return;
   }
-  mutexLock(s->mutex);
+  mutexLock(s->mutex->name);
   Process * running = getCurrenProcess();
   if (s->value == 0) {
     queueOffer(s->lockedQueue, &running);
-    mutexUnlock(s->mutex);
+    mutexUnlock(s->mutex->name);
     removeProcess(running);
     _interrupt();
   } else {
     s->value--;
-    mutexUnlock(s->mutex);
+    mutexUnlock(s->mutex->name);
   }
   return;
 }
 
 void semPost(sem_t s) {
   if (s == NULL) return;
-  mutexLock(s->mutex);
+  mutexLock(s->mutex->name);
   if (queueSize(s->lockedQueue) != 0) {
     Process * proc;
     queuePoll(s->lockedQueue, &proc);
@@ -86,6 +86,6 @@ void semPost(sem_t s) {
   } else {
     s->value++;
   }
-  mutexUnlock(s->mutex);
+  mutexUnlock(s->mutex->name);
   return;
 }

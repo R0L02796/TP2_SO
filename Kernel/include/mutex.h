@@ -4,11 +4,11 @@
 #include "stddef.h"
 
 #define MAX_MUTEXES 50
-
+#define MAX_MUTEX_NAME 40
 
 typedef struct {
 	int used;
-    char name[50];
+    char name[MAX_MUTEX_NAME];
     int pidLock;
     queue_t blockedQueue;
     int pidCreator;
@@ -18,4 +18,13 @@ typedef struct {
 
 typedef mutex * mutex_t;
 
+void mutexInitialize(); 
+
+mutex_t newMutex(char * name);
+
+void deleteMutex(char * name); 
+
+void mutexLock(char * name);
+
+void mutexUnlock(char * name);
 #endif

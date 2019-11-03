@@ -19,7 +19,7 @@ void mutexInitialize() {
   return;
 }
 
-int newMutex(char * name)
+mutex_t newMutex(char * name)
 {
   int pid = getCurrentPid();
   for (int i = 0; i < MAX_MUTEXES; i++) 
@@ -32,10 +32,10 @@ int newMutex(char * name)
 			mutexVec[i].pidLock = 0;
 			mutexVec[i].value = 0;
 			mutexVec[i].pidCreator = pid;
-      return i;
+      return &(mutexVec[i]);
 		}
   }
-  return -1;
+  return NULL;
 }
 
 int getMutex(char * mutexName) 
@@ -45,12 +45,14 @@ int getMutex(char * mutexName)
 			return i;
 		}
 	}
-	return createMutex(mutexName);
+	return -1;
 }
 
 void deleteMutex(char * name)
 {
     int i = getMutex(name);
+    if(i == - 1)
+      return;
     mutexVec[i].free = 1;
     mutexVec[i].pidCreator = 0;
     Process * ret;
@@ -61,20 +63,22 @@ void deleteMutex(char * name)
     mutexVec[i].value = 0;
 }
 
-void mutexLock(mutex_t mutex)
+void mutexLock(char * name)
 {
-    Process * running = getCurrentProcess();
-    if (!_mutexAcquire(&(mutex->value))) 
-        return;
+  mutex_t mutex = &(mutexVec[getMutex(name)]);
+  Process * running = getCurrentProcess();
+  if (!_mutexAcquire(&(mutex->value))) 
+      return;
 
-    Offer(mutex->blockedQueue, &running);
-    removeProcess(running);
-    running->state = BLOCKED;
-    _interrupt();
+  Offer(mutex->blockedQueue, &running);
+  removeProcess(running);
+  running->state = BLOCKED;
+  _interrupt();
 }
 
-void mutexUnlock(mutex_t mutex) 
+void mutexUnlock(char * name) 
 {
+  mutex_t mutex = &(mutexVec[getMutex(name)]);
   if (sizeQ(mutex->blockedQueue) > 0) 
   {
     Process * proc;
