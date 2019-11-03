@@ -21,7 +21,10 @@
 #define GET_PID 15
 #define SET_PROCESS 16
 #define END_PROCESS 17
-
+#define SEMOPEN 18
+#define SEMCLOSE 19
+#define SEMWAIT 20
+#define SEMPOST 21
 
 #define GET 0
 #define SET 1

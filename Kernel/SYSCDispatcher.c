@@ -71,6 +71,16 @@ void syscallDispatcher(uint64_t syscall, uint64_t p1, uint64_t p2, uint64_t p3, 
 		case SET_PROCESS: 
 			break;
 		case END_PROCESS:
+			break;
+		case SEMOPEN:
+			break;
+		case SEMCLOSE:
+			break;
+		case SEMWAIT:
+			break;
+		case SEMPOST:
+			break;
+		
 	}
 }
 
