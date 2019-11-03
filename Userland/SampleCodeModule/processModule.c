@@ -1,3 +1,6 @@
+#include "processModule.h"
+#include "SYSCall.h"
+
 long int setAndRunProcess(char* name, int (*entry)(int, char**), int argc,
                                 char** argv, int priority)
 {
@@ -24,7 +27,7 @@ void changePriority(long int pid, int priority)
 
 void changeState(long int pid)
 {
-  systemcall((uint64_t) CHANGE_STATE,(uint64_t)pid,0,0,0,0)
+  systemcall((uint64_t) CHANGE_STATE,(uint64_t)pid,0,0,0,0);
 }
 
 void getRunningPid()
@@ -34,10 +37,10 @@ void getRunningPid()
 
 void setProcess()
 {
-  systemcall((uint64_t) SET_PROCESS,0,0,0,0,0)
+  systemcall((uint64_t) SET_PROCESS,0,0,0,0,0);
 }
 
 void endProcess(long int pid)
 {
-  systemCall((uint64_t) END_PROCESS),(uint64_t)pid,0,0,0,0);
+  systemCall((uint64_t) END_PROCESS,(uint64_t)pid,0,0,0,0);
 }

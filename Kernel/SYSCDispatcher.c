@@ -4,6 +4,11 @@
 #include "timeDriver.h"
 #include "memoryManager.h"
 #include "SYSCDispatcher.h"
+#include "process.h"
+#include "scheduler.h"
+#include "pipe.h"
+#include "semaphore.h"
+#include "mutex.h"
 
 
 void syscallDispatcher(uint64_t syscall, uint64_t p1, uint64_t p2, uint64_t p3, uint64_t p4, uint64_t p5) {
@@ -51,6 +56,21 @@ void syscallDispatcher(uint64_t syscall, uint64_t p1, uint64_t p2, uint64_t p3, 
 		case PRINTPAGE:
 			printPage((void *) p1);
 			break;
+		case SET_AND_RUN_PROCESS:
+			break;
+		case KILL_PROCESS:
+			break;
+		case RUN_PROCESS:
+			break;
+		case CHANGE_PRIORITY:
+			break;
+		case CHANGE_STATE:
+			break;
+		case GET_PID :
+			break;
+		case SET_PROCESS: 
+			break;
+		case END_PROCESS:
 	}
 }
 
@@ -100,4 +120,64 @@ void getTime(unsigned int * t, uint64_t time) {
 			break;
 	}
 
+}
+
+
+//no se que hacer con esto
+void _runProcess(int pid) 
+{
+  Process* process = getProcess(pid);
+  if (process == NULL) return;
+  stackCheat(process);
+  addProcess(process);
+}
+
+long int _setAndRunProcess(char *name, int (*entry)(int, char **),int argc, char **argv, int priority) 
+{
+  Process * newProcess = createProcess(name, entry, argc, argv, priority);
+  stackCheat(newProcess);
+  addProcess(newProcess);
+  return newProcess->pid;
+}
+
+void _setProcess(char *name, int (*entry)(int, char **),int argc, char **argv, int priority)
+{
+  Process * newProcess = createProcess(name, entry, argc, argv, priority);
+  return newProcess->pid;
+}
+
+void _changeProcessState(long int pid, processState state)
+{
+  changeProcessState(pid,state); //PARA BLOQUEAR Y MATAR PROCESOS, DONDE ESTA DEFINIDO processState???????
+}
+
+void _kill(long int pid)
+{
+  changeProcessState(pid,DEAD);
+}
+
+void _endProcess(long int pid)
+{
+  removeProcess(pid);
+}
+
+void _nice(long int pid, int priority)
+{ //para cambiar prioridad
+  if (pid <= 1) return;
+  if (priority == HIGHP || priority == MIDP || priority == LOWP) 
+  {
+    nice(pid, priority);
+  }
+}
+
+
+void _printProcesses()
+{
+  printProcesses();
+}
+
+
+long int _getCurrentPid()
+{
+  return getCurrentPid();
 }

@@ -13,6 +13,15 @@
 #define MALLOC 7
 #define FREE 8
 #define PRINTPAGE 9
+#define SET_AND_RUN_PROCESS 10
+#define KILL_PROCESS 11
+#define RUN_PROCESS 12
+#define CHANGE_PRIORITY 13
+#define CHANGE_STATE 14
+#define GET_PID 15
+#define SET_PROCESS 16
+#define END_PROCESS 17
+
 
 #define GET 0
 #define SET 1
