@@ -19,6 +19,8 @@ void _syscall_handler(void);
 void _cli(void);
 void _sti(void);
 
+void _interrupt(void);
+
 void _hlt(void);
 
 void picMasterMask(uint8_t mask);
