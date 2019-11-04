@@ -36,7 +36,7 @@ sem_t semCreate(int startValue, char* name) {
 
 int findSem(char * name){
   int resp = 0;
-  while(strcmp(semVec[resp].name, name) != 0 && resp < MAX_SEMS){
+  while(strCmp(semVec[resp].name, name) != 0 && resp < MAX_SEMS){
     resp++;
   }
   if(resp < MAX_SEMS)
@@ -49,7 +49,7 @@ int getSem(sem_t s) {
 }
 
 void deleteSem(sem_t s) {
-  mutexDelete(s->mutex->name);//tal vez deleteMutex
+  deleteMutex(s->mutex->name);//tal vez deleteMutex
   freeQ(s->lockedQueue);
   s->name = NULL;
   s->lockedQueue = NULL;
@@ -65,8 +65,9 @@ void semWait(sem_t s) {
   }
   mutexLock(s->mutex->name);
   Process * running = getCurrentProcess();
-  if (s->value == 0) {
-    Offer(s->lockedQueue, &running);
+  if (s->value == 0) 
+  {
+    offer(s->lockedQueue, &running);
     mutexUnlock(s->mutex->name);
     removeProcess(running->pid);
     _interrupt();

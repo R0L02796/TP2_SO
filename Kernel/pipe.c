@@ -36,14 +36,16 @@ int pipe(int fds[2])
   int i;
   for(i=0; i < MAX_PIPES; i++)
   {
-      if (pipes[i].free = 1)
+      if (pipes[i].free == 1)
       {
         pipes[i].creatorProcess = getCurrentProcess();
-        fds[0] = addFileDescriptors(pipes[i].creatorProcess, pipeid);
-        fds[1] = addFileDescriptors(pipes[i].creatorProcess, pipeid);
+        fds[0] = addFileDescriptor(pipes[i].creatorProcess, pipeid);
+        fds[1] = addFileDescriptor(pipes[i].creatorProcess, pipeid);
         pipes[i].free = 0;
-        pipes[i].sem = semOpen(toString(pipes[i].pipeid));
-        pipes[i].mutex = newMutex(toString(pipes[i].pipeid));
+        char * name[10];
+        char * name2[10];
+        pipes[i].sem = semOpen(decToStr(pipes[i].pipeid, name));
+        pipes[i].mutex = newMutex(decToStr(pipes[i].pipeid, name2));
         pipes[i].users = 0;
         return 0;
       }
@@ -100,9 +102,11 @@ void freePipe(int pipeid)
   p->creatorProcess = NULL;
   p->readPosition = 0;
   p->writePosition = 0;
-  deleteSem(toString(p->pipeid)); //hacer funcion to string
+  char * name3[10];
+  char * name4[10];
+  deleteSem(decToStr(p->pipeid, name4)); //hacer funcion to string
   p->sem = NULL;
-  deleteMutex(toString(p->pipeid));
+  deleteMutex(decToStr(p->pipeid, name3));
   p->mutex = NULL;
   p->users = 0;
   for (int i = 0; i < MAX_BUFFER_DIM; i++)
