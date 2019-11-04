@@ -6,7 +6,7 @@
 #define MAX_SEM_ID 20
 #define MAX_SEMS 50
 
-typedef struct {
+typedef struct tSemaphore{
   char* name;
   int value;
   queue_t lockedQueue;
@@ -31,10 +31,10 @@ int findSem(char * name);
 
 int getSem(sem_t s);
 
-void deleteSem(sem_t s);
+void deleteSem(char * name);
 
-void semWait(sem_t s);
+void semWait(char * name);
 
-void semPost(sem_t s);
+void semPost(char * name);
 
 #endif

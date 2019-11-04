@@ -50,6 +50,7 @@ int pipe(int fds[2])
         return 0;
       }
   }
+  return -1;
 }
 
 int pipeRead(int pipeid, char * data, int bytes)

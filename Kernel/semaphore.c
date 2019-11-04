@@ -5,7 +5,6 @@
 #include "queue.h"
 #include "lib.h"
 
-queue_t semQueue;
 void _interrupt();
 static tSemaphore semVec[MAX_SEMS] = {NULL};
 
@@ -21,7 +20,8 @@ void semInitialize() {// Quiero que el vector de semaforos empiece lleno
   return;
 }
 
-sem_t semCreate(int startValue, char* name) {
+sem_t semCreate(int startValue, char* name) 
+{
   for(int i = 0; i<MAX_SEMS; i++){
     if(semVec[i].name == NULL){
       sem_t s = &(semVec[i]);
@@ -36,7 +36,8 @@ sem_t semCreate(int startValue, char* name) {
 
 int findSem(char * name){
   int resp = 0;
-  while(strCmp(semVec[resp].name, name) != 0 && resp < MAX_SEMS){
+  while(strCmp(semVec[resp].name, name) != 0 && resp < MAX_SEMS)
+  {
     resp++;
   }
   if(resp < MAX_SEMS)
@@ -48,7 +49,8 @@ int getSem(sem_t s) {
   return s->value;
 }
 
-void deleteSem(sem_t s) {
+void deleteSem(char * name) {
+  sem_t s = &semVec[findSem(name)];
   deleteMutex(s->mutex->name);//tal vez deleteMutex
   freeQ(s->lockedQueue);
   s->name = NULL;
@@ -58,9 +60,11 @@ void deleteSem(sem_t s) {
   return;
 }
 
-void semWait(sem_t s) {
-
-  if (s == NULL) {
+void semWait(char * name) 
+{
+  sem_t s = &semVec[findSem(name)];
+  if (s == NULL) 
+  {
     return;
   }
   mutexLock(s->mutex->name);
@@ -80,7 +84,9 @@ void semWait(sem_t s) {
   return;
 }
 
-void semPost(sem_t s) {
+void semPost(char * name) 
+{
+  sem_t s = &semVec[findSem(name)];
   if (s == NULL) return;
   mutexLock(s->mutex->name);
   if (sizeQ(s->lockedQueue) != 0) 
