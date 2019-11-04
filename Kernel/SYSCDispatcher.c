@@ -87,7 +87,7 @@ void syscallDispatcher(uint64_t syscall, uint64_t p1, uint64_t p2, uint64_t p3, 
 			changeProcessState(p1,DEAD);
 			break;
 		case RUN_PROCESS:
-			callrunProcess(p1);
+			callRunProcess(p1);
 			break;
 		case CHANGE_PRIORITY:
 			callNice(p1,p2);

@@ -41,7 +41,7 @@ static void addToProcessList(Process * process)
 }
 
 static ProcessSlot * removeFromProcessList(ProcessSlot * node, Process * process)
- {
+{
   if (node == NULL) return NULL;
   if (node->process->pid == process->pid) {
     ProcessSlot * aux = node->next;
@@ -67,7 +67,7 @@ void freeProcess(Process * process)
   free((Process*)process->stackTop);
   for (int i = 0; i <= MAX_FD; i++)
   {
-    closeFD(process, i);
+    closeFileDescriptor(process, i);
   }
   free(process);
 }
