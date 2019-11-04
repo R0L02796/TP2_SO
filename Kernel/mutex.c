@@ -41,7 +41,7 @@ mutex_t newMutex(char * name)
 int getMutex(char * mutexName) 
 {
 	for (int i = 0; i < MAX_MUTEXES; i++) {
-		if (strcmp(mutexVec[i].name, mutexName) == 0 && mutexVec[i].free == 0) {
+		if (strCmp(mutexVec[i].name, mutexName) == 0 && mutexVec[i].free == 0) {
 			return i;
 		}
 	}
@@ -70,7 +70,7 @@ void mutexLock(char * name)
   if (!_mutexAcquire(&(mutex->value))) 
       return;
 
-  Offer(mutex->blockedQueue, &running);
+  offer(mutex->blockedQueue, &running);
   removeProcess(running);
   running->state = BLOCKED;
   _interrupt();

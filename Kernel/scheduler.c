@@ -183,7 +183,7 @@ void printProcesses()
 {
 	int i;
 	ProcessSlot * s = current;
-	printc('\n');
+	newLine();
 	for(i = 0; i < cantProcesses; i++)
   	{
 		Process * p = s->process;

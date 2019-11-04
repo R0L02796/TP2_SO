@@ -82,7 +82,7 @@ int pipeWrite(int pipeid, char* data, int bytes)
   }
   if (bytes > 0 && getSem(pipe->sem) == 0)
   {
-    semPost(pipe->sem);
+    semPost(pipe->sem->name);
   }
   mutexUnlock(pipe->mutex->name);
   return i;

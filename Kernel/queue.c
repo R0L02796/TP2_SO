@@ -95,7 +95,7 @@ void freeQ(queue_t queue)
 }
 
 
-size_t size(queue_t queue)
+size_t sizeQ(queue_t queue)
 {
   if (queue == NULL) 
     return 0;

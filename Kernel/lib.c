@@ -69,6 +69,15 @@ char * decToStr(int num, char * buffer) {
     return buffer;
 }
 
+int strlen(char *str) {
+  int len = 0;
+  while (*str != 0) {
+    len++;
+    str++;
+  }
+  return len;
+}
+
 int strCmp(char * a, char * b) {
 	while (*a && *b) {
 		if (*a > *b) return 1;
