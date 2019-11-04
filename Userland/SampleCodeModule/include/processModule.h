@@ -19,5 +19,7 @@ void setProcess();
 
 void endProcess(long int pid);
 
+void printAllProcesses();
+
 
 #endif
