@@ -35,9 +35,9 @@ typedef struct Process
 } Process;
 
 
-Process * createProcess(char * name,int argc, char** argv,int priority, int (*entryFunction) (int, char **));
+struct Process * createProcess(char * name,int argc, char** argv,int priority, int (*entryFunction) (int, char **));
 void startProcesses();
-void freeProcess(Process * process);
-int addFileDescriptor(Process* process, int fileDescriptor);
+void freeProcess(struct Process * process);
+int addFileDescriptor(struct Process* process, int fileDescriptor);
 
 #endif
