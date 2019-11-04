@@ -74,4 +74,10 @@ void getTime(unsigned int * dest, uint64_t time);
 char beepon();
 void beepoff();
 
+void callNice(long int pid, int priority);
+long int callSetProcess(char *name,int argc, char **argv, int priority,int (*entry)(int, char **));
+long int callSetAndRunProcess(char *name,int argc, char **argv, int priority,int (*entry)(int, char **)) ;
+void callRunProcess(int pid); 
+
+
 #endif
