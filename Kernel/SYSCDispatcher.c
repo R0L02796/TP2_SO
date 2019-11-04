@@ -11,7 +11,7 @@
 #include "mutex.h"
 
 
-void syscallDispatcher(uint64_t syscall, uint64_t p1, uint64_t p2, uint64_t p3, uint64_t p4, uint64_t p5) {
+void syscallDispatcher(uint64_t syscall, uint64_t p1, uint64_t p2, uint64_t p3, uint64_t p4, uint64_t p5, uint64_t p6) {
 	switch(syscall) {
 		case READ:
 			read(p1, p2, p3);
@@ -81,7 +81,7 @@ void syscallDispatcher(uint64_t syscall, uint64_t p1, uint64_t p2, uint64_t p3, 
 			mutexUnlock((char *) p1);
 			break;
 		case SET_AND_RUN_PROCESS:
-			callSetAndRunProcess(p1,p2,p3,p4,p5);
+			*(long int *) p6 = callSetAndRunProcess(p1,p2,p3,p4,p5);
 			break;
 		case KILL_PROCESS:
 			changeProcessState(p1,DEAD);
@@ -99,7 +99,7 @@ void syscallDispatcher(uint64_t syscall, uint64_t p1, uint64_t p2, uint64_t p3, 
 			getCurrentPid();
 			break;
 		case SET_PROCESS: 
-			callSetProcess(p1,p2,p3,p4,p5);
+			*(long int *) p6 = callSetProcess(p1,p2,p3,p4,p5);
 			break;
 		case END_PROCESS:
 			removeProcess(p1);

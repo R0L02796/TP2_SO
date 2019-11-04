@@ -51,7 +51,7 @@
 #define SECOND 2
 
 // Handles General Systemcalls
-void syscallDispatcher(uint64_t syscall, uint64_t p1, uint64_t p2, uint64_t p3, uint64_t p4, uint64_t p5);
+void syscallDispatcher(uint64_t syscall, uint64_t p1, uint64_t p2, uint64_t p3, uint64_t p4, uint64_t p5, uint64_t p6);
 
 // Handles Read syscalls
 void read(uint64_t mode, uint64_t p1, uint64_t p2);
