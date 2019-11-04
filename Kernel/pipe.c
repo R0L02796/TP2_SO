@@ -55,17 +55,17 @@ int pipe(int fds[2])
 
 int pipeRead(int pipeid, char * data, int bytes)
 {
-  Pipe_t pipe = &pipes[pipeid - 2];
-  semWait(pipe->sem);
-  mutexLock(pipe->mutex->name);
+  Pipe_t p = getPipe(pipeid);
+  semWait(p->sem->name);
+  mutexLock(p->mutex->name);
   int i;
-  for (i = 0; i < bytes && pipe->bufferDim > 0; i++)
+  for (i = 0; i < bytes && p->bufferDim > 0; i++)
     {
-    pipe->readPosition = pipe->readPosition % MAX_BUFFER_DIM;
-    data[i] = pipe->buffer[pipe->readPosition++];
-    pipe->bufferDim--;
+    p->readPosition = p->readPosition % MAX_BUFFER_DIM;
+    data[i] = p->buffer[p->readPosition++];
+    p->bufferDim--;
   }
-  mutexUnlock(pipe->mutex->name);
+  mutexUnlock(p->mutex->name);
   return i;
 }
 

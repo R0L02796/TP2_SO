@@ -15,12 +15,6 @@ typedef struct tSemaphore{
 
 typedef tSemaphore* sem_t;
 
-// typedef struct SemData {
-//   char id[MAX_SEM_ID];
-//   sem_t sem;
-// }SemData;
-//NO SE USA O SI?
-
 extern queue_t semQueue;
 
 void semInitialize();

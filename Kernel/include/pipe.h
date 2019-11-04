@@ -17,7 +17,7 @@ typedef struct Pipe
     int pipeid;
     int readPosition;
     int writePosition;
-    sem_t sem;
+    tSemaphore * sem;
     mutex_t mutex;
     char buffer[MAX_BUFFER_DIM];
     int bufferDim;

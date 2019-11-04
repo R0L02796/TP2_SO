@@ -8,7 +8,8 @@
 void _interrupt();
 static tSemaphore semVec[MAX_SEMS] = {NULL};
 
-void semInitialize() {// Quiero que el vector de semaforos empiece lleno
+void semInitialize() 
+{// Quiero que el vector de semaforos empiece lleno
     for (int i=0; i<MAX_SEMS; i++)
     {
         sem_t s = &(semVec[i]);
@@ -34,7 +35,8 @@ sem_t semCreate(int startValue, char* name)
   return NULL;
 }
 
-int findSem(char * name){
+int findSem(char * name)
+{
   int resp = 0;
   while(strCmp(semVec[resp].name, name) != 0 && resp < MAX_SEMS)
   {
@@ -45,11 +47,13 @@ int findSem(char * name){
   return -1;
 }
 
-int getSem(sem_t s) {
+int getSem(sem_t s) 
+{
   return s->value;
 }
 
-void deleteSem(char * name) {
+void deleteSem(char * name) 
+{
   sem_t s = &semVec[findSem(name)];
   deleteMutex(s->mutex->name);//tal vez deleteMutex
   freeQ(s->lockedQueue);
