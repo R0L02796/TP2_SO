@@ -29,6 +29,15 @@
 #define MUTEXCLOSE 23
 #define MUTEXLOCK 24
 #define MUTEXUNLOCK 25
+#define SET_AND_RUN_PROCESS 26
+#define KILL_PROCESS 27
+#define RUN_PROCESS 28
+#define CHANGE_PRIORITY 29
+#define CHANGE_STATE 30
+#define GET_PID 31
+#define SET_PROCESS 32
+#define END_PROCESS 33
+#define PRINT_PROCESSES 34
 
 #define GET 0
 #define SET 1

@@ -44,3 +44,8 @@ void endProcess(long int pid)
 {
   systemCall((uint64_t) END_PROCESS,(uint64_t)pid,0,0,0,0);
 }
+
+void printAllProcesses()
+{
+  systemCall((uint64_t) PRINT_PROCESSES,0,0,0,0,0);
+}
