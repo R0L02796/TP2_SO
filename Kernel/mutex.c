@@ -2,12 +2,15 @@
 #include "process.h"
 #include "scheduler.h"
 #include "lib.h"
+#include "string.h"
 #include "queue.h"
 
-
+int _mutexAcquire(int* value);
+void _interrupt();
 static mutex mutexVec[MAX_MUTEXES];
 
-void mutexInitialize() {
+void mutexInitialize() 
+{
     for (int i=0; i<MAX_MUTEXES; i++)
     {
         mutex_t m = &mutexVec[i]; 
@@ -71,7 +74,7 @@ void mutexLock(char * name)
       return;
 
   offer(mutex->blockedQueue, &running);
-  removeProcess(running);
+  removeProcess(running->pid);
   running->state = BLOCKED;
   _interrupt();
 }
