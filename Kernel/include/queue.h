@@ -1,6 +1,8 @@
 #ifndef QUEUE_H
 #define QUEUE_h
 
+#include "stddef.h"
+
 typedef struct node * node_t;
 typedef struct queue * queue_t;
 
