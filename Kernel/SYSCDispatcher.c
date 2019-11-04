@@ -186,14 +186,14 @@ long int callSetProcess(char *name,int argc, char **argv, int priority,int (*ent
 
 void callNice(long int pid, int priority) //FALTA HACER APP DE NICE
 { 
-  if (pid <= 1)
+  /*if (pid <= 1)
   {
 	return;
   }
   if (priority == HIGHP || priority == LOWP) 
   {
     nice(pid, priority);
-  }
+  }*/
 }
 
 

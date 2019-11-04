@@ -100,6 +100,16 @@ void closeFileDescriptor(Process* process, int fd)
     freePipe(pipe->pipeid);
 }
 
+Process * getProcess( long int pid) {
+  ProcessSlot * l = processList;
+  while (l != NULL) {
+    if (l->process->pid == pid) {
+      return l->process;
+    }
+    l = l->next;
+  }
+  return NULL;
+}
 
 void dup(int fd1, int fd2, Process * processFd2)
 {
