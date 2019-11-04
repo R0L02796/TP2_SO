@@ -15,7 +15,7 @@ static ProcessSlot * removeFromProcessList(ProcessSlot * node, Process * process
 static long int pid;
 static ProcessSlot * processList;
 
-Process * createProcess(char * name,int argc, char** argv,int priority, int (*entryFunction) (int, char **), int isForeground)
+Process * createProcess(char * name,int argc, char** argv,int priority, int (*entryFunction) (int, char **))
 {
     Process * process = malloc(sizeof(process));
     process->name = name;
@@ -28,7 +28,6 @@ Process * createProcess(char * name,int argc, char** argv,int priority, int (*en
     process->rsp = process->stackBase;
     process->priority = priority;
     process->state = READY;
-    process->foreground = isForeground;
     process->fileDescriptors[0] = 0;
     process->fileDescriptors[1] = 1;
     for (int i = 2; i < MAX_FD; i++)
