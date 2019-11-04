@@ -27,7 +27,7 @@ typedef struct memoryList{
     size_t cantPages;
     struct page * first;  
     struct page * last;
-}memoryList;
+}memoryList; 
 
 typedef struct page{
     int free;

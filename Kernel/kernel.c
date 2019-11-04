@@ -6,6 +6,9 @@
 #include "videoDriver.h"
 #include "IDTLoader.h"
 #include "scheduler.h"
+#include "mutex.h"
+#include "semaphore.h"
+#include "pipe.h"
 
 
 extern uint8_t text;
@@ -59,6 +62,10 @@ int main() {
 	_get(getStackBase());
 	loadIDT();
 	ncClear();
+
+	initializePipes();
+	semInitialize();
+	mutexInitialize();
 
 	startSchedule((EntryPoint)sampleCodeModuleAddress)();
 

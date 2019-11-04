@@ -21,8 +21,8 @@ void startSchedule(int (*entryPoint)(int, char **))
   current = NULL;
 	cantProcesses=0;
   startProcesses();
-  Process * idle = createProcess("idle", 0, NULL,LOWP, (entryIdle)idle,0);
-  Process * shell = createProcess("shell",0, NULL, HIGHP,entryPoint, 0);
+  Process * idle = createProcess("idle", 0, NULL,LOWP, (entryIdle)idle);
+  Process * shell = createProcess("shell",0, NULL, HIGHP,entryPoint);
   if (shell == NULL)
    {
     return;
@@ -41,7 +41,7 @@ void startSchedule(int (*entryPoint)(int, char **))
 
 ProcessSlot * newProcessSlot(Process * process)
 {
-	ProcessSlot * newProcessSlot = malloc(sizeof(ProcessSlot));//revisar allocblock
+	ProcessSlot * newProcessSlot = malloc(sizeof(ProcessSlot));
 	newProcessSlot->process = process;
 	return newProcessSlot;
 }
@@ -98,17 +98,22 @@ return;
 
 static ProcessSlot* findProcessReadyRec(ProcessSlot * current)
 { //STATIC
-  if(current->process->state == READY){
-    if(current->process->pid == -1){     //maintenance process
-      if(cantProcesses<2){
+  if(current->process->state == READY)
+  {
+    if(current->process->pid == -1)
+	{     //maintenance process
+      if(cantProcesses<2)
+	  {
           return current;
       }
     }
-    else {
+    else 
+	{
       return current;
     }
   }
-  if(current->process->state == DEAD){
+  if(current->process->state == DEAD)
+  {
     ProcessSlot * aux = current;
     removeProcess(current);
     return findProcessReadyRec(aux->next);
@@ -118,23 +123,24 @@ static ProcessSlot* findProcessReadyRec(ProcessSlot * current)
 
 void schedule()
 {
-	if(quantum > 0 && current->process->state == RUNNING){
-    quantum--;
-    return;
-  }
-  if(current->process->state != DEAD){
-  changeProcessState(current->process->pid, READY);
-  }
-  current = current->next;
-  current = findProcessReadyRec(current);//gives next process that is ready for execution
-  changeProcessState(current->process->pid, RUNNING);
-  quantum = current->process->priority;
-  _runProcess(current->process->rsp);
+	if(quantum > 0 && current->process->state == RUNNING)
+	{
+	quantum--;
+	return;
+  	}
+	if(current->process->state != DEAD){
+	changeProcessState(current->process->pid, READY);
+	}
+	current = current->next;
+	current = findProcessReadyRec(current);//gives next process that is ready for execution
+	changeProcessState(current->process->pid, RUNNING);
+	quantum = current->process->priority;
+	_runProcess(current->process->rsp);
 }
 
 
 void changeProcessState(int pid, processState state)
-{ //PARA BLOQUEAR Y MATAR PROCESOS, DONDE ESTA DEFINIDO processState???????
+{ 
 	int i;
  	ProcessSlot * slot = current;
 
@@ -179,21 +185,21 @@ void printProcesses()
 	ProcessSlot * s = current;
 	printc('\n');
 	for(i = 0; i < cantProcesses; i++)
-  {
+  	{
 		Process * p = s->process;
 		putStr("  |  Name: ");
 		putStr(p->name);
 		putStr("PID: ");
     char buffer[10];
 		putStr(decToStr(p->pid,buffer));
-    if(p->foreground)
-    {
-      putStr("Foreground process");
-    }
-    else
-    {
-      putStr("Background process");
-    }
+    //if(p->foreground)
+    //{
+    //  putStr("Foreground process");
+    //}
+    //else
+    //{
+    // putStr("Background process");
+    //}
     putStr("  | Priority: ");
     char buffer1[10];
     putStr(decToStr(p->priority, buffer1));
