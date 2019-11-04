@@ -177,7 +177,7 @@ long int callSetAndRunProcess(char *name,int argc, char **argv, int priority,int
   return newProcess->pid;
 }
 
-void callSetProcess(char *name,int argc, char **argv, int priority,int (*entry)(int, char **))
+long int callSetProcess(char *name,int argc, char **argv, int priority,int (*entry)(int, char **))
 {
   Process * newProcess = createProcess(name,argc, argv, priority,entry);
   return newProcess->pid;
