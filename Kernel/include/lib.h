@@ -7,6 +7,6 @@ void * memset(void * destination, int32_t character, uint64_t length);
 void * memcpy(void * destination, const void * source, uint64_t length);
 char *decToStr(int num, char * buffer);
 char *cpuVendor(char *result);
-int strlen(char* str);
+int strLen(char* str);
 int strCmp(char * a, char * b);
 #endif

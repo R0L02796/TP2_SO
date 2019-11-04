@@ -1,8 +1,8 @@
-#include "mutex.h"
-#include "process.h"
-#include "scheduler.h"
-#include "lib.h"
-#include "queue.h"
+#include "include/mutex.h"
+#include "include/process.h"
+#include "include/scheduler.h"
+#include "include/lib.h"
+#include "include/queue.h"
 
 int _mutexAcquire(int* value);
 void _interrupt();
@@ -29,7 +29,7 @@ mutex_t newMutex(char * name)
 		if (mutexVec[i].free == 1) 
       {
 			mutexVec[i].free = 0;
-			int len = strlen(name);
+			int len = strLen(name);
 			memcpy(mutexVec[i].name, name, len+1);
 			mutexVec[i].pidLock = 0;
 			mutexVec[i].value = 0;

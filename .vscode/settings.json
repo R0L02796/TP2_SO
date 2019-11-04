@@ -1,6 +1,11 @@
 {
     "files.associations": {
         "snakemodule.h": "c",
-        "stdint.h": "c"
+        "stdint.h": "c",
+        "lib.h": "c",
+        "queue.h": "c",
+        "scheduler.h": "c",
+        "process.h": "c",
+        "mutex.h": "c"
     }
 }

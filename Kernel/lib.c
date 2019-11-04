@@ -69,7 +69,7 @@ char * decToStr(int num, char * buffer) {
     return buffer;
 }
 
-int strlen(char *str) {
+int strLen(char *str) {
   int len = 0;
   while (*str != 0) {
     len++;
