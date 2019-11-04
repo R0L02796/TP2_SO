@@ -2,6 +2,7 @@
 #include "include/process.h"
 #include "include/scheduler.h"
 #include "include/mutex.h"
+#include "queue.h"
 #include "lib.h"
 
 queue_t semQueue;
@@ -63,11 +64,11 @@ void semWait(sem_t s) {
     return;
   }
   mutexLock(s->mutex->name);
-  Process * running = getCurrenProcess();
+  Process * running = getCurrentProcess();
   if (s->value == 0) {
     queueOffer(s->lockedQueue, &running);
     mutexUnlock(s->mutex->name);
-    removeProcess(running);
+    removeProcess(running->pid);
     _interrupt();
   } else {
     s->value--;
