@@ -42,9 +42,9 @@ int pipe(int fds[2])
         fds[0] = addFileDescriptor(pipes[i].creatorProcess, pipeid);
         fds[1] = addFileDescriptor(pipes[i].creatorProcess, pipeid);
         pipes[i].free = 0;
-        char * name[10];
-        char * name2[10];
-        pipes[i].sem = semOpen(decToStr(pipes[i].pipeid, name));
+        char name[10];
+        char name2[10];
+        pipes[i].sem = semCreate(0, decToStr(pipes[i].pipeid, name));
         pipes[i].mutex = newMutex(decToStr(pipes[i].pipeid, name2));
         pipes[i].users = 0;
         return 0;
@@ -56,7 +56,7 @@ int pipeRead(int pipeid, char * data, int bytes)
 {
   Pipe_t pipe = &pipes[pipeid - 2];
   semWait(pipe->sem);
-  mutexLock(pipe->mutex);
+  mutexLock(pipe->mutex->name);
   int i;
   for (i = 0; i < bytes && pipe->bufferDim > 0; i++)
     {
@@ -64,14 +64,14 @@ int pipeRead(int pipeid, char * data, int bytes)
     data[i] = pipe->buffer[pipe->readPosition++];
     pipe->bufferDim--;
   }
-  mutexUnlock(pipe->mutex);
+  mutexUnlock(pipe->mutex->name);
   return i;
 }
 
 int pipeWrite(int pipeid, char* data, int bytes)
 {
   Pipe_t pipe = &pipes[pipeid -2];
-  mutexLock(pipe->mutex);
+  mutexLock(pipe->mutex->name);
   int i;
   for (i = 0; i < bytes; i++)
   {
@@ -79,11 +79,11 @@ int pipeWrite(int pipeid, char* data, int bytes)
     pipe->buffer[pipe->writePosition++] = data[i];
     pipe->bufferDim++;
   }
-  if (bytes > 0 && semGetValue(pipe->sem) == 0)
+  if (bytes > 0 && getSem(pipe->sem) == 0)
   {
     semPost(pipe->sem);
   }
-  mutexUnlock(pipe->mutex);
+  mutexUnlock(pipe->mutex->name);
   return i;
 }
 
@@ -102,8 +102,8 @@ void freePipe(int pipeid)
   p->creatorProcess = NULL;
   p->readPosition = 0;
   p->writePosition = 0;
-  char * name3[10];
-  char * name4[10];
+  char name3[10];
+  char name4[10];
   deleteSem(decToStr(p->pipeid, name4)); //hacer funcion to string
   p->sem = NULL;
   deleteMutex(decToStr(p->pipeid, name3));
