@@ -5,7 +5,7 @@ long int setAndRunProcess(char* name,int argc,char** argv, int priority, int (*e
 {
   long int pid;
   systemCall((uint64_t)SET_AND_RUN_PROCESS, (uint64_t)name,
-  (uint64_t)argc, (uint64_t)argv, (uint64_t)priority,(uint64_t)entry,&pid);
+  (uint64_t)argc, (uint64_t)argv, (uint64_t)priority,(uint64_t)entry,(uint64_t)&pid);
   return pid;
 }
 
@@ -27,13 +27,13 @@ void changePriority(long int pid, int priority)
 
 void changeState(long int pid)
 {
-  systemcall((uint64_t) CHANGE_STATE,(uint64_t)pid,0,0,0,0, 0);
+  systemCall((uint64_t) CHANGE_STATE,(uint64_t)pid,0,0,0,0, 0);
 }
 
 long int getRunningPid()
 {
   long int pid;
-  systemcall((uint64_t) GET_PID, &pid,0,0,0,0, 0);
+  systemCall((uint64_t) GET_PID,(uint64_t) &pid,0,0,0,0, 0);
   return pid;
 }
 
@@ -41,7 +41,7 @@ long int setProcess(char* name,int argc,char** argv, int priority, int (*entry)(
 {
   long int pid;
   systemCall((uint64_t)SET_PROCESS, (uint64_t)name,
-  (uint64_t)argc, (uint64_t)argv, (uint64_t)priority,(uint64_t)entry, &pid);
+  (uint64_t)argc, (uint64_t)argv, (uint64_t)priority,(uint64_t)entry, (uint64_t)&pid);
   return pid;
 }
 

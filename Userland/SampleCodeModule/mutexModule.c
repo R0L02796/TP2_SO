@@ -5,7 +5,8 @@
 void * mutexOpen(char id[MAX_MUTEX_ID]) 
 {
     void * mutex;
-    systemCall((uint64_t)MUTEXOPEN, (uint64_t)id, &mutex, 0, 0, 0, 0);
+    systemCall((uint64_t)MUTEXOPEN, (uint64_t)id, (uint64_t)&mutex, 0, 0, 0, 0);
+    return mutex;
 }
 void mutexClose(char id[MAX_MUTEX_ID]) 
 {
