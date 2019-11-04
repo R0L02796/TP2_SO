@@ -1,6 +1,6 @@
 #include "include/scheduler.h"
 #include "include/process.h"
-//#include "include/pipe.h"
+#include "interruptions.h"
 #include "include/videoDriver.h"
 
 
@@ -11,7 +11,7 @@ static int cantProcesses;
 
 typedef int (*entryIdle)();
 void _runProcess(uint64_t rsp);
-uint64_t _stackCheat(uint64_t stackBase, int (*entryFunction)(int, char *), int argc,char **argv, uint64_t stackRet);
+uint64_t _stackCheat(uint64_t stackBase, int (*entryFunction)(int, char **), int argc,char **argv, uint64_t stackRet);
 static ProcessSlot* findProcessReadyRec(ProcessSlot * current);
 
 
@@ -35,7 +35,7 @@ void startSchedule(int (*entryPoint)(int, char **))
   stackCheat(idle);
   addProcess(shell);
   addProcess(idle);
-  current = shell;
+  current->process = shell;
   _runProcess(current->process->rsp);
 }
 
@@ -68,10 +68,9 @@ void addProcess(Process * process)
 void removeProcess(long int pid)
 {
 	if (pid == 0 || pid == 1 || cantProcesses < 3)
-  {
+  	{
 		return;
 	}
-
 	ProcessSlot * prevSlot = current;
 	ProcessSlot * slotToRemove = current->next;
 	int i = 0;
@@ -80,20 +79,17 @@ void removeProcess(long int pid)
 		slotToRemove = slotToRemove->next;
 		i++;
 	}
-
 	if (i == cantProcesses)
-  {
+  	{
 		return;
 	}
-
-
-else
-{
-		prevSlot->next = slotToRemove->next;
-		cantProcesses--;
-    freeProcess(slotToRemove->process);
-}
-return;
+	else
+	{
+			prevSlot->next = slotToRemove->next;
+			cantProcesses--;
+		freeProcess(slotToRemove->process);
+	}
+	return;
 }
 
 static ProcessSlot* findProcessReadyRec(ProcessSlot * current)
@@ -115,7 +111,7 @@ static ProcessSlot* findProcessReadyRec(ProcessSlot * current)
   if(current->process->state == DEAD)
   {
     ProcessSlot * aux = current;
-    removeProcess(current);
+    removeProcess(current->process->pid);
     return findProcessReadyRec(aux->next);
   }
   return findProcessReadyRec(current->next);
