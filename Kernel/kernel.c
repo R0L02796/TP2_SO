@@ -3,6 +3,7 @@
 #include <lib.h>
 #include <moduleLoader.h>
 #include <naiveConsole.h>
+#include "interruptions.h"
 #include "videoDriver.h"
 #include "IDTLoader.h"
 #include "scheduler.h"
@@ -24,7 +25,8 @@ static void * const sampleCodeModuleAddress = (void*)0x400000;
 static void * const sampleDataModuleAddress = (void*)0x500000;
 void _get(void* sp);
 
-typedef int (* EntryPoint)(void);
+typedef int (*entryPoint)();
+
 
 
 void clearBSS(void * bssAddress, uint64_t bssSize)
@@ -67,7 +69,7 @@ int main() {
 	semInitialize();
 	mutexInitialize();
 
-	startSchedule((EntryPoint)sampleCodeModuleAddress)();
+	startSchedule((entryPoint)sampleCodeModuleAddress);
 
 	return 1;
 }
