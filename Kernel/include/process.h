@@ -30,7 +30,6 @@ typedef struct Process
   uint64_t stackTop;
   uint64_t rsp;
   int (*entryFunction) (int, char **);
-  int foreground;
   int fileDescriptors[MAX_FD];
 } Process;
 
