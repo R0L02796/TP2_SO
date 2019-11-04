@@ -2,7 +2,6 @@
 #include "process.h"
 #include "scheduler.h"
 #include "lib.h"
-#include "string.h"
 #include "queue.h"
 
 int _mutexAcquire(int* value);

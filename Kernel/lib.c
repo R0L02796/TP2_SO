@@ -68,7 +68,7 @@ char * decToStr(int num, char * buffer) {
     }while(num);
     return buffer;
 }
-/*
+
 int strlen(char *str) {
   int len = 0;
   while (*str != 0) {
@@ -76,7 +76,7 @@ int strlen(char *str) {
     str++;
   }
   return len;
-}*/
+}
 
 int strCmp(char * a, char * b) {
 	while (*a && *b) {

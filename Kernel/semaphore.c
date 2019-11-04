@@ -4,7 +4,6 @@
 #include "include/mutex.h"
 #include "queue.h"
 #include "lib.h"
-#include "string.h"
 
 void _interrupt();
 static tSemaphore semVec[MAX_SEMS] = {NULL};
