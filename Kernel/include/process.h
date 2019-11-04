@@ -18,6 +18,7 @@ typedef struct ProcessSlot
 
 
 typedef enum processState {RUNNING, READY, BLOCKED, DEAD} processState;
+
 typedef struct Process
 {
   int argc;

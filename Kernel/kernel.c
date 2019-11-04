@@ -24,7 +24,7 @@ static void * const sampleCodeModuleAddress = (void*)0x400000;
 static void * const sampleDataModuleAddress = (void*)0x500000;
 void _get(void* sp);
 
-typedef int (*EntryPoint)();
+typedef int (* EntryPoint)(void);
 
 
 void clearBSS(void * bssAddress, uint64_t bssSize)

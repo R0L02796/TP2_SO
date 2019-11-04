@@ -14,7 +14,7 @@ void removeProcess(long int pid);
 void schedule();
 void changeProcessState(int pid, processState state);
 unsigned long int getCurrentPid();
-Process * getCurrentProcess();
+struct Process * getCurrentProcess();
 void stackCheat(Process * process);
 void wrapper(int (*entryFunction)(int, char **), int argc, char **argv);
 void printProcesses();
