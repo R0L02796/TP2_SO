@@ -15,7 +15,7 @@ void changeState(long int pid);
 
 void getRunningPid();
 
-void setProcess();
+long int setProcess(char* name,int argc,char** argv, int priority, int (*entry)(int, char**));
 
 void endProcess(long int pid);
 
