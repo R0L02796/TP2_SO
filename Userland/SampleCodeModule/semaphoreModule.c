@@ -3,11 +3,11 @@
 // test
 #include "include/stdlib.h"
 
-void semCreate(char id[MAX_SEM_ID], int start) {
-  systemCall((uint64_t)SEMCREATE, (uint64_t)id, (uint64_t)start, 0, 0, 0);
+void semOpen(char id[MAX_SEM_ID], int start) {
+  systemCall((uint64_t)SEMOPEN, (uint64_t)id, (uint64_t)start, 0, 0, 0);
 }
-void deleteSem(char id[MAX_SEM_ID]) {
-  systemCall((uint64_t)DELETESEM, (uint64_t)id, 0, 0, 0, 0);
+void semClose(char id[MAX_SEM_ID]) {
+  systemCall((uint64_t)SEMCLOSE, (uint64_t)id, 0, 0, 0, 0);
 }
 void semWait(char id[MAX_SEM_ID]) {
   systemCall((uint64_t)SEMWAIT, (uint64_t)id, 0, 0, 0, 0);
