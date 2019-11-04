@@ -169,17 +169,17 @@ void callRunProcess(int pid)
   addProcess(process);
 }
 
-long int callSetAndRunProcess(char *name, int (*entry)(int, char **),int argc, char **argv, int priority) 
+long int callSetAndRunProcess(char *name,int argc, char **argv, int priority,int (*entry)(int, char **)) 
 {
-  Process * newProcess = createProcess(name, entry, argc, argv, priority);
+  Process * newProcess = createProcess(name,argc, argv, priority,entry);
   stackCheat(newProcess);
   addProcess(newProcess);
   return newProcess->pid;
 }
 
-void callSetProcess(char *name, int (*entry)(int, char **),int argc, char **argv, int priority)
+void callSetProcess(char *name,int argc, char **argv, int priority,int (*entry)(int, char **))
 {
-  Process * newProcess = createProcess(name, entry, argc, argv, priority);
+  Process * newProcess = createProcess(name,argc, argv, priority,entry);
   return newProcess->pid;
 }
 
