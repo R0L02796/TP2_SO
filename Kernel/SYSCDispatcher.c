@@ -56,33 +56,6 @@ void syscallDispatcher(uint64_t syscall, uint64_t p1, uint64_t p2, uint64_t p3, 
 		case PRINTPAGE:
 			printPage((void *) p1);
 			break;
-		case SET_AND_RUN_PROCESS:
-			_setAndRunProcess(p1,p2,p3,p4,p5);
-			break;
-		case KILL_PROCESS:
-			_kill(p1);
-			break;
-		case RUN_PROCESS:
-			_runProcess(p1);
-			break;
-		case CHANGE_PRIORITY:
-			_nice(p1,p2);
-			break;
-		case CHANGE_STATE:
-			_changeProcessState(p1,p2);
-			break;
-		case GET_PID :
-			_getCurrentPid();
-			break;
-		case SET_PROCESS: 
-			_setProcess(p1,p2,p3,p4,p5);
-			break;
-		case END_PROCESS:
-			_endProcess(p1);
-			break;
-		case PRINT_PROCESSES:
-			_printProcesses();
-			break;
 		case SEMOPEN:
 			semCreate((char *) p1, (int) p2);
 			break;
@@ -107,6 +80,33 @@ void syscallDispatcher(uint64_t syscall, uint64_t p1, uint64_t p2, uint64_t p3, 
 		case MUTEXUNLOCK:
 			mutexUnlock((char *) p1);
 			break;
+		case SET_AND_RUN_PROCESS:
+			callSetAndRunProcess(p1,p2,p3,p4,p5);
+			break;
+		case KILL_PROCESS:
+			changeProcessState(p1,DEAD);
+			break;
+		case RUN_PROCESS:
+			callrunProcess(p1);
+			break;
+		case CHANGE_PRIORITY:
+			callNice(p1,p2);
+			break;
+		case CHANGE_STATE:
+			changeProcessState(p1,p2);
+			break;
+		case GET_PID :
+			getCurrentPid();
+			break;
+		case SET_PROCESS: 
+			callSetProcess(p1,p2,p3,p4,p5);
+			break;
+		case END_PROCESS:
+			removeProcess(p1);
+			break;
+		case PRINT_PROCESSES:
+			printProcesses();
+			break;	
 		
 
 	}
@@ -161,8 +161,7 @@ void getTime(unsigned int * t, uint64_t time) {
 }
 
 
-//no se que hacer con esto
-void _runProcess(int pid) 
+void callRunProcess(int pid) 
 {
   Process* process = getProcess(pid);
   if (process == NULL) return;
@@ -170,7 +169,7 @@ void _runProcess(int pid)
   addProcess(process);
 }
 
-long int _setAndRunProcess(char *name, int (*entry)(int, char **),int argc, char **argv, int priority) 
+long int callSetAndRunProcess(char *name, int (*entry)(int, char **),int argc, char **argv, int priority) 
 {
   Process * newProcess = createProcess(name, entry, argc, argv, priority);
   stackCheat(newProcess);
@@ -178,44 +177,26 @@ long int _setAndRunProcess(char *name, int (*entry)(int, char **),int argc, char
   return newProcess->pid;
 }
 
-void _setProcess(char *name, int (*entry)(int, char **),int argc, char **argv, int priority)
+void callSetProcess(char *name, int (*entry)(int, char **),int argc, char **argv, int priority)
 {
   Process * newProcess = createProcess(name, entry, argc, argv, priority);
   return newProcess->pid;
 }
 
-void _changeProcessState(long int pid, processState state)
-{
-  changeProcessState(pid,state); //PARA BLOQUEAR Y MATAR PROCESOS, DONDE ESTA DEFINIDO processState???????
-}
 
-void _kill(long int pid)
-{
-  changeProcessState(pid,DEAD);
-}
-
-void _endProcess(long int pid)
-{
-  removeProcess(pid);
-}
-
-void _nice(long int pid, int priority)
-{ //para cambiar prioridad
-  if (pid <= 1) return;
-  if (priority == HIGHP || priority == MIDP || priority == LOWP) 
+void callNice(long int pid, int priority) //FALTA HACER APP DE NICE
+{ 
+  if (pid <= 1)
+  {
+	return;
+  }
+  if (priority == HIGHP || priority == LOWP) 
   {
     nice(pid, priority);
   }
 }
 
 
-void _printProcesses()
-{
-  printProcesses();
-}
 
 
-long int _getCurrentPid()
-{
-  return getCurrentPid();
-}
+
