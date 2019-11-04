@@ -3,8 +3,8 @@
 
 
 
-long int setAndRunProcess(char* name, int (*entry)(int, char**), int argc,
-                                char** argv, int priority);
+long int setAndRunProcess(char* name,int argc,
+                                char** argv, int priority,int (*entry)(int, char**));
 void kill(long int pid);
 
 void runProcess(long int pid);
