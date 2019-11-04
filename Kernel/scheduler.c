@@ -2,6 +2,7 @@
 #include "include/process.h"
 #include "interruptions.h"
 #include "include/videoDriver.h"
+#include "include/memoryManager.h"
 
 
 
@@ -20,20 +21,20 @@ void startSchedule(int (*entryPoint)(int, char **))
   current = NULL;
 	cantProcesses=0;
   startProcesses();
-  Process * idle = createProcess("idle", 0, NULL,LOWP, (entryIdle)idle);
+  // Process * idle = createProcess("idle", 0, NULL,LOWP, (entryIdle)idle);
   Process * shell = createProcess("shell",0, NULL, HIGHP,entryPoint);
   if (shell == NULL)
    {
     return;
   }
-  if (idle == NULL)
-  {
-    return;
-  }
+  // if (idle == NULL)
+  // {
+  //   return;
+  // }
   stackCheat(shell);
-  stackCheat(idle);
+  // stackCheat(idle);
   addProcess(shell);
-  addProcess(idle);
+  // addProcess(idle);
   current->process = shell;
   _runProcess(current->process->rsp);
 }
@@ -86,7 +87,7 @@ void removeProcess(long int pid)
 	{
 			prevSlot->next = slotToRemove->next;
 			cantProcesses--;
-		freeProcess(slotToRemove->process);
+		freeProcess(slotToRemove);
 	}
 	return;
 }
@@ -102,7 +103,7 @@ static ProcessSlot* findProcessReadyRec(ProcessSlot * current)
           return current;
       }
     }
-    else 
+    else
 	{
       return current;
     }
@@ -128,14 +129,13 @@ void schedule()
 	}
 	current = current->next;
 	current = findProcessReadyRec(current);//gives next process that is ready for execution
-	changeProcessState(current->process->pid, RUNNING);
-	quantum = current->process->priority;
+  quantum = current->process->priority;
 	_runProcess(current->process->rsp);
 }
 
 
 void changeProcessState(int pid, processState state)
-{ 
+{
 	int i;
  	ProcessSlot * slot = current;
 

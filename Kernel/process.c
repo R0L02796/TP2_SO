@@ -1,6 +1,7 @@
 #include "include/process.h"
 #include "include/pipe.h"
 #include "include/scheduler.h"
+#include "include/memoryManager.h"
 
 static void addToProcessList(Process * process);
 static ProcessSlot * removeFromProcessList(ProcessSlot * node, Process * process);
@@ -54,22 +55,23 @@ static ProcessSlot * removeFromProcessList(ProcessSlot * node, Process * process
 
 void startProcesses()
  {
-  pid = 0;
+  pid = 1;
   processList = NULL;
 }
 
-void freeProcess(Process * process)
+void freeProcess(ProcessSlot * processSlot)
 {
-  if (process == NULL) return;
+  if (processSlot->process == NULL) return;
   // _cli();
-  processList = removeFromProcessList(processList, process);
+  processList = removeFromProcessList(processList, processSlot);
   // _sti();
-  free((Process*)process->stackTop);
+  free(processSlot->process->stackTop);
   for (int i = 0; i <= MAX_FD; i++)
   {
-    closeFileDescriptor(process, i);
+    closeFileDescriptor(processSlot->process, i);
   }
-  free(process);
+  free(processSlot->process);
+  free(processSlot);
 }
 
 int addFileDescriptor(Process* process, int fd)
@@ -96,7 +98,7 @@ void closeFileDescriptor(Process* process, int fd)
   process->fileDescriptors[fd] = -1;
   Pipe * pipe = getPipe(pipeid);
   pipe->users--;
-  if (pipe->users == 0) 
+  if (pipe->users == 0)
     freePipe(pipe->pipeid);
 }
 
@@ -116,7 +118,7 @@ void dup(int fd1, int fd2, Process * processFd2)
   Process * processFd1 = getCurrentProcess();
   int pipeID = processFd1->fileDescriptors[fd1];
   Pipe * pipe = getPipe(pipeID);
-  if (pipe != NULL) 
+  if (pipe != NULL)
     pipe->users++;
   processFd2->fileDescriptors[fd2] = pipeID;
 }
