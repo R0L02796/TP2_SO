@@ -1,8 +1,7 @@
 #include "processModule.h"
 #include "SYSCall.h"
 
-long int setAndRunProcess(char* name, int (*entry)(int, char**), int argc,int priority,
-                                char** argv)
+long int setAndRunProcess(char* name,int argc,char** argv, int priority, int (*entry)(int, char**))
 {
   unsigned long int pid = systemCall((uint64_t)SET_AND_RUN_PROCESS, (uint64_t)name,
                  (uint64_t)argc, (uint64_t)argv, (uint64_t)priority,(uint64_t)entry);
