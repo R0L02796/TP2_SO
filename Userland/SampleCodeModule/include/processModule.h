@@ -3,8 +3,7 @@
 
 
 
-long int setAndRunProcess(char* name,int argc,
-                                char** argv, int priority,int (*entry)(int, char**));
+long int setAndRunProcess(char* name, int argc, char** argv, int priority,int (*entry)(int, char**));
 void kill(long int pid);
 
 void runProcess(long int pid);
@@ -13,7 +12,7 @@ void changePriority(long int pid, int priority);
 
 void changeState(long int pid);
 
-void getRunningPid();
+long int getRunningPid();
 
 long int setProcess(char* name,int argc,char** argv, int priority, int (*entry)(int, char**));
 

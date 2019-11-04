@@ -30,9 +30,11 @@ void changeState(long int pid)
   systemcall((uint64_t) CHANGE_STATE,(uint64_t)pid,0,0,0,0, 0);
 }
 
-void getRunningPid()
+long int getRunningPid()
 {
-  systemcall((uint64_t) GET_PID,0,0,0,0,0, 0);
+  long int pid;
+  systemcall((uint64_t) GET_PID, &pid,0,0,0,0, 0);
+  return pid;
 }
 
 long int setProcess(char* name,int argc,char** argv, int priority, int (*entry)(int, char**))

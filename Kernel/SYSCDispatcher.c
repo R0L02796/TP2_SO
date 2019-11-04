@@ -81,28 +81,28 @@ void syscallDispatcher(uint64_t syscall, uint64_t p1, uint64_t p2, uint64_t p3, 
 			mutexUnlock((char *) p1);
 			break;
 		case SET_AND_RUN_PROCESS:
-			*(long int *) p6 = callSetAndRunProcess(p1,p2,p3,p4,p5);
+			*(long int *) p6 = callSetAndRunProcess((char *)p1,(int)p2,(char **)p3,(int)p4,(int (*)(int, char **))p5);
 			break;
 		case KILL_PROCESS:
-			changeProcessState(p1,DEAD);
+			changeProcessState((int)p1,DEAD);
 			break;
 		case RUN_PROCESS:
-			callRunProcess(p1);
+			callRunProcess((int)p1);
 			break;
 		case CHANGE_PRIORITY:
 			callNice(p1,p2);
 			break;
 		case CHANGE_STATE:
-			changeProcessState(p1,p2);
+			changeProcessState((int)p1,(processState)p2);
 			break;
 		case GET_PID :
-			getCurrentPid();
+			*(long int *) p1 = getCurrentPid();
 			break;
 		case SET_PROCESS: 
-			*(long int *) p6 = callSetProcess(p1,p2,p3,p4,p5);
+			*(long int *) p6 = callSetProcess((char *)p1,(int)p2,(char **)p3,(int)p4,(int (*)(int, char **))p5);
 			break;
 		case END_PROCESS:
-			removeProcess(p1);
+			removeProcess((long) p1);
 			break;
 		case PRINT_PROCESSES:
 			printProcesses();
