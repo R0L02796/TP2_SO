@@ -38,5 +38,8 @@ struct Process * createProcess(char * name,int argc, char** argv,int priority, i
 void startProcesses();
 void freeProcess(struct Process * p);
 int addFileDescriptor(struct Process * p, int fileDescriptor);
+void closeFileDescriptor(Process* process, int fd);
+void dup(int fd1, int fd2, Process * processFd2);
+
 
 #endif

@@ -86,7 +86,7 @@ int pipeWrite(int pipeid, char* data, int bytes)
 }
 
 
-Pipe * getPipeId(int id)
+Pipe * getPipe(int id)
 {
   if(id < 2 || id > MAX_PIPES)
     return NULL;

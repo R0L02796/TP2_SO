@@ -26,7 +26,7 @@ typedef struct Pipe
 
 typedef Pipe* Pipe_t;
 
-Pipe * getPipeId(int id);
+Pipe * getPipe(int id);
 
 int pipeRead(int pipeid, char * data, int bytes);
 

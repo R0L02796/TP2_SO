@@ -26,7 +26,7 @@ sem_t semCreate(int startValue, char* name) {
     if(semVec[i].name == NULL){
       sem_t s = &(semVec[i]);
       s->name = name;
-      s->lockedQueue = queueCreate(sizeof(Process *));
+      s->lockedQueue = newQueue(sizeof(Process *));
       s->mutex = newMutex(name);
       return s;
     }
@@ -50,7 +50,7 @@ int getSem(sem_t s) {
 
 void deleteSem(sem_t s) {
   mutexDelete(s->mutex->name);//tal vez deleteMutex
-  queueFree(s->lockedQueue);
+  freeQ(s->lockedQueue);
   s->name = NULL;
   s->lockedQueue = NULL;
   s->value = 0;
@@ -66,11 +66,13 @@ void semWait(sem_t s) {
   mutexLock(s->mutex->name);
   Process * running = getCurrentProcess();
   if (s->value == 0) {
-    queueOffer(s->lockedQueue, &running);
+    Offer(s->lockedQueue, &running);
     mutexUnlock(s->mutex->name);
     removeProcess(running->pid);
     _interrupt();
-  } else {
+  } 
+  else 
+  {
     s->value--;
     mutexUnlock(s->mutex->name);
   }
@@ -80,9 +82,10 @@ void semWait(sem_t s) {
 void semPost(sem_t s) {
   if (s == NULL) return;
   mutexLock(s->mutex->name);
-  if (queueSize(s->lockedQueue) != 0) {
+  if (sizeQ(s->lockedQueue) != 0) 
+  {
     Process * proc;
-    queuePoll(s->lockedQueue, &proc);
+    poll(s->lockedQueue, &proc);
     addProcess(proc);
   } else {
     s->value++;

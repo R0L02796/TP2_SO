@@ -2,12 +2,6 @@
 #include "include/pipe.h"
 #include "include/scheduler.h"
 
-typedef struct ProcessSlot
- {
-  Process * process;
-  struct ProcessSlot * next;
-} ProcessSlot;
-
 static void addToProcessList(Process * process);
 static ProcessSlot * removeFromProcessList(ProcessSlot * node, Process * process);
 
@@ -92,19 +86,19 @@ int addFileDescriptor(Process* process, int fd)
 }
 
 void closeFileDescriptor(Process* process, int fd)
- {
-   int pipeid = process->fileDescriptors[fd];
-   if (pipeid < 2)
-     {
-       return;
-     }
+{
+  int pipeid = process->fileDescriptors[fd];
+  if (pipeid < 2)
+    {
+      return;
+    }
 
-   process->fileDescriptors[fd] = -1;
-   Pipe * pipe = getPipe(pipeid);
-   pipe->users--;
-   if (pipe->users == 0) 
-      freePipe(pipe->pipeid);
- }
+  process->fileDescriptors[fd] = -1;
+  Pipe * pipe = getPipe(pipeid);
+  pipe->users--;
+  if (pipe->users == 0) 
+    freePipe(pipe->pipeid);
+}
 
 
 void dup(int fd1, int fd2, Process * processFd2)
