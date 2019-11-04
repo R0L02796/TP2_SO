@@ -34,7 +34,7 @@ void getRunningPid()
   systemcall((uint64_t) GET_PID,0,0,0,0,0);
 }
 
-void setProcess(char* name,int argc,char** argv, int priority, int (*entry)(int, char**))
+long int setProcess(char* name,int argc,char** argv, int priority, int (*entry)(int, char**))
 {
   long int pid = systemCall((uint64_t)SET_PROCESS, (uint64_t)name,
                  (uint64_t)argc, (uint64_t)argv, (uint64_t)priority,(uint64_t)entry);
