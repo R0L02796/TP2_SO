@@ -26,4 +26,16 @@ typedef struct Pipe
 
 typedef Pipe* Pipe_t;
 
+Pipe * getPipeId(int id);
+
+int pipeRead(int pipeid, char * data, int bytes);
+
+int pipe(int fds[2]);
+
+void initializePipes();
+
+int pipeWrite(int pipeid, char* data, int bytes);
+
+void freePipe(int pipeid);
+
 #endif
