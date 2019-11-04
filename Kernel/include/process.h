@@ -19,8 +19,7 @@ typedef struct ProcessSlot
 
 typedef enum processState {RUNNING, READY, BLOCKED, DEAD} processState;
 
-typedef struct Process
-{
+typedef struct Process{
   int argc;
   char * name;
   char **argv;
@@ -32,12 +31,12 @@ typedef struct Process
   uint64_t rsp;
   int (*entryFunction) (int, char **);
   int fileDescriptors[MAX_FD];
-} Process;
+}Process;
 
 
 struct Process * createProcess(char * name,int argc, char** argv,int priority, int (*entryFunction) (int, char **));
 void startProcesses();
-void freeProcess(struct Process * process);
-int addFileDescriptor(struct Process* process, int fileDescriptor);
+void freeProcess(struct Process * p);
+int addFileDescriptor(struct Process * p, int fileDescriptor);
 
 #endif
