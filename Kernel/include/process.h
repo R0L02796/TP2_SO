@@ -12,7 +12,7 @@
 #define HIGHP 6
 typedef struct ProcessSlot
 {
-  Process * process;
+  struct Process * process;
   struct ProcessSlot * next;
 } ProcessSlot;
 
