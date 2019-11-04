@@ -57,20 +57,31 @@ void syscallDispatcher(uint64_t syscall, uint64_t p1, uint64_t p2, uint64_t p3, 
 			printPage((void *) p1);
 			break;
 		case SET_AND_RUN_PROCESS:
+			_setAndRunProcess(p1,p2,p3,p4,p5);
 			break;
 		case KILL_PROCESS:
+			_kill(p1);
 			break;
 		case RUN_PROCESS:
+			_runProcess(p1);
 			break;
 		case CHANGE_PRIORITY:
+			_nice(p1,p2);
 			break;
 		case CHANGE_STATE:
+			_changeProcessState(p1,p2);
 			break;
 		case GET_PID :
+			_getCurrentPid();
 			break;
 		case SET_PROCESS: 
+			_setProcess(p1,p2,p3,p4,p5);
 			break;
 		case END_PROCESS:
+			_endProcess(p1);
+			break;
+		case PRINT_PROCESSES:
+			_printProcesses();
 			break;
 		case SEMOPEN:
 			semCreate((char *) p1, (int) p2);
