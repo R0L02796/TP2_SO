@@ -100,8 +100,8 @@ static ProcessSlot* findProcessReadyRec(ProcessSlot * current)
 { //STATIC
   if(current->process->state == READY)
   {
-    if(current->process->pid == -1)
-	{     //maintenance process
+    if(current->process->pid == 0) // idle process
+	{
       if(cantProcesses<2)
 	  {
           return current;
