@@ -34,7 +34,7 @@ void startSchedule(int (*entryPoint)(int, char **))
   stackCheat(shell);
   // stackCheat(idle);
   addProcess(shell);
-  _cli();
+  //_cli();
   // addProcess(idle);
   current->process = shell;
   _sti();
