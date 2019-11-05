@@ -38,7 +38,7 @@ void loadIDT() {
   picSlaveMask(0xFF);     // disables all slave pic interruptions
    
 
-  _sti();   // reenables interruptions
+  //_sti();   // reenables interruptions
 
 }
 
