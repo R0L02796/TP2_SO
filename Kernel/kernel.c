@@ -63,7 +63,7 @@ int main() {
 	_get(getStackBase());
 	loadIDT();
 	ncClear();
-
+	_cli();
 	initializePipes();
 	semInitialize();
 	mutexInitialize();
