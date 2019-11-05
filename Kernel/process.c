@@ -54,7 +54,7 @@ static ProcessSlot * removeFromProcessList(ProcessSlot * node, Process * process
 }
 
 void startProcesses()
- {
+{
   pid = 1;
   processList = NULL;
 }
