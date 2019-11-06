@@ -9,18 +9,19 @@
 #include "snakeModule.h"
 
 int on = 1;
+int i = 0;
 void initShell(){
 
   printf("\n~~WELCOME TO LENIA'S SHELL~~\n\nPlease type 'help' to find out about our commands\n\n\n");
 
   char command[MAXLEN];
   while (on){
-
+    printf("%d",i++);
     printf("$> ");
     clearBuffer(command);
     scanAndPrint(command);
     int com = getCommand(command);
-
+    
     switch(com) {
       case HELP:
           help();
