@@ -37,7 +37,7 @@ void startSchedule(int (*entryPoint)(int, char **))
   //_cli();
   // addProcess(idle);
   current->process = shell;
-  _sti();
+  //_sti();
   _runProcess(current->process->rsp);
 
 }
@@ -132,7 +132,7 @@ void schedule()
 	}
 	current = current->next;
 	current = findProcessReadyRec(current);//gives next process that is ready for execution
-  quantum = current->process->priority;
+ 	quantum = current->process->priority;
 	_runProcess(current->process->rsp);
 }
 
