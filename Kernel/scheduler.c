@@ -122,6 +122,8 @@ static ProcessSlot* findProcessReadyRec(ProcessSlot * current)
 
 void schedule(uint64_t stackPointer)
 {
+	putStr("schedule");
+
 	if(quantum > 0 && current->process->state == RUNNING)
 	{
 	quantum--;
@@ -136,6 +138,8 @@ void schedule(uint64_t stackPointer)
 	current = findProcessReadyRec(current);//gives next process that is ready for execution
  	quantum = current->process->priority;
 	_runProcess(current->process->rsp);
+
+	putStr("SCHEDULE FIN");
 }
 
 
