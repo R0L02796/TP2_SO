@@ -7,16 +7,16 @@
 #include <scheduler.h>
 
 
-void int20(void);
+void int20(uint64_t rsp);
 void int21(void);
 
 
 
-void irqDispatcher(uint64_t irq) {
+void irqDispatcher(uint64_t irq, uint64_t rsp) {
 
 	switch (irq) {
 		case 0:
-			int20();	//timer tick interruption
+			int20(rsp);	//timer tick interruption
 			break;
         case 1:
         	int21();	//keyboard interruption
@@ -25,9 +25,9 @@ void irqDispatcher(uint64_t irq) {
 	return;
 }
 
-void int20() {
+void int20(uint64_t rsp) {
 	timeHandler();
-	schedule();
+	schedule(rsp);
 }
 
 void int21() {

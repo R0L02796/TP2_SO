@@ -22,7 +22,6 @@ _runProcess:
 	pop rdx
 	pop rcx
 	pop rbx
-	pop rax
 	
 	; End Of Interrupt
 	mov al, 20h
