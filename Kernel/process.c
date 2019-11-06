@@ -46,7 +46,6 @@ static ProcessSlot * removeFromProcessList(ProcessSlot * node, Process * process
   if (node == NULL) return NULL;
   if (node->process->pid == process->pid) {
     ProcessSlot * aux = node->next;
-    free(node);
     return aux;
   }
   node->next = removeFromProcessList(node->next, process);
@@ -63,7 +62,7 @@ void freeProcess(ProcessSlot * processSlot)
 {
   if (processSlot->process == NULL) return;
   // _cli();
-  processList = removeFromProcessList(processList, processSlot);
+  processList = removeFromProcessList(processList, processSlot->process);
   // _sti();
   free(processSlot->process->stackTop);
   for (int i = 0; i <= MAX_FD; i++)
