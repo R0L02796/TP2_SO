@@ -22,12 +22,13 @@ _runProcess:
 	pop rdx
 	pop rcx
 	pop rbx
-
+	pop rax
+	
 	; End Of Interrupt
 	mov al, 20h
 	out 20h, al
 
-	pop rax
+	;pop rax
 	iretq
 
 _stackCheat:
