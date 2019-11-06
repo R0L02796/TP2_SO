@@ -122,17 +122,15 @@ static ProcessSlot* findProcessReadyRec(ProcessSlot * current)
 
 void schedule(uint64_t stackPointer)
 {
-
+	current->process->rsp = stackPointer;
 	if(quantum > 0 && current->process->state == RUNNING)
 	{
-	quantum--;
-	return;
+		quantum--;
+		return;
   	}
-	
 	if(current->process->state != DEAD){
-	changeProcessState(current->process->pid, READY);
+		changeProcessState(current->process->pid, READY);
 	}
-	current->process->rsp = stackPointer;
 	current = current->next;
 	current = findProcessReadyRec(current);//gives next process that is ready for execution
  	quantum = current->process->priority;

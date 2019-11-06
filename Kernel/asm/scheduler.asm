@@ -27,7 +27,7 @@ _runProcess:
 	mov al, 20h
 	out 20h, al
 
-	;pop rax
+	pop rax
 	iretq
 
 _stackCheat:

@@ -11,7 +11,7 @@ void startSchedule(int (*entryPoint)(int, char **));
 ProcessSlot * newProcessSlot(Process * process);
 void addProcess(Process * process);
 void removeProcess(long int pid);
-void schedule(uint64_t rsp);
+void schedule(uint64_t stackPointer);
 void changeProcessState(int pid, processState state);
 unsigned long int getCurrentPid();
 struct Process * getCurrentProcess();
