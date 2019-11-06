@@ -64,7 +64,7 @@ void freeProcess(ProcessSlot * processSlot)
   // _cli();
   processList = removeFromProcessList(processList, processSlot->process);
   // _sti();
-  free(processSlot->process->stackTop);
+  free((Process*)processSlot->process->stackTop);
   for (int i = 0; i <= MAX_FD; i++)
   {
     closeFileDescriptor(processSlot->process, i);
