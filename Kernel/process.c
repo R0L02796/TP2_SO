@@ -101,7 +101,8 @@ void closeFileDescriptor(Process* process, int fd)
     freePipe(pipe->pipeid);
 }
 
-Process * getProcess( long int pid) {
+Process * getProcess( long int pid) 
+{
   ProcessSlot * l = processList;
   while (l != NULL) {
     if (l->process->pid == pid) {

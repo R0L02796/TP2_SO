@@ -16,7 +16,6 @@ void initShell(){
 
   char command[MAXLEN];
   while (on){
-    printf("%d",i++);
     printf("$> ");
     clearBuffer(command);
     scanAndPrint(command);
