@@ -37,7 +37,7 @@ void startSchedule(int (*entryPoint)(int, char **))
   //_cli();
   // addProcess(idle);
   current->process = shell;
-  //_sti();
+  _sti();
   _runProcess(current->process->rsp);
 
 }
