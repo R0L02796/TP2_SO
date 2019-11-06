@@ -122,7 +122,7 @@ static ProcessSlot* findProcessReadyRec(ProcessSlot * current)
 
 void schedule(uint64_t stackPointer)
 {
-	putStr("schedule");
+	printf("schedule");
 
 	if(quantum > 0 && current->process->state == RUNNING)
 	{
@@ -139,7 +139,7 @@ void schedule(uint64_t stackPointer)
  	quantum = current->process->priority;
 	_runProcess(current->process->rsp);
 
-	putStr("SCHEDULE FIN");
+	printf("SCHEDULE FIN");
 }
 
 
