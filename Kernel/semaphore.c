@@ -98,7 +98,9 @@ void semPost(char * name)
     Process * proc;
     poll(s->lockedQueue, &proc);
     addProcess(proc);
-  } else {
+  } 
+  else 
+  {
     s->value++;
   }
   mutexUnlock(s->mutex->name);

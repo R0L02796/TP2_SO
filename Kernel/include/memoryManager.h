@@ -17,7 +17,7 @@ void printPage(uint64_t * address);
 ////////////////////////////////////////////////FIRST FIT//////////////////////////////////////////////////////////
 
 
-#define SIZE_OF_MEMORY 0x0800000   //128Megas
+#define SIZE_OF_MEMORY 0x8000000   //128Megas
 #define SIZE_OF_PAGE 0x8000000/1000000
 #define MAX_CANT_OF_PAGES 1000000
 
