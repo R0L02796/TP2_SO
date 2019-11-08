@@ -247,7 +247,7 @@ char * getStateFromNumber(int state)
 }
 
 int nice(int pid){
-  processSlot * found = current;
+  ProcessSlot * found = current;
   int i;
 
 	for (i = 0; i < cantProcesses; i++) {

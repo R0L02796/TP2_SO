@@ -61,6 +61,7 @@ void deleteMutex(char * name)
     while (sizeQ(mutexVec[i].blockedQueue) > 0)
     {
         poll(mutexVec[i].blockedQueue,&ret);
+        ret->state = READY;
     }
     mutexVec[i].value = 0;
 }
@@ -73,7 +74,6 @@ void mutexLock(char * name)
       return;
 
   offer(mutex->blockedQueue, &running);
-  removeProcess(running->pid);
   running->state = BLOCKED;
   _interrupt();
 }
@@ -87,11 +87,7 @@ void mutexUnlock(char * name)
     poll(mutex->blockedQueue, &proc);
     mutex->pidCreator = proc->pid;
     proc->state = READY;
-    addProcess(proc);
   } 
-  else 
-  {
-    mutex->pidCreator= 0;
-  }
   mutex->value = 0;
+  _interrupt();
 }
