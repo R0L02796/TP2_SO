@@ -246,23 +246,20 @@ char * getStateFromNumber(int state)
 		return s;
 }
 
-int nice(int pid){
+void nice(long int pid, int priority)
+{
   ProcessSlot * found = current;
   int i;
 
 	for (i = 0; i < cantProcesses; i++) {
 		if (found->process->pid == pid) {
-			found->process->priority = HIGHP;
+			found->process->priority = priority;
 			return;
 		}
 
 		found = found->next;
 	}
-  if(i == cantProcesses){
-    return 1;
-  }
-
-	return 0;
+	return;
 }
 
 static void idle()

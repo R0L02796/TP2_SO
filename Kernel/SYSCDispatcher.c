@@ -46,9 +46,9 @@ void syscallDispatcher(uint64_t syscall, uint64_t p1, uint64_t p2, uint64_t p3, 
 				case SET:
 					setCursor(*(int*)p2, *(int*)p3);
 					break;
-			}	
+			}
 		case MALLOC:
-			*((void **) p1) = malloc((size_t )p2); 
+			*((void **) p1) = malloc((size_t )p2);
 			break;
 		case FREE:
 			free((void *) p1);
@@ -98,7 +98,7 @@ void syscallDispatcher(uint64_t syscall, uint64_t p1, uint64_t p2, uint64_t p3, 
 		case GET_PID :
 			*(long int *) p1 = getCurrentPid();
 			break;
-		case SET_PROCESS: 
+		case SET_PROCESS:
 			*(long int *) p6 = callSetProcess((char *)p1,(int)p2,(char **)p3,(int)p4,(int (*)(int, char **))p5);
 			break;
 		case END_PROCESS:
@@ -106,8 +106,8 @@ void syscallDispatcher(uint64_t syscall, uint64_t p1, uint64_t p2, uint64_t p3, 
 			break;
 		case PRINT_PROCESSES:
 			printProcesses();
-			break;	
-		
+			break;
+
 
 	}
 }
@@ -161,7 +161,7 @@ void getTime(unsigned int * t, uint64_t time) {
 }
 
 
-void callRunProcess(int pid) 
+void callRunProcess(int pid)
 {
   Process* process = getProcess(pid);
   if (process == NULL) return;
@@ -169,7 +169,7 @@ void callRunProcess(int pid)
   addProcess(process);
 }
 
-long int callSetAndRunProcess(char *name,int argc, char **argv, int priority,int (*entry)(int, char **)) 
+long int callSetAndRunProcess(char *name,int argc, char **argv, int priority,int (*entry)(int, char **))
 {
   Process * newProcess = createProcess(name,argc, argv, priority,entry);
   stackCheat(newProcess);
@@ -185,18 +185,13 @@ long int callSetProcess(char *name,int argc, char **argv, int priority,int (*ent
 
 
 void callNice(long int pid, int priority) //FALTA HACER APP DE NICE
-{ 
+{
   /*if (pid <= 1)
   {
 	return;
   }
-  if (priority == HIGHP || priority == LOWP) 
+  if (priority == HIGHP || priority == LOWP)
   {
     nice(pid, priority);
   }*/
 }
-
-
-
-
-
