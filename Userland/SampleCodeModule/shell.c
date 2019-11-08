@@ -92,6 +92,7 @@ void help() {
   printf("  * zerodiv   :       Executes Zero Division Interruption\n");
   printf("  * exit      :       Exits shell\n");
   printf("  * lenia     :       Beep\n");
+  printf("  * memtest   :       Memory Test\n");
   printf("  * time      :       Displays current time\n");
   printf("  * pong      :       Iniciates pong when user presses 'enter' which will run until\n"); 
   printf("                      end of game or until user presses 'backspace' to leave\n");
