@@ -19,5 +19,6 @@ void stackCheat(Process * process);
 void wrapper(int (*entryFunction)(int, char **), int argc, char **argv);
 void printProcesses();
 char * getStateFromNumber(int state);
+int nice(int pid);
 
 #endif

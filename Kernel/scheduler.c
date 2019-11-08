@@ -100,14 +100,21 @@ static ProcessSlot* findProcessReadyRec(ProcessSlot * current)
   if(current->process->state == READY)
   {
     if(current->process->pid == 0) // idle process
-	{
-      if(cantProcesses<2)
 	  {
+      if(cantProcesses<2)
+	    {
           return current;
       }
     }
+    else if (current->process->pid == 1) // shell process
+    {
+      if(cantProcesses<3)
+      {
+        return current;
+      }
+    }
     else
-	{
+	   {
       return current;
     }
   }
@@ -187,6 +194,8 @@ void printProcesses()
 	for(i = 0; i < cantProcesses; i++)
   	{
 		Process * p = s->process;
+    if(p->state == READY || p->state == RUNNING)
+    {
 		putStr("  |  Name: ");
 		putStr(p->name);
 		putStr("PID: ");
@@ -215,6 +224,7 @@ void printProcesses()
     char buffer4[10];
 		putStr(decToStr((int)p->stackTop, buffer4));
     newLine();
+    }
 		s = s->next;
 	}
 }
@@ -234,6 +244,25 @@ char * getStateFromNumber(int state)
 			default: s="other";
 		}
 		return s;
+}
+
+int nice(int pid){
+  processSlot * found = current;
+  int i;
+
+	for (i = 0; i < cantProcesses; i++) {
+		if (found->process->pid == pid) {
+			found->process->priority = HIGHP;
+			return;
+		}
+
+		found = found->next;
+	}
+  if(i == cantProcesses){
+    return 1;
+  }
+
+	return 0;
 }
 
 static void idle()
