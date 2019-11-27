@@ -3,8 +3,7 @@
 
 long int setAndRunProcess(char* name,int argc,char** argv, int priority, int (*entry)(int, char**))
 {
-  long int pid;
-  systemCall((uint64_t)SET_AND_RUN_PROCESS, (uint64_t)name,
+  long int pid = systemCall((uint64_t)SET_AND_RUN_PROCESS, (uint64_t)name,
   (uint64_t)argc, (uint64_t)argv, (uint64_t)priority,(uint64_t)entry,(uint64_t)&pid);
   return pid;
 }
@@ -53,4 +52,9 @@ void endProcess(long int pid)
 void printAllProcesses()
 {
   systemCall((uint64_t) PRINT_PROCESSES,0,0,0,0,0, 0);
+}
+
+void waitPid(long pid)
+{
+  systemCall((uint64_t) WAIT_PID, (uint64_t)pid, 0, 0, 0, 0, 0);
 }

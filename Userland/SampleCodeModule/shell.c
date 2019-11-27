@@ -6,6 +6,7 @@
 #include "pongModule.h"
 #include "memoryModule.h"
 #include "soundModule.h"
+#include "processModule.h"
 #include "snakeModule.h"
 
 int on = 1;
@@ -20,7 +21,7 @@ void initShell(){
     clearBuffer(command);
     scanAndPrint(command);
     int com = getCommand(command);
-    
+
     switch(com) {
       case HELP:
           help();
@@ -57,13 +58,21 @@ void initShell(){
       case SNAKE:
           snake();
           break;
-          
+
       case MEMTEST:
           memTest();
           break;
 
       case INVCOM:
           invCom();
+          break;
+
+      case MXTEST:
+          mxTest();
+          break;
+
+      case PRINTPROC:
+          ps();
           break;
     }
   }
@@ -81,6 +90,8 @@ int getCommand(char * command) {
   if (!strCmp("exit", command)) return EXIT;
   if (!strCmp("snake", command)) return SNAKE;
   if (!strCmp("memtest", command)) return MEMTEST;
+  if (!strCmp("mxtest", command)) return MXTEST;
+  if (!strCmp("ps", command)) return PRINTPROC;
 
   return INVCOM;
 }
@@ -93,10 +104,11 @@ void help() {
   printf("  * exit      :       Exits shell\n");
   printf("  * lenia     :       Beep\n");
   printf("  * memtest   :       Memory Test\n");
+  printf("  * mxtest    :       Mutex Test\n");
   printf("  * time      :       Displays current time\n");
-  printf("  * pong      :       Iniciates pong when user presses 'enter' which will run until\n"); 
+  printf("  * pong      :       Iniciates pong when user presses 'enter' which will run until\n");
   printf("                      end of game or until user presses 'backspace' to leave\n");
-  printf("  * snake      :      Iniciates snake when user presses 'enter' which will run until\n"); 
+  printf("  * snake      :      Iniciates snake when user presses 'enter' which will run until\n");
   printf("                      end of game or until user presses 'backspace' to leave\n");
 
 
@@ -188,17 +200,47 @@ void memTest() {
   memcpy(mem3, copy3, sizeof(copy3));
   printPage(mem3);
 
-  char * mem4 = malloc(200); 
+  char * mem4 = malloc(200);
   printf("\n -----MALLOC----\n");
   char copy4[25] = "la vista";
   memcpy(mem4, copy4, sizeof(copy4));
   printPage(mem4);
 
-  
 
-  char * mem5 = malloc(200); 
+
+  char * mem5 = malloc(200);
   printf("\n -----MALLOC----\n");
   char copy5[25] = "a lo lejos ";
   memcpy(mem5, copy5, sizeof(copy5));
   printPage(mem5);
+}
+
+int mutexTestProc(int n, char **argv) {
+  mutexLock("lenia");
+  printf("number: %d\n", n);
+  for (int i = 0; i < 50000000; i-=-1){}
+  mutexUnlock("lenia");
+  return n;
+}
+
+void mxProcesses() {
+  mutexOpen("lenia");
+  int pid1 = setAndRunProcess("process 1", 1, NULL, 1, mutexTestProc);
+  int pid2 = setAndRunProcess("process 2", 2, NULL, 1, mutexTestProc);
+  int pid3 = setAndRunProcess("process 3", 3, NULL, 1, mutexTestProc);
+  waitPid(pid1);
+  waitPid(pid2);
+  waitPid(pid3);
+  mutexClose("lenia");
+}
+
+int mxTest(void) {
+  printf("\n");
+  int pid = setAndRunProcess("mutex test wrapper", 0, NULL, 1, mxProcesses);
+  waitPid(pid);
+  return pid;
+}
+
+void ps() {
+  printAllProcesses();
 }

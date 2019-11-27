@@ -3,7 +3,7 @@ GLOBAL _sti
 GLOBAL picMasterMask
 GLOBAL picSlaveMask
 GLOBAL haltcpu
-GLOBAL _hlt	
+GLOBAL _hlt
 
 GLOBAL _irq00Handler
 GLOBAL _irq01Handler
@@ -71,7 +71,7 @@ SECTION .text
 	out 20h, al
 
 	popState
-	
+
 	sti
 
 	iretq
@@ -98,9 +98,9 @@ SECTION .text
 	mov al, 20h
 	out 20h, al
 
-	;mov rsp, rbp   ;  Libera el stack utilizado por la funcion anterior que 
-	;add rsp, 8		;  no llego a liberarse al tener una exception, no estaba 
-				   	;  completamente seguro de como lograr que funcione 
+	;mov rsp, rbp   ;  Libera el stack utilizado por la funcion anterior que
+	;add rsp, 8		;  no llego a liberarse al tener una exception, no estaba
+				   	;  completamente seguro de como lograr que funcione
 
 	mov qword [rsp],  400000h  ; set return to shell initialize
 
@@ -133,7 +133,7 @@ picMasterMask:
 picSlaveMask:
 	push    rbp
     mov     rbp, rsp
-    mov     ax, di  
+    mov     ax, di
     out	0A1h, al
     pop     rbp
     retn
@@ -157,15 +157,12 @@ _exceptionInvalidOpcodeHandler:
 
 ; System Call
 _syscall_handler:
-	
+
 	push rbp
 	mov rbp, rsp
 
-	pushState
-
 	call syscallDispatcher
 
-	popState
 	pop rbp
 
 	iretq

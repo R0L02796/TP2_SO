@@ -30,6 +30,7 @@
 #define SET_PROCESS 24
 #define END_PROCESS 25
 #define PRINT_PROCESSES 26
+#define WAIT_PID 27
 
 
 #define GET 0

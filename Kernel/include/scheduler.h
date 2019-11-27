@@ -20,5 +20,6 @@ void wrapper(int (*entryFunction)(int, char **), int argc, char **argv);
 void printProcesses();
 char * getStateFromNumber(int state);
 void nice(long int pid, int priority);
+int existProcess(long pid);
 
 #endif

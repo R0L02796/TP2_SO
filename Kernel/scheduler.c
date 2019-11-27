@@ -70,7 +70,7 @@ void addProcess(Process * process)
 
 void removeProcess(long int pid)
 {
-	if (pid == 0 || pid == 1 || cantProcesses < 3)
+	if (pid == 0 || pid == 1)
   	{
 		return;
 	}
@@ -99,27 +99,28 @@ static ProcessSlot* findProcessReadyRec(ProcessSlot * current)
 { //STATIC
   if(current->process->state == READY)
   {
-    if(current->process->pid == 0) // idle process
-	  {
-      if(cantProcesses<2)
-	    {
-          return current;
-      }
-    }
-    else if (current->process->pid == 1) // shell process
-    {
-      if(cantProcesses<3)
-      {
-        return current;
-      }
-    }
-    else
-	   {
+    // if(current->process->pid == 0) // idle process(not implemented)
+	  // {
+    //   if(cantProcesses<2)
+	  //   {
+    //       return current;
+    //   }
+    // }
+    // else if (current->process->pid == 1) // shell process
+    // {
+    //   if(cantProcessesF<3)
+    //   {
+    //     return current;
+    //   }
+    // }
+    // else
+	  //  {
       return current;
-    }
+    // }
   }
-  if(current->process->state == DEAD)
+  else if(current->process->state == DEAD)
   {
+    putStr("cerranding\n");
     ProcessSlot * aux = current;
     removeProcess(current->process->pid);
     return findProcessReadyRec(aux->next);
@@ -134,8 +135,8 @@ void schedule(uint64_t stackPointer)
 	{
 		quantum--;
 		return;
-  	}
-	if(current->process->state != DEAD){
+  }
+	if(current->process->state == RUNNING){
 		changeProcessState(current->process->pid, READY);
 	}
 	current = current->next;
@@ -194,11 +195,9 @@ void printProcesses()
 	for(i = 0; i < cantProcesses; i++)
   	{
 		Process * p = s->process;
-    if(p->state == READY || p->state == RUNNING)
-    {
 		putStr("  |  Name: ");
 		putStr(p->name);
-		putStr("PID: ");
+		putStr("  |  PID: ");
     char buffer[10];
 		putStr(decToStr(p->pid,buffer));
     //if(p->foreground)
@@ -224,7 +223,6 @@ void printProcesses()
     char buffer4[10];
 		putStr(decToStr((int)p->stackTop, buffer4));
     newLine();
-    }
 		s = s->next;
 	}
 }
@@ -268,4 +266,19 @@ static void idle()
   {
     _hlt();
   }
+}
+
+int existProcess(long pid)
+{
+  ProcessSlot * found = current;
+  int i;
+
+	for (i = 0; i < cantProcesses; i++) {
+		if (found->process->pid == pid) {
+			return 1;
+		}
+
+		found = found->next;
+	}
+	return 0;
 }

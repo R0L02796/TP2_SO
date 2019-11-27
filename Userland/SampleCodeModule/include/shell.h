@@ -14,6 +14,8 @@
 #define EXIT   10
 #define SNAKE 11
 #define MEMTEST 12
+#define MXTEST 13
+#define PRINTPROC 14
 
 #define MAXLEN 256
 
@@ -54,9 +56,14 @@ void invCom();
 // Executes the 'snake' command. Initializes the snake game
 void snake();
 
+// Executes a mutex test with multiple processes
+int mxTest();
+
 // Declaration of external function
 void opCode();
 
 void memTest();
+
+void ps();
 
 #endif

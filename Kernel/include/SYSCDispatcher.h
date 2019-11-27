@@ -28,6 +28,7 @@
 #define SET_PROCESS 24
 #define END_PROCESS 25
 #define PRINT_PROCESSES 26
+#define WAIT_PID 27
 
 
 
@@ -51,7 +52,7 @@
 #define SECOND 2
 
 // Handles General Systemcalls
-void syscallDispatcher(uint64_t syscall, uint64_t p1, uint64_t p2, uint64_t p3, uint64_t p4, uint64_t p5, uint64_t p6);
+int syscallDispatcher(uint64_t syscall, uint64_t p1, uint64_t p2, uint64_t p3, uint64_t p4, uint64_t p5, uint64_t p6);
 
 // Handles Read syscalls
 void read(uint64_t mode, uint64_t p1, uint64_t p2);
@@ -69,7 +70,7 @@ void beepoff();
 void callNice(long int pid, int priority);
 long int callSetProcess(char *name,int argc, char **argv, int priority,int (*entry)(int, char **));
 long int callSetAndRunProcess(char *name,int argc, char **argv, int priority,int (*entry)(int, char **)) ;
-void callRunProcess(int pid); 
+void callRunProcess(int pid);
 
 
 #endif

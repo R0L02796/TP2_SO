@@ -9,9 +9,9 @@
 #include "pipe.h"
 #include "semaphore.h"
 #include "mutex.h"
+#include "lib.h"
 
-
-void syscallDispatcher(uint64_t syscall, uint64_t p1, uint64_t p2, uint64_t p3, uint64_t p4, uint64_t p5, uint64_t p6) {
+int syscallDispatcher(uint64_t syscall, uint64_t p1, uint64_t p2, uint64_t p3, uint64_t p4, uint64_t p5, uint64_t p6) {
 	switch(syscall) {
 		case READ:
 			read(p1, p2, p3);
@@ -81,7 +81,7 @@ void syscallDispatcher(uint64_t syscall, uint64_t p1, uint64_t p2, uint64_t p3, 
 			mutexUnlock((char *) p1);
 			break;
 		case SET_AND_RUN_PROCESS:
-			*(long int *) p6 = callSetAndRunProcess((char *)p1,(int)p2,(char **)p3,(int)p4,(int (*)(int, char **))p5);
+			return callSetAndRunProcess((char *)p1,(int)p2,(char **)p3,(int)p4,(int (*)(int, char **))p5);
 			break;
 		case KILL_PROCESS:
 			changeProcessState((int)p1,DEAD);
@@ -107,9 +107,10 @@ void syscallDispatcher(uint64_t syscall, uint64_t p1, uint64_t p2, uint64_t p3, 
 		case PRINT_PROCESSES:
 			printProcesses();
 			break;
-
-
+		case WAIT_PID:
+			waitPid((long)p1);
 	}
+	return 0;
 }
 
 void read(uint64_t mode, uint64_t p1, uint64_t p2) {
@@ -194,4 +195,10 @@ void callNice(long int pid, int priority) //FALTA HACER APP DE NICE
   {
     nice(pid, priority);
   }*/
+}
+
+void waitPid(long pid)
+{
+		_sti();
+		while (existProcess(pid)){}
 }

@@ -18,6 +18,8 @@ long int setProcess(char* name,int argc,char** argv, int priority, int (*entry)(
 
 void endProcess(long int pid);
 
+void waitPid(long pid);
+
 void printAllProcesses();
 
 
