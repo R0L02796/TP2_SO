@@ -257,7 +257,7 @@ void ps()
   printAllProcesses();
 }
 
-void sonProcess() 
+int sonProcess(int a, char ** b) 
 {
   char buff[11] = {0};
   readFd(0, buff, 11, getRunningPid());
@@ -273,11 +273,10 @@ void sonProcess()
 
 void pipeTest() 
 {
-  typedef int (*entryIdle)(int, char **);
   int fd[2];
   pipe(fd);
   long int fatherPid = getRunningPid();
-  long int sonPid = setProcess("son", 0, NULL, 6, (entryIdle)sonProcess);
+  long int sonPid = setProcess("son", 0, NULL, 6, sonProcess);
   dup(fd[1], 0, sonPid);
   dup(fd[0], 1, sonPid);
   writeFd(fd[1], "hola hijo", 11, fatherPid);
