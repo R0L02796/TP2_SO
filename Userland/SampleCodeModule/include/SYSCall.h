@@ -31,7 +31,9 @@
 #define END_PROCESS 25
 #define PRINT_PROCESSES 26
 #define WAIT_PID 27
-
+#define PIPE 28
+#define DUP 29
+#define FDCLOSE 30
 
 #define GET 0
 #define SET 1

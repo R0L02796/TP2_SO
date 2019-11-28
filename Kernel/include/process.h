@@ -39,7 +39,7 @@ void startProcesses();
 void freeProcess(struct ProcessSlot * p);
 int addFileDescriptor(struct Process * p, int fileDescriptor);
 void closeFileDescriptor(Process* process, int fd);
-void dup(int fd1, int fd2, Process * processFd2);
+void dup(int fd1, int fd2, int processFd2pid);
 Process * getProcess( long int pid);
 
 

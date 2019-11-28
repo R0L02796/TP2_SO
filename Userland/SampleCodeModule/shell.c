@@ -163,7 +163,8 @@ void invCom() {
   printf("\nInvalid command\n");
 }
 
-void memTest() {
+void memTest() 
+{
   /*char * mem = malloc(901);
   printf("\n -----MALLOC----\n");
 
@@ -215,7 +216,8 @@ void memTest() {
   printPage(mem5);
 }
 
-int mutexTestProc(int n, char **argv) {
+int mutexTestProc(int n, char **argv) 
+{
   mutexLock("lenia");
   printf("number: %d\n", n);
   for (int i = 0; i < 50000000; i-=-1){}
@@ -223,7 +225,8 @@ int mutexTestProc(int n, char **argv) {
   return n;
 }
 
-void mxProcesses() {
+void mxProcesses() 
+{
   mutexOpen("lenia");
   int pid1 = setAndRunProcess("process 1", 1, NULL, 1, mutexTestProc);
   int pid2 = setAndRunProcess("process 2", 2, NULL, 1, mutexTestProc);
@@ -234,13 +237,15 @@ void mxProcesses() {
   mutexClose("lenia");
 }
 
-int mxTest(void) {
+int mxTest(void) 
+{
   printf("\n");
   int pid = setAndRunProcess("mutex test wrapper", 0, NULL, 1, mxProcesses);
   waitPid(pid);
   return pid;
 }
 
-void ps() {
+void ps() 
+{
   printAllProcesses();
 }

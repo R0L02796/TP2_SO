@@ -113,9 +113,10 @@ Process * getProcess( long int pid)
   return NULL;
 }
 
-void dup(int fd1, int fd2, Process * processFd2)
+void dup(int fd1, int fd2, int processFd2pid)
 {
   Process * processFd1 = getCurrentProcess();
+  Process * processFd2 = getProcess(processFd2pid);
   int pipeID = processFd1->fileDescriptors[fd1];
   Pipe * pipe = getPipe(pipeID);
   if (pipe != NULL)

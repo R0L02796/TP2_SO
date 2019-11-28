@@ -109,6 +109,15 @@ int syscallDispatcher(uint64_t syscall, uint64_t p1, uint64_t p2, uint64_t p3, u
 			break;
 		case WAIT_PID:
 			waitPid((long)p1);
+		case PIPE:
+			pipe((int*)p1);
+			break;
+		case DUP:
+			dup(p1, p2, p3);
+			break;
+		case FDCLOSE:
+			closeFileDescriptor(getProcess(p2),p1);
+			break;
 	}
 	return 0;
 }
