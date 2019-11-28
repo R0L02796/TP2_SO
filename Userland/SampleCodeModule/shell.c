@@ -17,7 +17,8 @@ void initShell(){
   printf("\n~~WELCOME TO LENIA'S SHELL~~\n\nPlease type 'help' to find out about our commands\n\n\n");
 
   char command[MAXLEN];
-  while (on){
+  while (on)
+  {
     printf("$> ");
     clearBuffer(command);
     scanAndPrint(command);
@@ -75,6 +76,9 @@ void initShell(){
       case PRINTPROC:
           ps();
           break;
+      case PIPETEST:
+          pipeTest();
+          break;
     }
   }
    printf("\n\n End of program");
@@ -93,6 +97,8 @@ int getCommand(char * command) {
   if (!strCmp("memtest", command)) return MEMTEST;
   if (!strCmp("mxtest", command)) return MXTEST;
   if (!strCmp("ps", command)) return PRINTPROC;
+  if (!strCmp("pipetest", command)) return PIPETEST;
+
 
   return INVCOM;
 }
@@ -250,13 +256,27 @@ void ps()
 {
   printAllProcesses();
 }
-void createSon();
+
+void sonProcess() 
+{
+  char buff[11] = {0};
+  readFd(0, buff, 11, getRunningPid());
+  if(strCmp(buff,"hola hijo") == 0)
+    writeFd(1, "hola papito", 13, getRunningPid());
+  else
+  {
+    printf("no es hola hijo");
+  }
+  
+  return;
+}
+
 long int pipeTest() 
 {
   int fd[2];
   pipe(fd);
   long int fatherPid = getRunningPid();
-  long int sonPid = setProcess("son", 0, NULL, 6, sonTest);
+  long int sonPid = setProcess("son", 0, NULL, 6, sonProcess);
   dup(fd[1], 0, sonPid);
   dup(fd[0], 1, sonPid);
   writeFd(fd[1], "hola hijo", 11, fatherPid);
@@ -274,11 +294,3 @@ long int pipeTest()
   return 0;
 }
 
-void sonTest() 
-{
-  char buff[11] = {0};
-  readFd(0, buff, 11, getRunningPid());
-  if(strCmp(buff,"hola hijo") == 0)
-    writeFd(1, "hola papito", 13, getRunningPid());
-  return;
-}

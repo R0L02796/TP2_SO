@@ -16,6 +16,7 @@
 #define MEMTEST 12
 #define MXTEST 13
 #define PRINTPROC 14
+#define PIPETEST 15
 
 #define MAXLEN 256
 
