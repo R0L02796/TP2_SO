@@ -271,7 +271,7 @@ void sonProcess()
   return;
 }
 
-long int pipeTest() 
+void pipeTest() 
 {
   typedef int (*entryIdle)(int, char **);
   int fd[2];
@@ -292,6 +292,6 @@ long int pipeTest()
   waitPid(sonPid);
   closeFD(fd[0], fatherPid);
   closeFD(fd[1], fatherPid);
-  return 0;
+  return;
 }
 

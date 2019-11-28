@@ -67,4 +67,6 @@ void memTest();
 
 void ps();
 
+void pipeTest(); 
+
 #endif
