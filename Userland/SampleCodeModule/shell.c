@@ -273,10 +273,11 @@ void sonProcess()
 
 long int pipeTest() 
 {
+  typedef int (*entryIdle)(int, char **);
   int fd[2];
   pipe(fd);
   long int fatherPid = getRunningPid();
-  long int sonPid = setProcess("son", 0, NULL, 6, sonProcess);
+  long int sonPid = setProcess("son", 0, NULL, 6, (entryIdle)sonProcess);
   dup(fd[1], 0, sonPid);
   dup(fd[0], 1, sonPid);
   writeFd(fd[1], "hola hijo", 11, fatherPid);
