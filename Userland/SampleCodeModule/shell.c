@@ -268,7 +268,7 @@ int sonProcess(int a, char ** b)
     printf("no es hola hijo");
   }
   
-  return;
+  return 0;
 }
 
 void pipeTest() 
