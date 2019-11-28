@@ -3,9 +3,13 @@
 
 void pipe(int fd[2]); 
 
-void dup(int pid, int fd, int pos); 
+void dup(int fd1, int fd2, long processPid) ; 
 
-void closeFD(int fd, long int pid); 
+void closeFD(long int pid, int fd) ; 
+
+void writeFd(int fd, char * buf, int length, long pid);
+
+void readFd(int fd, char * buf, int length, long pid);
 
 
 #endif

@@ -1,5 +1,5 @@
 #include "shell.h"
-#include "stdlib.h"
+#include "include/stdlib.h"
 #include <stdint.h>
 #include "timeModule.h"
 #include "videoModule.h"
@@ -8,6 +8,7 @@
 #include "soundModule.h"
 #include "processModule.h"
 #include "snakeModule.h"
+#include "pipeModule.h"
 
 int on = 1;
 int i = 0;
@@ -248,4 +249,36 @@ int mxTest(void)
 void ps() 
 {
   printAllProcesses();
+}
+void createSon();
+long int pipeTest() 
+{
+  int fd[2];
+  pipe(fd);
+  long int fatherPid = getRunningPid();
+  long int sonPid = setProcess("son", 0, NULL, 6, sonTest);
+  dup(fd[1], 0, sonPid);
+  dup(fd[0], 1, sonPid);
+  writeFd(fd[1], "hola hijo", 11, fatherPid);
+  runProcess(sonPid);
+  // wait(10);
+  // wait(10);
+
+  // printf("(F) reading from pipe\n");
+  char buff[20] = {0};
+  readFd(fd[0], buff, 20, fatherPid);
+  printf(" %s.\n", buff);
+  waitPid(sonPid);
+  closeFD(fd[0], fatherPid);
+  closeFD(fd[1], fatherPid);
+  return 0;
+}
+
+void sonTest() 
+{
+  char buff[11] = {0};
+  readFd(0, buff, 11, getRunningPid());
+  if(strCmp(buff,"hola hijo") == 0)
+    writeFd(1, "hola papito", 13, getRunningPid());
+  return;
 }

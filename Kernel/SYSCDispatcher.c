@@ -113,10 +113,16 @@ int syscallDispatcher(uint64_t syscall, uint64_t p1, uint64_t p2, uint64_t p3, u
 			pipe((int*)p1);
 			break;
 		case DUP:
-			dup(p1, p2, p3);
+			dup((int)p1,(int)p2, (int)p3);
 			break;
 		case FDCLOSE:
-			closeFileDescriptor(getProcess(p2),p1);
+			closeFileDescriptor(getProcess((int)p1),(int)p2);
+			break;
+		case READFD:
+			readFd((int)p1,(char *)p2,(int)p3,(int)p4);
+			break;
+		case WRITEFD:
+			writeFd((int)p1,(char *)p2,(int)p3,(int)p4);
 			break;
 	}
 	return 0;

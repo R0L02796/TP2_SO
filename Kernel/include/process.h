@@ -41,6 +41,9 @@ int addFileDescriptor(struct Process * p, int fileDescriptor);
 void closeFileDescriptor(Process* process, int fd);
 void dup(int fd1, int fd2, int processFd2pid);
 Process * getProcess( long int pid);
+void readFd(int fd, char * buff, int length, int pPid);
+void writeFd(int fd, char * buff, int length, int pPid);
+
 
 
 #endif

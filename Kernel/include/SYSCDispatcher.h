@@ -32,7 +32,8 @@
 #define PIPE 28
 #define DUP 29
 #define FDCLOSE 30
-
+#define READFD 31
+#define WRITEFD 32
 
 #define GET 0
 #define SET 1

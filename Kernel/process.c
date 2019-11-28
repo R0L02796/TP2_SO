@@ -123,3 +123,14 @@ void dup(int fd1, int fd2, int processFd2pid)
     pipe->users++;
   processFd2->fileDescriptors[fd2] = pipeID;
 }
+
+void writeFd(int fd, char * buff, int length, int pPid)
+{
+  Process * p = getProcess(pPid);
+  pipeWrite(p->fileDescriptors[fd], buff, length);
+}
+void readFd(int fd, char * buff, int length, int pPid)
+{
+  Process * p = getProcess(pPid);
+  pipeRead(p->fileDescriptors[fd], buff, length);
+}
