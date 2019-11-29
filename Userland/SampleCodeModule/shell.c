@@ -257,7 +257,7 @@ void ps()
   printAllProcesses();
 }
 
-int sonProcess(int a, char ** b) 
+int sonProcess(int n, char **argv) 
 {
   char buff[11] = {0};
   readFd(0, buff, 11, getRunningPid());
@@ -268,7 +268,7 @@ int sonProcess(int a, char ** b)
     printf("no es hola hijo");
   }
   
-  return 0;
+  return n;
 }
 
 void pipeTest() 
