@@ -276,19 +276,19 @@ void pipeTest()
   int fd[2];
   pipe(fd);
   long int fatherPid = getRunningPid();
-  long int sonPid = setProcess("son", 0, NULL, 6, sonProcess);
-  dup(fd[1], 0, sonPid);
-  dup(fd[0], 1, sonPid);
-  runProcess(sonPid);
+  // long int sonPid = setProcess("son", 0, NULL, 6, sonProcess);
+  // dup(fd[1], 0, sonPid);
+  // dup(fd[0], 1, sonPid);
+  // runProcess(sonPid);
   wait(10);
   writeFd(fd[1], "hola hijo", 11, fatherPid);
   wait(10);
 
   // printf("(F) reading from pipe\n");
   char buff[20] = {0};
-  readFd(fd[0], buff, 20, fatherPid);
+  // readFd(fd[0], buff, 20, fatherPid);
   printf(" %s.\n", buff);
-  waitPid(sonPid);
+  // waitPid(sonPid);
   closeFD(fd[0], fatherPid);
   closeFD(fd[1], fatherPid);
   return;
