@@ -361,16 +361,19 @@ void mamaProcess()
   long int mamaPid = getRunningPid();
   dup(fd[1], 0, juanPid);
   dup(fd[0], 1, juanPid);
-  runProcess(juanPid);
-  wait(10);
+
+  for(int i=0; i<5; i++){}
+  
+  runProcess(juanPid);  
   writeFd(fd[1], "hola hijo", 11, mamaPid);
-  wait(10);
+
+  for(int i=0; i<5; i++){}
 
   printf("(F) reading from pipe");
   char buff[20] = {0};
   readFd(fd[0], buff, 20, mamaPid);
   printf(" %s.\n", buff);
-  waitPid(juanPid);
+  // waitPid(juanPid);
   closeFD(fd[0], mamaPid);
   closeFD(fd[1], mamaPid);
   return;
