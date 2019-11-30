@@ -341,13 +341,16 @@ void ps()
 
 int juanProcess(int n, char **argv)
 {
-  char buff[11] = {0};
+  char buff[50] = {0};
+
+  wait(20);
+
   readFd(0, buff, 11, getRunningPid());
   if(strCmp(buff,"arriba arriba juan, hay que ir a la escuela") == 0)
-  writeFd(1, "no no mama, no rompas las bolas", 13, getRunningPid());
+  writeFd(1, "no no mama, no rompas las bolas", 33, getRunningPid());
   else
   {
-    printf("se quedo dormido");
+    writeFd(1, "durmiendo.....", 13, getRunningPid());
   }
 
   return n;
@@ -362,16 +365,16 @@ void mamaProcess()
   dup(fd[1], 0, juanPid);
   dup(fd[0], 1, juanPid);
 
-  for(int i=0; i<5; i++){}
+  runProcess(juanPid);  
 
-  runProcess(juanPid);
   writeFd(fd[1], "hola hijo", 11, mamaPid);
 
-  for(int i=0; i<5; i++){}
-
   printf("(F) reading from pipe");
-  char buff[20] = {0};
-  readFd(fd[0], buff, 20, mamaPid);
+  char buff[50] = {0};
+
+  waitPid(juanPid);
+
+  readFd(fd[0], buff, 50, mamaPid);
   printf(" %s.\n", buff);
   // waitPid(juanPid);
   closeFD(fd[0], mamaPid);
@@ -380,12 +383,9 @@ void mamaProcess()
 }
 void pipeTest()
 {
-  setAndRunProcess("mama", 0, NULL, 6, mamaProcess);
-  for (int i = 0; i < 50; i++)
-  {
-    /* code */
-  }
-
+  long int pid = setAndRunProcess("mama", 0, NULL, 6, mamaProcess);
+  waitPid(pid);
+  
   return;
 }
 
