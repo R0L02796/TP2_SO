@@ -19,9 +19,9 @@ void runProcess(long int pid)
   systemCall((uint64_t)RUN_PROCESS, (uint64_t)pid, 0, 0, 0, 0, 0);
 }
 
-void changePriority(long int pid, int priority)
+void changePriority(long int pid)
 {
-  systemCall((uint64_t) CHANGE_PRIORITY,(uint64_t)pid,(uint64_t) priority,0,0,0, 0);
+  systemCall((uint64_t) CHANGE_PRIORITY,(uint64_t)pid,0,0,0,0, 0);
 }
 
 void changeState(long int pid)
@@ -57,4 +57,14 @@ void printAllProcesses()
 void waitPid(long pid)
 {
   systemCall((uint64_t) WAIT_PID, (uint64_t)pid, 0, 0, 0, 0, 0);
+}
+
+void block(long int pid)
+{
+  systemCall((uint64_t)BLOCK_PROCESS, (uint64_t)pid, 0, 0, 0, 0, 0);
+}
+
+void unblock(long int pid)
+{
+  systemCall((uint64_t)UNBLOCK_PROCESS, (uint64_t)pid, 0, 0, 0, 0, 0);
 }

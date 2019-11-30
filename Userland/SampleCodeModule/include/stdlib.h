@@ -40,7 +40,13 @@ void lcg(unsigned long int *x, unsigned long int a, int c,
 
 void * memcpy(void * destination, const void * source, uint64_t length)
 ;
-        
+
+int strnCmp(char * a, char * b, int n);
+
+int strLen(char *str);
+
+int atoi(char * string);
 
 unsigned long int rand();
+
 #endif

@@ -22,12 +22,12 @@ void startSchedule(int (*entryPoint)(int, char **))
 	cantProcesses=0;
   startProcesses();
   // Process * idle = createProcess("idle", 0, NULL,LOWP, (entryIdle)idle);
-  Process * shell = createProcess("shell",0, NULL, HIGHP,entryPoint);
+  Process * shell = createProcess("shell",0, NULL, FOREGROUNDHP,entryPoint);
   if (shell == NULL)
    {
     return;
   }
-  // if (idle == NULL)
+  // if (idle == NULl)
   // {
   //   return;
   // }
@@ -38,6 +38,7 @@ void startSchedule(int (*entryPoint)(int, char **))
   // addProcess(idle);
   current->process = shell;
   //_sti();
+  changeProcessState(current->process->pid,RUNNING);
   _runProcess(current->process->rsp);
 
 }
@@ -115,12 +116,12 @@ static ProcessSlot* findProcessReadyRec(ProcessSlot * current)
     // }
     // else
 	  //  {
+      changeProcessState(current->process->pid, RUNNING);
       return current;
     // }
   }
   else if(current->process->state == DEAD)
   {
-    putStr("cerranding\n");
     ProcessSlot * aux = current;
     removeProcess(current->process->pid);
     return findProcessReadyRec(aux->next);
@@ -149,6 +150,11 @@ void schedule(uint64_t stackPointer)
 
 void changeProcessState(int pid, processState state)
 {
+  if(pid == 1 && state == DEAD)//You can not kill shell process HA
+  {
+    putStr("\nYou Can Not Kill Me HAHA, never.\n");
+    return;
+  }
 	int i;
  	ProcessSlot * slot = current;
 
@@ -200,14 +206,14 @@ void printProcesses()
 		putStr("  |  PID: ");
     char buffer[10];
 		putStr(decToStr(p->pid,buffer));
-    //if(p->foreground)
-    //{
-    //  putStr("Foreground process");
-    //}
-    //else
-    //{
-    // putStr("Background process");
-    //}
+    if(p->priority == FOREGROUNDHP || p->priority == FOREGROUNDLP)
+    {
+     putStr("  |  Foreground process");
+    }
+    else
+    {
+    putStr("  |  Background process");
+    }
     putStr("  | Priority: ");
     char buffer1[10];
     putStr(decToStr(p->priority, buffer1));
@@ -244,14 +250,25 @@ char * getStateFromNumber(int state)
 		return s;
 }
 
-void nice(long int pid, int priority)
+void nice(long int pid)
 {
   ProcessSlot * found = current;
   int i;
 
 	for (i = 0; i < cantProcesses; i++) {
 		if (found->process->pid == pid) {
-			found->process->priority = priority;
+
+      if(found->process->pid != 1)
+      {
+        if(found->process->priority == FOREGROUNDHP)
+  			   found->process->priority = FOREGROUNDLP;
+        else if(found->process->priority == FOREGROUNDLP)
+          found->process->priority = FOREGROUNDHP;
+        else if(found->process->priority == HIGHP)
+          found->process->priority = LOWP;
+        else if(found->process->priority == LOWP)
+          found->process->priority = HIGHP;
+      }
 			return;
 		}
 

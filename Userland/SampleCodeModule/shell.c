@@ -10,6 +10,12 @@
 #include "snakeModule.h"
 #include "pipeModule.h"
 
+int piddummy;
+int flag = 0;
+int pidkill;
+int pidblock;
+int pidunblock;
+int pidnice;
 int on = 1;
 int i = 0;
 void initShell(){
@@ -79,12 +85,42 @@ void initShell(){
       case PIPETEST:
           pipeTest();
           break;
+      case LOOPS:
+          looptest();
+          break;
+      case KILL:
+          kill(pidkill);
+          break;
+      case BLOCK:
+          block(pidblock);
+          break;
+      case UNBLOCK:
+          unblock(pidunblock);
+          break;
+      case NICE:
+          changePriority(pidnice);
+          break;
+      case DUMMY:
+          piddummy = dummy();
+          if(flag == 1)
+          {
+            waitPid(piddummy);
+            flag = 0;
+          }
+          break;
     }
   }
    printf("\n\n End of program");
 }
 
 int getCommand(char * command) {
+  int len = strLen(command);
+  if(command[len-1] == '&' && command[len-2] == ' ')
+  {
+    flag = 1;
+    command[len-2] = 0;
+  }
+  if (!strCmp("dummy", command)) return DUMMY;
   if (!strCmp("help", command)) return HELP;
   if (!strCmp("clear", command)) return CLEAR;
   if (!strCmp("time", command)) return TIME;
@@ -98,8 +134,43 @@ int getCommand(char * command) {
   if (!strCmp("mxtest", command)) return MXTEST;
   if (!strCmp("ps", command)) return PRINTPROC;
   if (!strCmp("pipetest", command)) return PIPETEST;
-
-
+  if (!strCmp("loops", command)) return LOOPS;
+  if (!strnCmp("kill ", command,5))
+  {
+    pidkill = atoi(command+5);
+    if(pidkill == -1)
+    {
+      return INVCOM;
+    }
+  return KILL;
+  }
+  if (!strnCmp("block ", command,6))
+  {
+    pidblock = atoi(command+6);
+    if(pidblock == -1)
+    {
+      return INVCOM;
+    }
+  return BLOCK;
+  }
+  if (!strnCmp("unblock ", command,8))
+  {
+    pidunblock = atoi(command+8);
+    if(pidunblock == -1)
+    {
+      return INVCOM;
+    }
+  return UNBLOCK;
+  }
+  if (!strnCmp("nice ", command,5))
+  {
+    pidnice = atoi(command+5);
+    if(pidnice == -1)
+    {
+      return INVCOM;
+    }
+  return NICE;
+  }
   return INVCOM;
 }
 
@@ -111,17 +182,29 @@ void help() {
   printf("  * exit      :       Exits shell\n");
   printf("  * lenia     :       Beep\n");
   printf("  * memtest   :       Memory Test\n");
-  printf("  * mxtest    :       Mutex Test\n");
+  printf("  * mxtest    :       Mutex Test, creates three processes and handles their execution one at a time using mutex\n");
+  printf("  * loops     :       Creates 2 background loops to test kill, nice, block and unblock syscalls\n");
+  printf("  * kill      :       Recieves process id and kills it\n");
+  printf("  * nice      :       Recieves process id changes its priority to HIGH if it was low and LOW if it was high\n");
+  printf("  * block     :       Recieves process id and blocks it\n");
+  printf("  * unblock   :       Recieves process id and unblocks it\n");
+  printf("  * dummy     :       Dummy used to test foreground assignation\n");
   printf("  * time      :       Displays current time\n");
   printf("  * pong      :       Iniciates pong when user presses 'enter' which will run until\n");
   printf("                      end of game or until user presses 'backspace' to leave\n");
-  printf("  * snake      :      Iniciates snake when user presses 'enter' which will run until\n");
+  printf("  * snake     :       Iniciates snake when user presses 'enter' which will run until\n");
   printf("                      end of game or until user presses 'backspace' to leave\n");
-
 
   printf("\n  Any other command will be taken as invalid\n\n");
 
+  printf("FOREGROUND TESTING ---->  USE 'dummy &' to generate FOREGROUND dummy process\n");
+  printf("IMPORTANT!!! --> every process generated in shell can be assigned FOREGROUND, but not all of our commands generate processes.\n");
+  printf("ONLY TRY WITH DUMMY AND PHYLO\n");
+
+
 }
+
+
 
 void clear() {
   clearScreen();
@@ -170,7 +253,7 @@ void invCom() {
   printf("\nInvalid command\n");
 }
 
-void memTest() 
+void memTest()
 {
   /*char * mem = malloc(901);
   printf("\n -----MALLOC----\n");
@@ -223,16 +306,16 @@ void memTest()
   printPage(mem5);
 }
 
-int mutexTestProc(int n, char **argv) 
+int mutexTestProc(int n, char **argv)
 {
   mutexLock("lenia");
-  printf("number: %d\n", n);
+  printf("\nnumber: %d\n", n);
   for (int i = 0; i < 50000000; i-=-1){}
   mutexUnlock("lenia");
   return n;
 }
 
-void mxProcesses() 
+void mxProcesses()
 {
   mutexOpen("lenia");
   int pid1 = setAndRunProcess("process 1", 1, NULL, 1, mutexTestProc);
@@ -244,20 +327,19 @@ void mxProcesses()
   mutexClose("lenia");
 }
 
-int mxTest(void) 
+int mxTest(void)
 {
   printf("\n");
   int pid = setAndRunProcess("mutex test wrapper", 0, NULL, 1, mxProcesses);
-  waitPid(pid);
   return pid;
 }
 
-void ps() 
+void ps()
 {
   printAllProcesses();
 }
 
-int sonProcess(int n, char **argv) 
+int sonProcess(int n, char **argv)
 {
   char buff[11] = {0};
   readFd(0, buff, 11, getRunningPid());
@@ -267,11 +349,11 @@ int sonProcess(int n, char **argv)
   {
     printf("no es hola hijo");
   }
-  
+
   return n;
 }
 
-void pipeTest() 
+void pipeTest()
 {
   int fd[2];
   pipe(fd);
@@ -284,7 +366,7 @@ void pipeTest()
   writeFd(fd[1], "hola hijo", 11, fatherPid);
   wait(10);
 
-  // printf("(F) reading from pipe\n");
+  // printf("(F) reading from pipe");
   char buff[20] = {0};
   // readFd(fd[0], buff, 20, fatherPid);
   printf(" %s.\n", buff);
@@ -294,3 +376,50 @@ void pipeTest()
   return;
 }
 
+void loopmas()
+{
+  while(1)
+  {
+      for(int i = 0; i<100000000 ; i++){}
+      putStr("+");
+
+  }
+}
+
+void loopmenos()
+{
+  while(1)
+  {
+      for(int i = 0; i<100000000 ; i++){}
+      putStr("-");
+  }
+}
+
+
+void looptest()
+{
+  int pidloop1 = setAndRunProcess("loopmas", 0, NULL, 1, loopmas);
+  int pidloop2 = setAndRunProcess("loopmenos", 0, NULL, 1, loopmenos);
+}
+
+void dummytest()
+{
+  clearScreen();
+  printf("This is a dummy process, it can be BACKGROUND or FOREGROUND, if you cannot type it is because it was generated as a FOREGROUND process\n");
+  printf("Wait a few seconds and it will finish executing\n");
+  for(int i = 1; i< 1000000000; i++){}
+  printf("bye-bye\n");
+  for (int j = 1; j<100000000; j++){}
+}
+
+int dummy()
+{
+  int piddummy = setAndRunProcess("dummytest", 0, NULL, 6, dummytest);
+  return piddummy;
+}
+
+
+
+
+
+// void nice(long int pid, int priority);

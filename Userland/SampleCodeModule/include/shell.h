@@ -17,6 +17,12 @@
 #define MXTEST 13
 #define PRINTPROC 14
 #define PIPETEST 15
+#define LOOPS 16
+#define KILL 17
+#define BLOCK 18
+#define UNBLOCK 19
+#define NICE 20
+#define DUMMY 21
 
 #define MAXLEN 256
 
@@ -67,6 +73,19 @@ void memTest();
 
 void ps();
 
-void pipeTest(); 
+void pipeTest();
+
+void loopmas();
+
+void loopmenos();
+
+void looptest();
+
+void dummytest();
+
+int dummy();
+
+//
+// void nice(long int pid, int priority);
 
 #endif

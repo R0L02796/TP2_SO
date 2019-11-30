@@ -105,7 +105,7 @@ void scanAndPrint(char * buffer) {
 			}
 		}
 	}
-	*p = 0;  
+	*p = 0;
 }
 
 void clearBuffer(char * buffer) {
@@ -183,4 +183,44 @@ void * memcpy(void * destination, const void * source, uint64_t length)
 	}
 
 	return destination;
+}
+
+int strnCmp(char * a, char * b, int n)
+{
+  while (*a && *b && n>0)
+  {
+    if (*a > *b) return 1;
+    if (*a < *b) return -1;
+    a++;
+    b++;
+    n--;
+  }
+  if(n==0) return 0;
+  if (*a) return 1;
+  if (*b) return -1;
+}
+
+int atoi(char * candidatoACambiarseAUnNumeroQueVaASuperarElMaximoDeLargoDeUnaVariable)
+{
+	int respuestaDelCandidatoACambiarseAUnNumeroQueVaASuperar = 0;
+	for(int i = 0; i < strLen(candidatoACambiarseAUnNumeroQueVaASuperarElMaximoDeLargoDeUnaVariable); i++)
+	{
+		if(candidatoACambiarseAUnNumeroQueVaASuperarElMaximoDeLargoDeUnaVariable[i] >= '0' && candidatoACambiarseAUnNumeroQueVaASuperarElMaximoDeLargoDeUnaVariable[i] <= '9')
+		{
+			respuestaDelCandidatoACambiarseAUnNumeroQueVaASuperar = respuestaDelCandidatoACambiarseAUnNumeroQueVaASuperar*10 + candidatoACambiarseAUnNumeroQueVaASuperarElMaximoDeLargoDeUnaVariable[i] - '0';
+		}
+		else
+			return -1;
+	}
+	return respuestaDelCandidatoACambiarseAUnNumeroQueVaASuperar;
+}
+
+int strLen(char *str)
+{
+  int len = 0;
+  while (*str != 0) {
+    len++;
+    str++;
+  }
+  return len;
 }

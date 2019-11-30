@@ -34,6 +34,8 @@
 #define FDCLOSE 30
 #define READFD 31
 #define WRITEFD 32
+#define BLOCK_PROCESS 33
+#define UNBLOCK_PROCESS 34
 
 #define GET 0
 #define SET 1
@@ -70,7 +72,7 @@ void getTime(unsigned int * dest, uint64_t time);
 char beepon();
 void beepoff();
 
-void callNice(long int pid, int priority);
+void callNice(long int pid);
 long int callSetProcess(char *name,int argc, char **argv, int priority,int (*entry)(int, char **));
 long int callSetAndRunProcess(char *name,int argc, char **argv, int priority,int (*entry)(int, char **)) ;
 void callRunProcess(int pid);

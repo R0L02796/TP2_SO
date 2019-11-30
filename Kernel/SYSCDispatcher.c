@@ -91,7 +91,7 @@ int syscallDispatcher(uint64_t syscall, uint64_t p1, uint64_t p2, uint64_t p3, u
 			callRunProcess((int)p1);
 			break;
 		case CHANGE_PRIORITY:
-			callNice(p1,p2);
+			callNice(p1);
 			break;
 		case CHANGE_STATE:
 			changeProcessState((int)p1,(processState)p2);
@@ -125,6 +125,12 @@ int syscallDispatcher(uint64_t syscall, uint64_t p1, uint64_t p2, uint64_t p3, u
 		case WRITEFD:
 			writeFd((int)p1,(char *)p2,(int)p3,(int)p4);
 			break;
+		case BLOCK_PROCESS:
+				changeProcessState((int)p1,BLOCKED);
+				break;
+		case UNBLOCK_PROCESS:
+				changeProcessState((int)p1,READY);
+				break;
 	}
 	return 0;
 }
@@ -191,7 +197,6 @@ long int callSetAndRunProcess(char *name,int argc, char **argv, int priority,int
   Process * newProcess = createProcess(name,argc, argv, priority,entry);
   stackCheat(newProcess);
   addProcess(newProcess);
-  return newProcess->pid;
 }
 
 long int callSetProcess(char *name,int argc, char **argv, int priority,int (*entry)(int, char **))
@@ -201,20 +206,14 @@ long int callSetProcess(char *name,int argc, char **argv, int priority,int (*ent
 }
 
 
-void callNice(long int pid, int priority) //FALTA HACER APP DE NICE
+void callNice(long int pid)
 {
-  /*if (pid <= 1)
-  {
-	return;
-  }
-  if (priority == HIGHP || priority == LOWP)
-  {
-    nice(pid, priority);
-  }*/
+nice(pid);
 }
 
 void waitPid(long pid)
 {
 		_sti();
-		while (existProcess(pid)){}
+		while(existProcess(pid) == 1){};
+		_cli();
 }

@@ -10,6 +10,10 @@
 #define MAX_FD 30
 #define LOWP 1
 #define HIGHP 6
+#define FOREGROUNDHP 7
+#define FOREGROUNDLP 2
+
+
 typedef struct ProcessSlot
 {
   struct Process * process;

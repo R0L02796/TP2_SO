@@ -19,7 +19,7 @@ void stackCheat(Process * process);
 void wrapper(int (*entryFunction)(int, char **), int argc, char **argv);
 void printProcesses();
 char * getStateFromNumber(int state);
-void nice(long int pid, int priority);
+void nice(long int pid);
 int existProcess(long pid);
 
 #endif
