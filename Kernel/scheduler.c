@@ -120,12 +120,12 @@ static ProcessSlot* findProcessReadyRec(ProcessSlot * current)
       return current;
     // }
   }
-  else if(current->process->state == DEAD)
-  {
-    ProcessSlot * aux = current;
-    removeProcess(current->process->pid);
-    return findProcessReadyRec(aux->next);
-  }
+  // else if(current->process->state == DEAD) //CANCER ESTA ACA
+  // {
+  //   ProcessSlot * aux = current;
+  //   removeProcess(current->process->pid);
+  //   return findProcessReadyRec(aux->next);
+  // }
   return findProcessReadyRec(current->next);
 }
 
@@ -291,7 +291,7 @@ int existProcess(long pid)
   int i;
 
 	for (i = 0; i < cantProcesses; i++) {
-		if (found->process->pid == pid) {
+		if (found->process->pid == pid && found->process->state != DEAD) {
 			return 1;
 		}
 

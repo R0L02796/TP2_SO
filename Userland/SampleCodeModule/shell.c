@@ -363,8 +363,8 @@ void mamaProcess()
   dup(fd[0], 1, juanPid);
 
   for(int i=0; i<5; i++){}
-  
-  runProcess(juanPid);  
+
+  runProcess(juanPid);
   writeFd(fd[1], "hola hijo", 11, mamaPid);
 
   for(int i=0; i<5; i++){}
@@ -385,7 +385,7 @@ void pipeTest()
   {
     /* code */
   }
-  
+
   return;
 }
 
@@ -422,7 +422,6 @@ void dummytest()
   printf("Wait a few seconds and it will finish executing\n");
   for(int i = 1; i< 1000000000; i++){}
   printf("bye-bye\n");
-  for (int j = 1; j<100000000; j++){}
 }
 
 int dummy()
