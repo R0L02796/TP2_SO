@@ -380,7 +380,12 @@ void mamaProcess()
 }
 void pipeTest()
 {
-   setAndRunProcess("mama", 0, NULL, 6, mamaProcess);
+  setAndRunProcess("mama", 0, NULL, 6, mamaProcess);
+  for (int i = 0; i < 50; i++)
+  {
+    /* code */
+  }
+  
   return;
 }
 
