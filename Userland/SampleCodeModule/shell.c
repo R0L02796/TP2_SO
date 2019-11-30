@@ -394,7 +394,7 @@ int mamaProcess(int n, char **argv)
 void pipeTest()
 {
   long int pid = setAndRunProcess("mama", 0, NULL, 6, mamaProcess);
-  long int pid2 = setAndRunProcess("juan", 0, NULL, 6, juanProcess)
+  long int pid2 = setAndRunProcess("juan", 0, NULL, 6, juanProcess);
   // waitPid(pid);
 
   return;
