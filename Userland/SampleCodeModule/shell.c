@@ -347,16 +347,20 @@ int juanProcess(int n, char **argv)
 
   readFd(0, buff, 11, getRunningPid());
   if(strCmp(buff,"arriba arriba juan, hay que ir a la escuela") == 0)
-  writeFd(1, "no no mama, no rompas las bolas", 33, getRunningPid());
+  {
+    putStr("OO//");
+    writeFd(1, "no no mama, no rompas las bolas", 33, getRunningPid());
+  }
   else
   {
+    putStr("zzz");
     writeFd(1, "durmiendo.....", 13, getRunningPid());
   }
 
   return n;
 }
 
-void mamaProcess()
+int mamaProcess(int n, char **argv)
 {
   int fd[2];
   pipe(fd);
@@ -368,6 +372,7 @@ void mamaProcess()
   runProcess(juanPid);  
 
   writeFd(fd[1], "hola hijo", 11, mamaPid);
+  printf("hola hijo");
 
   printf("(F) reading from pipe");
   char buff[50] = {0};
@@ -379,7 +384,7 @@ void mamaProcess()
   // waitPid(juanPid);
   closeFD(fd[0], mamaPid);
   closeFD(fd[1], mamaPid);
-  return;
+  return 0;
 }
 void pipeTest()
 {
