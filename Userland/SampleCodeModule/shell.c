@@ -341,56 +341,62 @@ void ps()
 
 int juanProcess(int n, char **argv)
 {
-  char buff[50] = {0};
+  printf("JUAN\n");
+  // char buff[50] = {0};
+  //
+  // wait(20);
+  //
+  // readFd(0, buff, 11, getRunningPid());
+  // if(strCmp(buff,"arriba arriba juan, hay que ir a la escuela") == 0)
+  // {
+  //   putStr("OO//");
+  //   writeFd(1, "no no mama, no rompas las bolas", 33, getRunningPid());
+  // }
+  // else
+  // {
+  //   putStr("zzz");
+  //   writeFd(1, "durmiendo.....", 13, getRunningPid());
+  // }
 
-  wait(20);
-
-  readFd(0, buff, 11, getRunningPid());
-  if(strCmp(buff,"arriba arriba juan, hay que ir a la escuela") == 0)
-  {
-    putStr("OO//");
-    writeFd(1, "no no mama, no rompas las bolas", 33, getRunningPid());
-  }
-  else
-  {
-    putStr("zzz");
-    writeFd(1, "durmiendo.....", 13, getRunningPid());
-  }
-
-  return n;
+  return 0;
 }
 
 int mamaProcess(int n, char **argv)
 {
-  int fd[2];
-  pipe(fd);
-  long int juanPid = setProcess("juan", 0, NULL, 6, juanProcess);
-  long int mamaPid = getRunningPid();
-  dup(fd[1], 0, juanPid);
-  dup(fd[0], 1, juanPid);
+  printf("MAMA\n");
 
-  runProcess(juanPid);  
-
-  writeFd(fd[1], "hola hijo", 11, mamaPid);
-  printf("hola hijo");
-
-  printf("(F) reading from pipe");
-  char buff[50] = {0};
-
-  waitPid(juanPid);
-
-  readFd(fd[0], buff, 50, mamaPid);
-  printf(" %s.\n", buff);
-  // waitPid(juanPid);
-  closeFD(fd[0], mamaPid);
-  closeFD(fd[1], mamaPid);
+  // int fd[2];
+  // pipe(fd);
+  // // long int juanPid = setProcess("juan", 0, NULL, 6, juanProcess);
+  // printf("PROCCESSS SET\n");
+  //
+  // long int mamaPid = getRunningPid();
+  // // dup(fd[1], 0, juanPid);
+  // // dup(fd[0], 1, juanPid);
+  //
+  // // runProcess(juanPid);
+  //
+  // writeFd(fd[1], "hola hijo", 11, mamaPid);
+  // printf("hola hijo");
+  //
+  // printf("(F) reading from pipe");
+  // char buff[50] = {0};
+  //
+  // // waitPid(juanPid);
+  //
+  // readFd(fd[0], buff, 50, mamaPid);
+  // printf(" %s.\n", buff);
+  // // waitPid(juanPid);
+  // closeFD(fd[0], mamaPid);
+  // closeFD(fd[1], mamaPid);
   return 0;
 }
 void pipeTest()
 {
   long int pid = setAndRunProcess("mama", 0, NULL, 6, mamaProcess);
-  waitPid(pid);
-  
+  long int pid2 = setAndRunProcess("juan", 0, NULL, 6, juanProcess)
+  // waitPid(pid);
+
   return;
 }
 
