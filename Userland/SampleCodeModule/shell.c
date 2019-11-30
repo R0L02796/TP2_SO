@@ -339,40 +339,45 @@ void ps()
   printAllProcesses();
 }
 
-int sonProcess(int n, char **argv)
+int juanProcess(int n, char **argv)
 {
   char buff[11] = {0};
   readFd(0, buff, 11, getRunningPid());
-  if(strCmp(buff,"hola hijo") == 0)
-    writeFd(1, "hola papito", 13, getRunningPid());
+  if(strCmp(buff,"arriba arriba juan, hay que ir a la escuela") == 0)
+  writeFd(1, "no no mama, no rompas las bolas", 13, getRunningPid());
   else
   {
-    printf("no es hola hijo");
+    printf("se quedo dormido");
   }
 
   return n;
 }
 
-void pipeTest()
+void mamaProcess()
 {
   int fd[2];
   pipe(fd);
-  long int fatherPid = getRunningPid();
-  // long int sonPid = setProcess("son", 0, NULL, 6, sonProcess);
-  // dup(fd[1], 0, sonPid);
-  // dup(fd[0], 1, sonPid);
-  // runProcess(sonPid);
+  long int juanPid = setProcess("juan", 0, NULL, 6, juanProcess);
+  long int mamaPid = getRunningPid();
+  dup(fd[1], 0, juanPid);
+  dup(fd[0], 1, juanPid);
+  runProcess(juanPid);
   wait(10);
-  writeFd(fd[1], "hola hijo", 11, fatherPid);
+  writeFd(fd[1], "hola hijo", 11, mamaPid);
   wait(10);
 
-  // printf("(F) reading from pipe");
+  printf("(F) reading from pipe");
   char buff[20] = {0};
-  // readFd(fd[0], buff, 20, fatherPid);
+  readFd(fd[0], buff, 20, mamaPid);
   printf(" %s.\n", buff);
-  // waitPid(sonPid);
-  closeFD(fd[0], fatherPid);
-  closeFD(fd[1], fatherPid);
+  waitPid(juanPid);
+  closeFD(fd[0], mamaPid);
+  closeFD(fd[1], mamaPid);
+  return;
+}
+void pipeTest()
+{
+   setAndRunProcess("mama", 0, NULL, 6, mamaProcess);
   return;
 }
 
