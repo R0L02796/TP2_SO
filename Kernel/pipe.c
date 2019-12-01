@@ -45,7 +45,7 @@ int pipe(int fds[2])
         char * name2 = "combo"; //este lo mismo
         pipes[i].sem = semCreate(0,  name);
         pipes[i].mutex = newMutex(name2);
-        pipes[i].users = 0;
+        pipes[i].users = 2;
         return 0;
       }
   }
