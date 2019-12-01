@@ -81,7 +81,7 @@ int pipeWrite(int pipeid, char* data, int bytes)
   for(int i=0; i < MAX_PIPES; i++)
   {
     char wad[4];
-    putStr(decToStr(pipe->pipeid,wad));
+    putStr(decToStr(pipes[i].pipeid,wad));
   }
 
 
