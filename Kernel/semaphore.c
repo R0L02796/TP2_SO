@@ -78,7 +78,7 @@ void semWait(char * name)
   {
     offer(s->lockedQueue, &running);
     mutexUnlock(s->mutex->name);
-    removeProcess(running->pid);
+    running->state = BLOCKED;
     _interrupt();
   } 
   else 
@@ -94,17 +94,22 @@ void semPost(char * name)
   putStr("en sem post");
   sem_t s = &semVec[findSem(name)];
   if (s == NULL) return;
+    putStr("antes lock");
   mutexLock(s->mutex->name);
+      putStr("en sem post en lock");
+
   if (sizeQ(s->lockedQueue) != 0) 
   {
     Process * proc;
     poll(s->lockedQueue, &proc);
-    addProcess(proc);
+    proc->state = READY;
   } 
   else 
   {
     s->value++;
   }
+    putStr("en sem post saliendo lock");
+
   mutexUnlock(s->mutex->name);
   return;
 }
