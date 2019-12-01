@@ -38,9 +38,18 @@ sem_t semCreate(int startValue, char* name)
 
 int findSem(char * name)
 {
+
+  newLine();
+    putStr(semVec[0].name);
+        putStr(name);
+
+
   int resp = 0;
   while(strCmp(semVec[resp].name, name) != 0 && resp < MAX_SEMS)
   {
+    newLine();
+    putStr(semVec[resp].name);
+        putStr(name);
     resp++;
   }
   if(resp < MAX_SEMS)
