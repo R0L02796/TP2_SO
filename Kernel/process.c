@@ -126,6 +126,8 @@ void dup(int fd1, int fd2, int processFd2pid)
 void writeFd(int fd, char * buff, int length, int pPid)
 {
   Process * p = getProcess(pPid);
+  char wad[4];
+    putStr(decToStr(p->fileDescriptors[fd],wad));
   pipeWrite(p->fileDescriptors[fd], buff, length);
 }
 void readFd(int fd, char * buff, int length, int pPid)
