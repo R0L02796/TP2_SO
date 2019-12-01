@@ -356,7 +356,7 @@ int juanProcess(int n, char **argv)
   
   readFd(3, buff, 45, getRunningPid());
 
-  printf("%s\n",buff);
+  printf("\n%s\n",buff);
 
   if(strCmp(buff,"arriba arriba juan, hay que ir a la escuela") == 0)
   {
