@@ -119,8 +119,7 @@ void dup(int fd1, int fd2, int processFd2pid)
   Process * processFd2 = getProcess(processFd2pid);
   int pipeID = processFd1->fileDescriptors[fd1];
   Pipe * pipe = getPipe(pipeID);
-  if (pipe != NULL)
-    pipe->users++;
+  pipe->users++;
   processFd2->fileDescriptors[fd2] = pipeID;
 }
 

@@ -3,6 +3,7 @@
 #include "process.h"
 #include "semaphore.h"
 #include "mutex.h"
+#include "videoDriver.h"
 
 static int pipeid;
 static Pipe pipes[MAX_PIPES];
@@ -55,6 +56,7 @@ int pipe(int fds[2])
 
 int pipeRead(int pipeid, char * data, int bytes)
 {
+  putStr("en read");
   Pipe_t p = getPipe(pipeid);
   semWait(p->sem->name);
   mutexLock(p->mutex->name);
@@ -71,6 +73,7 @@ int pipeRead(int pipeid, char * data, int bytes)
 
 int pipeWrite(int pipeid, char* data, int bytes)
 {
+  putStr("en write");
   Pipe_t pipe = &pipes[pipeid -2];
   mutexLock(pipe->mutex->name);
   int i;

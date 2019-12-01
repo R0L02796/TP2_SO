@@ -351,21 +351,21 @@ void ps()
 int juanProcess(int n, char **argv)
 {
   printf("JUAN\n");
-  // char buff[50] = {0};
-  //
-  // wait(20);
-  //
-  // readFd(0, buff, 11, getRunningPid());
-  // if(strCmp(buff,"arriba arriba juan, hay que ir a la escuela") == 0)
-  // {
-  //   putStr("OO//");
-  //   writeFd(1, "no no mama, no rompas las bolas", 33, getRunningPid());
-  // }
-  // else
-  // {
-  //   putStr("zzz");
-  //   writeFd(1, "durmiendo.....", 13, getRunningPid());
-  // }
+  char buff[50] = {0};
+  
+  wait(20);
+  
+  readFd(3, buff, 45, getRunningPid());
+  if(strCmp(buff,"arriba arriba juan, hay que ir a la escuela") == 0)
+  {
+    putStr("OO//");
+    writeFd(4, "no no mama, no rompas las bolas", 33, getRunningPid());
+  }
+  else
+  {
+    putStr("zzz");
+    writeFd(4, "durmiendo.....", 13, getRunningPid());
+  }
 
   return 0;
 }
@@ -377,16 +377,16 @@ int mamaProcess(int n, char **argv)
   int fd[2];
   pipe(fd);
   printf("\n%d%d\n",fd[0],fd[1]);
-  long int juanPid = setProcess("juan", 0, NULL, 6, juanProcess);
+  long int juanPid = setAndRunProcess("juan", 0, NULL, 6, juanProcess);
   printf("PROCCESSS SET\n");
   
   long int mamaPid = getRunningPid();
   dup(fd[1], 3, juanPid);
   dup(fd[0], 4, juanPid);
   
-  runProcess(juanPid);
+  // runProcess(juanPid);
   
-  writeFd(fd[1], "hola hijo", 11, mamaPid);
+  writeFd(fd[1], "arriba arriba juan, hay que ir a la escuela", 45, mamaPid);
   printf("hola hijo");
   
   printf("(F) reading from pipe");
