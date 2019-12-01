@@ -190,7 +190,7 @@ void help() {
   printf("  * unblock   :       Recieves process id and unblocks it\n");
   printf("  * dummy     :       Dummy used to test foreground assignation\n");
   printf("  * time      :       Displays current time\n");
-  printf("  * pipetest  :       runs a test of pipes");
+  printf("  * pipetest  :       Creates two proceses that comunicates using pipes\n");
   printf("  * pong      :       Iniciates pong when user presses 'enter' which will run until\n");
   printf("                      end of game or until user presses 'backspace' to leave\n");
   printf("  * snake     :       Iniciates snake when user presses 'enter' which will run until\n");

@@ -200,35 +200,38 @@ void printProcesses()
 	newLine();
 	for(i = 0; i < cantProcesses; i++)
   	{
-		Process * p = s->process;
-		putStr("  |  Name: ");
-		putStr(p->name);
-		putStr("  |  PID: ");
-    char buffer[10];
-		putStr(decToStr(p->pid,buffer));
-    if(p->priority == FOREGROUNDHP || p->priority == FOREGROUNDLP)
-    {
-     putStr("  |  Foreground process");
-    }
-    else
-    {
-    putStr("  |  Background process");
-    }
-    putStr("  | Priority: ");
-    char buffer1[10];
-    putStr(decToStr(p->priority, buffer1));
-		putStr("  |  State: ");
-		putStr(getStateFromNumber(p->state));
-		putStr("  |  RSP: 0x");
-    char buffer2[20];
-		putStr(decToStr((int)p->rsp, buffer2));
-		putStr("  |  Stack Base: 0x");
-		char buffer3[20];
-		putStr(decToStr((int)p->stackBase, buffer3));
-		putStr("  |  Stack Top: 0x");
-    char buffer4[10];
-		putStr(decToStr((int)p->stackTop, buffer4));
-    newLine();
+		if(s->process->state != DEAD)
+		{
+			Process * p = s->process;
+			putStr("  |  Name: ");
+			putStr(p->name);
+			putStr("  |  PID: ");
+			char buffer[10];
+			putStr(decToStr(p->pid,buffer));
+			if(p->priority == FOREGROUNDHP || p->priority == FOREGROUNDLP)
+			{
+			putStr("  |  Foreground process");
+			}
+			else
+			{
+			putStr("  |  Background process");
+			}
+			putStr("  | Priority: ");
+			char buffer1[10];
+			putStr(decToStr(p->priority, buffer1));
+			putStr("  |  State: ");
+			putStr(getStateFromNumber(p->state));
+			putStr("  |  RSP: 0x");
+			char buffer2[20];
+			putStr(decToStr((int)p->rsp, buffer2));
+			putStr("  |  Stack Base: 0x");
+			char buffer3[20];
+			putStr(decToStr((int)p->stackBase, buffer3));
+			putStr("  |  Stack Top: 0x");
+			char buffer4[10];
+			putStr(decToStr((int)p->stackTop, buffer4));
+			newLine();
+		}
 		s = s->next;
 	}
 }
