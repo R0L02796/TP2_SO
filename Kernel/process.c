@@ -82,7 +82,7 @@ int addFileDescriptor(Process* process, int fd)
     {
       process->fileDescriptors[i] = fd;
       char wad1[4];
-    putStr(decToStr(process->fileDescriptors[i],wad1));
+      putStr(decToStr(process->fileDescriptors[i],wad1));
       return i;
     }
   }
