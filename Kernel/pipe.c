@@ -39,8 +39,8 @@ int pipe(int fds[2])
       if (pipes[i].free == 1)
       {
         pipes[i].creatorProcess = getCurrentProcess();
-        fds[0] = addFileDescriptor(pipes[i].creatorProcess, pipeid);
-        fds[1] = addFileDescriptor(pipes[i].creatorProcess, pipeid);
+        fds[0] = addFileDescriptor(pipes[i].creatorProcess, pipes[i].pipeid);
+        fds[1] = addFileDescriptor(pipes[i].creatorProcess, pipes[i].pipeid);
         pipes[i].free = 0;
         char * name = "wombo";  //tendria q ser diferente siempre, PRUEBA
         char * name2 = "combo"; //este lo mismo
