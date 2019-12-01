@@ -4,6 +4,7 @@
 #include "include/mutex.h"
 #include "queue.h"
 #include "lib.h"
+#include "videoDriver.h"
 
 void _interrupt();
 static tSemaphore semVec[MAX_SEMS] = {NULL};
@@ -90,6 +91,7 @@ void semWait(char * name)
 
 void semPost(char * name) 
 {
+  putStr("en sem post");
   sem_t s = &semVec[findSem(name)];
   if (s == NULL) return;
   mutexLock(s->mutex->name);
