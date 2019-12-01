@@ -80,6 +80,8 @@ int addFileDescriptor(Process* process, int fd)
     if (process->fileDescriptors[i] == -1)
     {
       process->fileDescriptors[i] = fd;
+      char wad1[4];
+    putStr(decToStr(process->fileDescriptors[i],wad1));
       return i;
     }
   }
