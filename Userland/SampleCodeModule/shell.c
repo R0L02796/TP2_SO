@@ -18,6 +18,11 @@ int pidunblock;
 int pidnice;
 int on = 1;
 int i = 0;
+int state[5];
+
+char ** sems = {"tenedor1","tenedor2","tenedor3","tenedor4","tenedor5"};
+
+
 void initShell(){
 
   printf("\n~~WELCOME TO LENIA'S SHELL~~\n\nPlease type 'help' to find out about our commands\n\n\n");
@@ -100,6 +105,9 @@ void initShell(){
       case NICE:
           changePriority(pidnice);
           break;
+      case PHYLOS:
+          philosophers();
+          break;
       case DUMMY:
           piddummy = dummy();
           if(flag == 1)
@@ -125,6 +133,7 @@ int getCommand(char * command) {
   if (!strCmp("clear", command)) return CLEAR;
   if (!strCmp("time", command)) return TIME;
   if (!strCmp("pong", command)) return PONG;
+  if (!strCmp("philosophers", command)) return PHYLOS;
   if (!strCmp("zerodiv", command)) return ZERODIV;
   if (!strCmp("invopcode", command)) return INVOPCODE;
   if (!strCmp("lenia", command)) return LENIA;
@@ -207,7 +216,7 @@ void help() {
 
 
 
-void clear() 
+void clear()
 {
   clearScreen();
   printf("\n~~Welcome to Lenia's Shell~~\n\n\n");
@@ -232,7 +241,7 @@ void snake()
   clear();
 }
 
-void zeroDiv() 
+void zeroDiv()
 {
   int a = 0;
   a = 2/a;
@@ -252,12 +261,12 @@ void lenia() {
 }
 
 
-void exit() 
+void exit()
 {
   on = 0;
 }
 
-void invCom() 
+void invCom()
 {
   printf("\nInvalid command\n");
 }
@@ -351,9 +360,9 @@ void ps()
 int juanProcess(int n, char **argv)
 {
   char buff[50] = {0};
-  
+
   // wait(20);
-  
+
   readFd(3, buff, 45, getRunningPid());
 
   printf("\n%s\n",buff);
@@ -376,18 +385,18 @@ int mamaProcess(int n, char **argv)
   int fd[2];
   pipe(fd);
   long int juanPid = setAndRunProcess("juan", 0, NULL, 6, juanProcess);
-  
+
   long int mamaPid = getRunningPid();
   dup(fd[1], 3, juanPid);
   dup(fd[0], 4, juanPid);
-  
-  
+
+
   writeFd(fd[1], "arriba arriba juan, que ya canto el gallito", 45, mamaPid);
-  
+
   char buff[50] = {0};
-  
+
   waitPid(juanPid);
-  
+
   readFd(fd[0], buff, 50, mamaPid);
   printf(" %s.\n", buff);
   waitPid(juanPid);
@@ -448,8 +457,105 @@ int dummy()
   return piddummy;
 }
 
+void philosophers()
+{
+  clear();
+  int i = 0;
 
+  // initialize the semaphores
+  mutexOpen("phylos");
+  printf("\nA\n");
+  mutexOpen(sems[0]);
+  mutexOpen(sems[1]);
+  mutexOpen(sems[2]);
+  mutexOpen(sems[3]);
+  mutexOpen(sems[4]);
+  printf("\nB\n");
+  int pidphilo1 = setAndRunProcess("philo 1", 1, NULL, 1, philo);
+  int pidphilo2 = setAndRunProcess("philo 2", 2, NULL, 1, philo);
+  int pidphilo3 = setAndRunProcess("philo 3", 3, NULL, 1, philo);
+  int pidphilo4 = setAndRunProcess("philo 4", 4, NULL, 1, philo);
+  int pidphilo5 = setAndRunProcess("philo 5", 5, NULL, 1, philo);
+  printf("\nC\n");
+  // waitPid(pidphilo1);
+  // waitPid(pidphilo2);
+  // waitPid(pidphilo3);
+  // waitPid(pidphilo4);
+  // waitPid(pidphilo5);
 
+}
 
+void philo(int n, char **argv)
+{
 
-// void nice(long int pid, int priority);
+    while (1) {
+
+        int* i = n-1;
+
+        wait(20);
+
+        take_fork(*i);
+
+        wait(0);
+
+        put_fork(*i);
+    }
+}
+
+void put_fork(int phnum)
+{
+
+    mutexLock("phylos");
+
+    // state that thinking
+    state[phnum] = THINKING;
+
+    printf("Philosopher %d putting fork %d and %d down\n", phnum + 1, (phnum + 4) % 5 + 1, phnum + 1);
+    printf("Philosopher %d is thinking\n", phnum + 1);
+
+    test((phnum + 4) % 5);
+    test((phnum + 1) % 5);
+
+    mutexUnlock("phylos");
+}
+
+void take_fork(int phnum)
+{
+
+    mutexLock("phylos");
+
+    // state that hungry
+    state[phnum] = HUNGRY;
+
+    printf("Philosopher %d is Hungry\n", phnum + 1);
+
+    // eat if neighbours are not eating
+    test(phnum);
+
+    mutexUnlock("phylos");
+
+    // if unable to eat wait to be signalled
+    mutexLock(sems[phnum]);
+
+    wait(10);
+}
+
+void test(int phnum)
+{
+    if (state[phnum] == HUNGRY && state[(phnum + 4) % 5] != EATING && state[(phnum + 1) % 5] != EATING) {
+        // state that eating
+        state[phnum] = EATING;
+
+        wait(10);
+
+        printf("Philosopher %d takes fork %d and %d\n",phnum + 1, (phnum + 4) % 5 + 1, phnum + 1);
+
+        printf("Philosopher %d is Eating\n", phnum + 1);
+
+        // mutexUnlock(&sems[phnum]) has no effect
+        // during takefork
+        // used to wake up hungry philosophers
+        // during putfork
+        mutexUnlock(sems[phnum]);
+    }
+}

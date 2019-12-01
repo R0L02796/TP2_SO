@@ -23,9 +23,13 @@
 #define UNBLOCK 19
 #define NICE 20
 #define DUMMY 21
+#define PHYLOS 22
 
 #define MAXLEN 256
 
+#define HUNGRY 50
+#define THINKING 51
+#define EATING 52
 
 // Initializes shell
 void initShell();
@@ -84,6 +88,18 @@ void looptest();
 void dummytest();
 
 int dummy();
+
+void test(int phnum);
+
+// take up chopsticks
+void take_fork(int phnum);
+
+// put down chopsticks
+void put_fork(int phnum);
+
+void philo(int n, char **argv);
+
+void philosophers();
 
 //
 // void nice(long int pid, int priority);
