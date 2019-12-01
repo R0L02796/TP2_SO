@@ -190,6 +190,7 @@ void help() {
   printf("  * unblock   :       Recieves process id and unblocks it\n");
   printf("  * dummy     :       Dummy used to test foreground assignation\n");
   printf("  * time      :       Displays current time\n");
+  printf("  * pipetest  :       runs a test of pipes");
   printf("  * pong      :       Iniciates pong when user presses 'enter' which will run until\n");
   printf("                      end of game or until user presses 'backspace' to leave\n");
   printf("  * snake     :       Iniciates snake when user presses 'enter' which will run until\n");
@@ -206,33 +207,39 @@ void help() {
 
 
 
-void clear() {
+void clear() 
+{
   clearScreen();
   printf("\n~~Welcome to Lenia's Shell~~\n\n\n");
 }
 
-void time(){
+void time()
+{
   unsigned int h = getHour();
   unsigned int m = getMinute();
   unsigned int s = getSecond();
   printf("\nLocal Time: %d:%d:%d\n", h, m, s);
 }
 
-void pong() {
+void pong()
+{
   startPong();
   clear();
 }
-void snake() {
+void snake()
+{
   startSnake();
   clear();
 }
 
-void zeroDiv() {
+void zeroDiv() 
+{
   int a = 0;
   a = 2/a;
 }
 
-void invOpCode(){
+void invOpCode()
+{
   opCode();
 }
 
@@ -245,11 +252,13 @@ void lenia() {
 }
 
 
-void exit() {
+void exit() 
+{
   on = 0;
 }
 
-void invCom() {
+void invCom() 
+{
   printf("\nInvalid command\n");
 }
 
@@ -365,37 +374,38 @@ int mamaProcess(int n, char **argv)
 {
   printf("MAMA\n");
 
-  // int fd[2];
-  // pipe(fd);
-  // // long int juanPid = setProcess("juan", 0, NULL, 6, juanProcess);
-  // printf("PROCCESSS SET\n");
-  //
-  // long int mamaPid = getRunningPid();
-  // // dup(fd[1], 0, juanPid);
-  // // dup(fd[0], 1, juanPid);
-  //
-  // // runProcess(juanPid);
-  //
-  // writeFd(fd[1], "hola hijo", 11, mamaPid);
-  // printf("hola hijo");
-  //
-  // printf("(F) reading from pipe");
-  // char buff[50] = {0};
-  //
-  // // waitPid(juanPid);
-  //
-  // readFd(fd[0], buff, 50, mamaPid);
-  // printf(" %s.\n", buff);
-  // // waitPid(juanPid);
-  // closeFD(fd[0], mamaPid);
-  // closeFD(fd[1], mamaPid);
+  int fd[2];
+  pipe(fd);
+  printf("\n%d%d\n",fd[0],fd[1]);
+  long int juanPid = setProcess("juan", 0, NULL, 6, juanProcess);
+  printf("PROCCESSS SET\n");
+  
+  long int mamaPid = getRunningPid();
+  dup(fd[1], 3, juanPid);
+  dup(fd[0], 4, juanPid);
+  
+  runProcess(juanPid);
+  
+  writeFd(fd[1], "hola hijo", 11, mamaPid);
+  printf("hola hijo");
+  
+  printf("(F) reading from pipe");
+  char buff[50] = {0};
+  
+  waitPid(juanPid);
+  
+  readFd(fd[0], buff, 50, mamaPid);
+  printf(" %s.\n", buff);
+  waitPid(juanPid);
+  closeFD(fd[0], mamaPid);
+  closeFD(fd[1], mamaPid);
   return 0;
 }
+
 void pipeTest()
 {
   long int pid = setAndRunProcess("mama", 0, NULL, 6, mamaProcess);
-  long int pid2 = setAndRunProcess("juan", 0, NULL, 6, juanProcess);
-  // waitPid(pid);
+  waitPid(pid);
 
   return;
 }
