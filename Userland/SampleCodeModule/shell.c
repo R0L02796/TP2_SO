@@ -20,7 +20,7 @@ int on = 1;
 int i = 0;
 int state[5];
 
-char ** sems = {"tenedor1","tenedor2","tenedor3","tenedor4","tenedor5"};
+char * sems[5] = {"tenedor1","tenedor2","tenedor3","tenedor4","tenedor5"};
 
 
 void initShell(){
@@ -464,19 +464,16 @@ void philosophers()
 
   // initialize the semaphores
   mutexOpen("phylos");
-  printf("\nA\n");
-  mutexOpen(sems[0]);
-  mutexOpen(sems[1]);
-  mutexOpen(sems[2]);
-  mutexOpen(sems[3]);
-  mutexOpen(sems[4]);
-  printf("\nB\n");
+  mutexOpen("tenedor1");
+  mutexOpen("tenedor2");
+  mutexOpen("tenedor3");
+  mutexOpen("tenedor4");
+  mutexOpen("tenedor5");
   int pidphilo1 = setAndRunProcess("philo 1", 1, NULL, 1, philo);
   int pidphilo2 = setAndRunProcess("philo 2", 2, NULL, 1, philo);
   int pidphilo3 = setAndRunProcess("philo 3", 3, NULL, 1, philo);
   int pidphilo4 = setAndRunProcess("philo 4", 4, NULL, 1, philo);
   int pidphilo5 = setAndRunProcess("philo 5", 5, NULL, 1, philo);
-  printf("\nC\n");
   // waitPid(pidphilo1);
   // waitPid(pidphilo2);
   // waitPid(pidphilo3);
@@ -489,22 +486,19 @@ void philo(int n, char **argv)
 {
 
     while (1) {
-
-        int* i = n-1;
-
+        int i = n-1;
+        for(int a = 0; a<100000000 ; a++){}
         wait(20);
-
-        take_fork(*i);
+        take_fork(i);
 
         wait(0);
+        put_fork(i);
 
-        put_fork(*i);
     }
 }
 
 void put_fork(int phnum)
 {
-
     mutexLock("phylos");
 
     // state that thinking
