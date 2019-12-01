@@ -74,7 +74,7 @@ int pipeRead(int pipeid, char * data, int bytes)
 int pipeWrite(int pipeid, char* data, int bytes)
 {
   putStr("en write");
-  Pipe_t pipe = &pipes[pipeid -2];
+  Pipe_t pipe = getPipe(pipeid);
   mutexLock(pipe->mutex->name);
   int i;
   for (i = 0; i < bytes; i++)
