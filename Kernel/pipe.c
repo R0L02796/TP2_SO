@@ -75,8 +75,13 @@ int pipeWrite(int pipeid, char* data, int bytes)
   putStr("en write");
   Pipe_t pipe = getPipe(pipeid);
 
-  char wad[3];
-  putStr(decToStr(pipe->pipeid,wad));
+  for(int i=0; i < MAX_PIPES; i++)
+  {
+    char wad[4];
+    putStr(decToStr(pipes[i].pipeid,wad));
+  }
+
+
   mutexLock(pipe->mutex->name);
   int i;
   for (i = 0; i < bytes; i++)
@@ -87,7 +92,6 @@ int pipeWrite(int pipeid, char* data, int bytes)
   }
   if (bytes > 0 && getSem(pipe->sem) == 0)
   {
-      putStr(pipe->sem->name);
     semPost(pipe->sem->name);
   }
   mutexUnlock(pipe->mutex->name);
