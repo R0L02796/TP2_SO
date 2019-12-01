@@ -14,21 +14,19 @@ void initializePipes()
   int i;int count = 2;
   for (i = 0; i < MAX_PIPES; i++)
   {
+    pipes[i].free = 1;
+    pipes[i].creatorProcess = NULL;
+    pipes[i].pipeid = count++;
+    pipes[i].readPosition = 0;
+    pipes[i].writePosition = 0;
+    pipes[i].sem = NULL;
+    pipes[i].mutex = NULL;
+    pipes[i].bufferDim = 0;
+    pipes[i].users = 0;
 
-    Pipe p = pipes[i];
-    p.free = 1;
-    p.creatorProcess = NULL;
-    p.pipeid = count++;
-    p.readPosition = 0;
-    p.writePosition = 0;
-    p.sem = NULL;
-    p.mutex = NULL;
-    p.bufferDim = 0;
-    p.users = 0;
-
-    for (i = 0; i < MAX_BUFFER_DIM; i++)
+    for (int j = 0; j < MAX_BUFFER_DIM; j++)
     {
-      p.buffer[i] = 0;
+      pipes[i].buffer[j] = 0;
     }
   }
 }
@@ -76,7 +74,6 @@ int pipeWrite(int pipeid, char* data, int bytes)
 {
   putStr("en write");
   Pipe_t pipe = getPipe(pipeid);
-
 
   for(int i=0; i < MAX_PIPES; i++)
   {
