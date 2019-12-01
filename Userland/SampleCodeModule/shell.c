@@ -355,14 +355,15 @@ int juanProcess(int n, char **argv)
   wait(20);
   
   readFd(3, buff, 45, getRunningPid());
+
+  printf("%s\n",buff);
+
   if(strCmp(buff,"arriba arriba juan, hay que ir a la escuela") == 0)
   {
-    putStr("OO//");
     writeFd(4, "no no mama, no rompas las bolas", 33, getRunningPid());
   }
   else
   {
-    putStr("zzz");
     writeFd(4, "durmiendo.....", 13, getRunningPid());
   }
 
@@ -380,12 +381,9 @@ int mamaProcess(int n, char **argv)
   dup(fd[1], 3, juanPid);
   dup(fd[0], 4, juanPid);
   
-  // runProcess(juanPid);
   
   writeFd(fd[1], "arriba arriba juan, hay que ir a la escuela", 45, mamaPid);
-  printf("hola hijo");
   
-  printf("(F) reading from pipe");
   char buff[50] = {0};
   
   waitPid(juanPid);
