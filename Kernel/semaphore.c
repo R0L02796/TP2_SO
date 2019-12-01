@@ -38,18 +38,10 @@ sem_t semCreate(int startValue, char* name)
 
 int findSem(char * name)
 {
-
-  newLine();
-    putStr(semVec[0].name);
-        putStr(name);
-
-
   int resp = 0;
   while(strCmp(semVec[resp].name, name) != 0 && resp < MAX_SEMS)
   {
     newLine();
-    putStr(semVec[resp].name);
-        putStr(name);
     resp++;
   }
   if(resp < MAX_SEMS)
@@ -100,12 +92,9 @@ void semWait(char * name)
 
 void semPost(char * name) 
 {
-  putStr("en sem post");
   sem_t s = &semVec[findSem(name)];
   if (s == NULL) return;
-    putStr("antes lock");
   mutexLock(s->mutex->name);
-      putStr("en sem post en lock");
 
   if (sizeQ(s->lockedQueue) != 0) 
   {
@@ -117,7 +106,6 @@ void semPost(char * name)
   {
     s->value++;
   }
-    putStr("en sem post saliendo lock");
 
   mutexUnlock(s->mutex->name);
   return;

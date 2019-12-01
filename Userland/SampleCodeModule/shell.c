@@ -350,7 +350,6 @@ void ps()
 
 int juanProcess(int n, char **argv)
 {
-  printf("JUAN\n");
   char buff[50] = {0};
   
   wait(20);
@@ -372,13 +371,10 @@ int juanProcess(int n, char **argv)
 
 int mamaProcess(int n, char **argv)
 {
-  printf("MAMA\n");
 
   int fd[2];
   pipe(fd);
-  printf("\n%d%d\n",fd[0],fd[1]);
   long int juanPid = setAndRunProcess("juan", 0, NULL, 6, juanProcess);
-  printf("PROCCESSS SET\n");
   
   long int mamaPid = getRunningPid();
   dup(fd[1], 3, juanPid);

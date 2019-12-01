@@ -54,7 +54,6 @@ int pipe(int fds[2])
 
 int pipeRead(int pipeid, char * data, int bytes)
 {
-  putStr("en read");
   Pipe_t p = getPipe(pipeid);
   semWait(p->sem->name);
   mutexLock(p->mutex->name);
@@ -71,16 +70,7 @@ int pipeRead(int pipeid, char * data, int bytes)
 
 int pipeWrite(int pipeid, char* data, int bytes)
 {
-  putStr("en write");
   Pipe_t pipe = getPipe(pipeid);
-
-  for(int i=0; i < MAX_PIPES; i++)
-  {
-    char wad[4];
-    putStr(decToStr(pipes[i].pipeid,wad));
-  }
-
-
   mutexLock(pipe->mutex->name);
   int i;
   for (i = 0; i < bytes; i++)
