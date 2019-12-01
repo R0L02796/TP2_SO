@@ -45,8 +45,8 @@ int pipe(int fds[2])
         pipes[i].free = 0;
         char * name = "wombo";  //tendria q ser diferente siempre, PRUEBA
         char * name2 = "combo"; //este lo mismo
-        pipes[i].sem = semCreate(0, decToStr(pipes[i].pipeid, name));
-        pipes[i].mutex = newMutex(decToStr(pipes[i].pipeid, name2));
+        pipes[i].sem = semCreate(0,  name);
+        pipes[i].mutex = newMutex(name2);
         pipes[i].users = 0;
         return 0;
       }
