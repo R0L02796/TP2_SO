@@ -11,23 +11,24 @@ static Pipe pipes[MAX_PIPES];
 
 void initializePipes()
 {
-  int i;
+  int i;int count = 2;
   for (i = 0; i < MAX_PIPES; i++)
   {
-    Pipe * p = &(pipes[i]);
-    p->free = 1;
-    p->creatorProcess = NULL;
-    p->pipeid = 2 + i;
-    p->readPosition = 0;
-    p->writePosition = 0;
-    p->sem = NULL;
-    p->mutex = NULL;
-    p->bufferDim = 0;
-    p->users = 0;
+
+    Pipe p = pipes[i];
+    p.free = 1;
+    p.creatorProcess = NULL;
+    p.pipeid = count++;
+    p.readPosition = 0;
+    p.writePosition = 0;
+    p.sem = NULL;
+    p.mutex = NULL;
+    p.bufferDim = 0;
+    p.users = 0;
 
     for (i = 0; i < MAX_BUFFER_DIM; i++)
     {
-      p->buffer[i] = 0;
+      p.buffer[i] = 0;
     }
   }
 }
@@ -75,6 +76,15 @@ int pipeWrite(int pipeid, char* data, int bytes)
 {
   putStr("en write");
   Pipe_t pipe = getPipe(pipeid);
+
+
+  for(int i=0; i < MAX_PIPES; i++)
+  {
+    char wad[4];
+    putStr(decToStr(pipe->pipeid,wad));
+  }
+
+
   mutexLock(pipe->mutex->name);
   int i;
   for (i = 0; i < bytes; i++)
