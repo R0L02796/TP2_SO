@@ -2,6 +2,7 @@
 #include "include/pipe.h"
 #include "include/scheduler.h"
 #include "include/memoryManager.h"
+#include "videoDriver.h"
 
 static void addToProcessList(Process * process);
 static ProcessSlot * removeFromProcessList(ProcessSlot * node, Process * process);

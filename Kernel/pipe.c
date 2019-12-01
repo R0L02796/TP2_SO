@@ -5,7 +5,6 @@
 #include "mutex.h"
 #include "videoDriver.h"
 
-static int pipeid;
 static Pipe pipes[MAX_PIPES];
 
 
