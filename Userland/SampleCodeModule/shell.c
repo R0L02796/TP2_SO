@@ -185,24 +185,25 @@ int getCommand(char * command) {
 
 void help() {
   printf("\n\n********  Help Menu  ********\n\n");
-  printf("  * clear     :       Clears screen\n");
-  printf("  * invopcode :       Executes Invalid OP Code Interruption\n");
-  printf("  * zerodiv   :       Executes Zero Division Interruption\n");
-  printf("  * exit      :       Exits shell\n");
-  printf("  * lenia     :       Beep\n");
-  printf("  * memtest   :       Memory Test\n");
-  printf("  * mxtest    :       Mutex Test, creates three processes and handles their execution one at a time using mutex\n");
-  printf("  * loops     :       Creates 2 background loops to test kill, nice, block and unblock syscalls\n");
-  printf("  * kill      :       Recieves process id and kills it\n");
-  printf("  * nice      :       Recieves process id changes its priority to HIGH if it was low and LOW if it was high\n");
-  printf("  * block     :       Recieves process id and blocks it\n");
-  printf("  * unblock   :       Recieves process id and unblocks it\n");
-  printf("  * dummy     :       Dummy used to test foreground assignation\n");
-  printf("  * time      :       Displays current time\n");
-  printf("  * pipetest  :       Creates two proceses that comunicates using pipes\n");
-  printf("  * pong      :       Iniciates pong when user presses 'enter' which will run until\n");
+  printf("  * clear        :       Clears screen\n");
+  printf("  * invopcode    :       Executes Invalid OP Code Interruption\n");
+  printf("  * zerodiv      :       Executes Zero Division Interruption\n");
+  printf("  * exit         :       Exits shell\n");
+  printf("  * lenia        :       Beep\n");
+  printf("  * memtest      :       Memory Test\n");
+  printf("  * mxtest       :       Mutex Test, creates three processes and handles their execution one at a time using mutex\n");
+  printf("  * loops        :       Creates 2 background loops to test kill, nice, block and unblock syscalls\n");
+  printf("  * kill         :       Recieves process id and kills it\n");
+  printf("  * nice         :       Recieves process id changes its priority to HIGH if it was low and LOW if it was high\n");
+  printf("  * block        :       Recieves process id and blocks it\n");
+  printf("  * unblock      :       Recieves process id and unblocks it\n");
+  printf("  * dummy        :       Dummy used to test foreground assignation\n");
+  printf("  * time         :       Displays current time\n");
+  printf("  * philosophers :       Makes the game of 5 phylosphers eating\n");
+  printf("  * pipetest     :       Creates two proceses that comunicates using pipes\n");
+  printf("  * pong         :       Iniciates pong when user presses 'enter' which will run until\n");
   printf("                      end of game or until user presses 'backspace' to leave\n");
-  printf("  * snake     :       Iniciates snake when user presses 'enter' which will run until\n");
+  printf("  * snake        :       Iniciates snake when user presses 'enter' which will run until\n");
   printf("                      end of game or until user presses 'backspace' to leave\n");
 
   printf("\n  Any other command will be taken as invalid\n\n");
