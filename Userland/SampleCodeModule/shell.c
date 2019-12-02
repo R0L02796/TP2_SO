@@ -210,7 +210,7 @@ void help() {
 
   printf("FOREGROUND TESTING ---->  USE 'dummy &' to generate FOREGROUND dummy process\n");
   printf("IMPORTANT!!! --> every process generated in shell can be assigned FOREGROUND, but not all of our commands generate processes.\n");
-  printf("ONLY TRY WITH DUMMY AND PHYLO\n");
+  printf("ONLY TRY WITH DUMMY\n");
 
 
 }
